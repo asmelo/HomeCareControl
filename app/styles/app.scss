@@ -1,0 +1,19 @@
+@import 'materialize';
+
+header, main, footer {
+  padding-left: 250px;
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+
+.navbar {
+  background-color: #7edaf1;
+}
+
+.sidenav {
+  width: 250px;
+}

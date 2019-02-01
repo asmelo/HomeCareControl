@@ -1,0 +1,9 @@
+{{input type="text" value=nome placeholder="Nome"}}
+{{input type="text" value=registro placeholder="Registro"}}
+{{input type="text" value=email placeholder="E-mail"}}
+{{input type="text" value=senha placeholder="Senha"}}
+
+{{#link-to "base"}}<a href="#">Cancelar</a>{{/link-to}}
+<button {{action "criarConta"}}>Criar Conta</button>
+
+{{outlet}}

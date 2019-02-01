@@ -1,0 +1,20 @@
+{{#unless session.isAuthenticated}}
+  {{#link-to "base.conta" class="waves-effect waves-light btn"}}Criar Conta{{/link-to}}
+  {{input type="text" value=email placeholder="E-mail"}}
+  {{input type="text" value=senha placeholder="Senha"}}
+  <button {{action "signIn"}}>Entrar</button>
+{{else}}
+  <header>
+    <nav class="navbar">
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="#" {{action "signOut"}}>Sair</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  {{menu-esquerdo}}
+
+  <main>
+    {{outlet}}
+  </main>
+{{/unless}}
