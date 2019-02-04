@@ -1,17 +1,13 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
 
 export default Route.extend({
 
   usuario: service(),
 
-  beforeModel() {
-    return this.get('usuario').verificaUsuarioLogado();
-  },
-
-  afterModel(model, transition) {
-    this.get('usuario').carregaUsuario();
-  },
-
+  model() {
+    return this.get('usuario').criaListenerAuth();
+  }
 
 });

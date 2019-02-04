@@ -5,48 +5,48 @@ export default Service.extend({
 
   session: service(),
   store: service(),
+  router: service(),
 
   usuario: null,
-  userId: firebase.auth().currentUser,
 
-  verificaUsuarioLogado() {
-    return this.get('session').fetch().catch(function() {});
-  },
-
-  carregaUsuario() {
-    if(this.get('session').get('isAuthenticated')) {
-      var uid = this.get('session').get('currentUser').uid
-      this.get('store').query('usuario', {
-        orderBy: 'uid',
-        equalTo: uid
-      }).then(response => {
-        let usuario = response.objectAt(0);
-        this.set('usuario', usuario);
-      })
-    }
+  criaListenerAuth() {
+    $('loading').css('display', '');
+    var this2 = this;
+    return new Promise(function(resolve, reject) {
+      //Cria listener no firebase.auth().
+      firebase.auth().onAuthStateChanged(function(user) {
+        //Sempre que houver mudança de estado esta função será executada.
+        if (user) {
+          this2.get('store').query('usuario', {
+            orderBy: 'email',
+            equalTo: user.email
+          }).then(response => {
+            let usuario = response.objectAt(0);
+            usuario.set('userFirebase', user);
+            this2.set('usuario', usuario);
+            $('loading').css('display', 'none');
+            this2.get('router').transitionTo('/');
+          })
+          resolve(user);
+        } else {
+          this2.set('usuario', null);
+          $('loading').css('display', 'none');
+          this2.get('router').transitionTo('login');
+        }
+      });
+    });
   },
 
   criarConta(nome, registro, email, senha) {
-    //Confirmar se após a criação da conta esta sendo feito o login para recuperar e salvar o uid
+    $('loading').css('display', '');
     firebase.auth().createUserWithEmailAndPassword(email, senha).then(response => {
       let usuario = this.get('store').createRecord('usuario', {
         nome: nome,
         registro: registro,
         email: email
-      })
-      this.set('novoUsuario', usuario);
+      });
       usuario.save().then(response => {
-        this.get('session').open('firebase',{
-          provider: "password",
-          email: this.get('novoUsuario.email'),
-          password: senha
-        }).then(data => {
-          var uid = this.get('session').get('currentUser').uid
-          this.get('novoUsuario').set('uid', uid);
-          usuario.save();
-        }).catch(erro => {
-          console.log('Erro: ' + erro)
-        })
+        this.get('router').transitionTo('/');
       })
     }).catch(error => {
       console.log(error.code)
@@ -55,36 +55,21 @@ export default Service.extend({
   },
 
   signIn(email, senha) {
-    // TODO: Entender como o userId é passado numa requisição para o Firebase e se as regras do Database estão corretas
-    //https://firebase.google.com/docs/database/security/user-security?hl=pt-br
-    //https://medium.com/@martinmalinda/emberfire-is-awesome-but-querying-data-and-writing-security-rules-can-be-a-pain-f5370f4decb
-    //https://github.com/firebase/emberfire
-    //https://firebase.google.com/docs/database/web/read-and-write
-    //https://firebase.google.com/docs/database/security/quickstart
+    $('loading').css('display', '');
+    let user = firebase.auth().currentUser;
+    if(user) {
+      this.get('router').transitionTo('/');
+    }else{
+      firebase.auth().signInWithEmailAndPassword(email, senha).catch(function(error) {
+        console.log('Erro: ' + error.message);
+      });
+    }
 
-    this.get('session').open('firebase',{
-      provider: "password",
-      email: email,
-      password: senha
-    }).then(data => {
-      //this.set('userId', firebase.auth().currentUser.uid)
-      console.log(data.currentUser);
-
-      this.get('store').query('usuario', {
-        orderBy: 'email',
-        equalTo: email
-      }).then(response => {
-        let usuario = response.objectAt(0);
-        this.set('usuario', usuario);
-      })
-
-    }).catch(erro => {
-      console.log('Erro: ' + erro)
-    })
   },
 
   signOut() {
-    this.get('session').close()
+    $('loading').css('display', '');
+    firebase.auth().signOut();
   },
 
 });

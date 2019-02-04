@@ -6,9 +6,12 @@ export default Controller.extend({
   usuario: service(),
 
   actions: {
-    
-    signOut() {
-      this.get('usuario').signOut()
+
+    signIn() {
+      let email = this.get('email')
+      let senha = this.get('senha')
+
+      this.get('usuario').signIn(email, senha)
     }
 
   }

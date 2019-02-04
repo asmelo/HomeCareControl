@@ -1,0 +1,36 @@
+<div id="login-page" class="row login-page">
+  <div class="col s12 m4 offset-m4 z-depth-4 card-panel">
+    <form class="login-form" {{action "signIn" on="submit"}}>
+      <div class="row">
+        <div class="col s12 center">
+          <img src="/images/login-logo.png" alt="" class="circle responsive-img valign profile-image-login">
+          <p class="center login-form-text">Home-Care Control</p>
+        </div>
+      </div>
+      <div class="row margin">
+        <div class="input-field col s12">
+          <i class="material-icons prefix pt-5">person_outline</i>
+          {{input value=email placeholder="E-mail"}}
+        </div>
+      </div>
+      <div class="row margin">
+        <div class="input-field col s12">
+          <i class="material-icons prefix pt-5">lock_outline</i>
+          {{input type="password" value=senha placeholder="Senha"}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <button type="submit" class="btn waves-effect waves-light col s12">Login</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+            <p class="center medium-small">
+              {{#link-to 'conta' class="link-text" }}Criar conta{{/link-to}}
+            </p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
