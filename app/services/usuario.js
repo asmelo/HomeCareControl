@@ -6,6 +6,8 @@ export default Service.extend({
   session: service(),
   store: service(),
   router: service(),
+  toastr: service('toast'),
+  alerta: service(),
 
   usuario: null,
 
@@ -24,8 +26,7 @@ export default Service.extend({
             let usuario = response.objectAt(0);
             usuario.set('userFirebase', user);
             this2.set('usuario', usuario);
-            $('loading').css('display', 'none');
-            this2.get('router').transitionTo('/');
+            $('loading').css('display', 'none');            
           })
           resolve(user);
         } else {
@@ -47,10 +48,12 @@ export default Service.extend({
       });
       usuario.save().then(response => {
         this.get('router').transitionTo('/');
+        this.get('alerta').sucesso('Conta cadastrada com sucesso!');
       })
     }).catch(error => {
-      console.log(error.code)
-      console.log(error.message)
+      console.log(error.code);
+      console.log(error.message);
+      $('loading').css('display', 'none');
     })
   },
 
@@ -60,8 +63,13 @@ export default Service.extend({
     if(user) {
       this.get('router').transitionTo('/');
     }else{
+      var this2 = this;
       firebase.auth().signInWithEmailAndPassword(email, senha).catch(function(error) {
-        console.log('Erro: ' + error.message);
+        if (error.code == 'auth/user-not-found') {
+          this2.get('alerta').erro('Usuário ou senha inválido!');
+        }
+        console.log('Erro: ' + error.code + ' - ' + error.message);
+        $('loading').css('display', 'none');
       });
     }
 

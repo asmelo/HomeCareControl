@@ -1,0 +1,15 @@
+{{outlet}}
+<div class="lista-collection">
+  <ul class="collection with-header">
+    <li class="collection-header"><h4>Pacientes</h4></li>
+    {{#each pacientesOrdenados as |paciente|}}
+      <li class="collection-item">
+        <div>{{paciente.nome}}
+          <a href="#" {{action "editarPaciente" paciente.id}} class="secondary-content">
+            <i class="material-icons">edit</i>
+          </a>
+        </div>
+      </li>
+    {{/each}}
+  </ul>
+</div>

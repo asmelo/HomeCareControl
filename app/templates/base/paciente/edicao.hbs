@@ -1,0 +1,22 @@
+<div class="row formulario">
+  <div class="col s12 m8 offset-m2">
+    <div class="card">
+      <div class="card-content">
+        <form {{action "atualizarPaciente" on="submit"}}>
+          <div class="row">
+            <span class="card-title grey-text text-darken-4">Atualizar Paciente</span>
+            <div class="col s12 m8">
+                {{input value=model.nome required=true placeholder="Nome do paciente"}}
+            </div>
+            <div class="col s12 m4">
+                <button class="btn wave-effects wave-light" {{action "cancelarEdicao"}}>Cancelar</button>
+                <button type="submit" class="btn wave-effects wave-light">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{outlet}}

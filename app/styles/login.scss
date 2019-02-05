@@ -1,0 +1,33 @@
+.login-page {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: #7edaf1;
+  padding: 50px;
+
+  .card-panel {
+    padding: 25px 25px 0px;
+    border-radius: 30px;
+  }
+  img {
+    width: 30%;
+  }
+
+  .btn {
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15.4px;
+    height: 43px;
+  }
+
+  .login-form-text{
+    font-weight: bolder;
+    text-transform: uppercase;
+  }
+
+  .link-text {
+    color: green;
+    font-weight: bold;
+  }
+
+}

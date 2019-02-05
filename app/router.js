@@ -7,7 +7,12 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('base', { path: '/' }, function() {});
+  this.route('base', { path: '/' }, function() {
+    this.route('paciente', function() {
+      this.route('novo');
+      this.route('edicao', { path: '/paciente/edicao/:idPaciente'});
+    });
+  });
   this.route('conta');
   this.route('login');
 });

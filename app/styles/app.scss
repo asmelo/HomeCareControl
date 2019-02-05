@@ -1,4 +1,12 @@
 @import 'materialize';
+@import 'base';
+@import 'conta';
+@import 'login';
+@import 'toastr';
+
+html {
+  scroll-behavior: smooth;
+}
 
 header, main, footer {
   padding-left: 250px;
@@ -10,12 +18,8 @@ header, main, footer {
   }
 }
 
-.navbar {
-  background-color: #7edaf1;
-}
-
-.sidenav {
-  width: 250px;
+.btn {
+  background-color: #00bcd4 !important;
 }
 
 .overlay {
@@ -28,31 +32,18 @@ header, main, footer {
   z-index: 1000;
 }
 
-.login-page {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  background-color: #7edaf1;
-  padding: 50px;
+//Remove o fundo amarelo dos inputs quando o browser completa automaticamente
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
 
-  .card-panel {
-    padding: 25px 25px 0px;
-  }
-  img {
-    width: 30%;
-  }
+.lista-collection {
+  padding: 0 30px;
+}
 
-  .btn {
-    background-color: #00bcd4 !important;
-  }
-
-  .login-form-text{
-    font-weight: bolder;
-  }
-
-  .link-text {
-    color: green;
-    font-weight: bold;
-  }
-
+.formulario {
+  padding: 30px 0px 0px 0px;
 }

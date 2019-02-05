@@ -1,9 +1,44 @@
-{{input type="text" value=nome placeholder="Nome"}}
-{{input type="text" value=registro placeholder="Registro"}}
-{{input type="text" value=email placeholder="E-mail"}}
-{{input type="text" value=senha placeholder="Senha"}}
+<div id="conta-page" class="row conta-page">
+  <div class="col s12 m4 offset-m4 z-depth-4 card-panel">
+    <form {{action "criarConta" on="submit"}}>
+      <div class="row margin" style="margin-bottom: 0px;">
+        <div class="col s12 center">
+          <h4>Cadastro</h4>
+        </div>
+      </div>
 
-{{#link-to "base"}}<a href="#">Cancelar</a>{{/link-to}}
-<button {{action "criarConta"}}>Criar Conta</button>
+      <div class="row margin">
+        <div class="input-field col s12">
+          <i class="material-icons prefix pt-5">person_outline</i>
+          {{input value=nome required=true placeholder="Nome"}}
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix pt-5">assignment</i>
+          {{input value=registro required=true placeholder="Registro"}}
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix pt-5">email</i>
+          {{input value=email required=true placeholder="E-mail"}}
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix pt-5">lock_outline</i>
+          {{input type="password" required=true value=senha placeholder="Senha"}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <button type="submit" class="btn waves-effect waves-light col s12">Cadastrar</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+            <p class="center medium-small">
+              {{#link-to 'login' class="link-text" }}Já possuo conta!{{/link-to}}
+            </p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 {{outlet}}

@@ -1,0 +1,21 @@
+<div class="row formulario">
+  <div class="col s12 m8 offset-m2">
+    <div class="card">
+      <div class="card-content">
+        <form {{action "cadastrarPaciente" on="submit"}}>
+          <div class="row">
+            <span class="card-title grey-text text-darken-4">Novo Paciente</span>
+            <div class="col s12 m10">
+                {{input value=nome required=true placeholder="Nome do paciente"}}
+            </div>
+            <div class="col s12 m2">
+                <button type="submit" class="btn wave-effects wave-light">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{outlet}}
