@@ -4,12 +4,12 @@
       <div class="card-content">
         <form {{action "atualizarPaciente" on="submit"}}>
           <div class="row">
-            <span class="card-title grey-text text-darken-4">Atualizar Paciente</span>
+            <h4>Atualizar Paciente</h4>
             <div class="col s12 m8">
-                {{input value=model.nome required=true placeholder="Nome do paciente"}}
+                {{input id="inputNome" value=model.nome required=true placeholder="Nome do paciente"}}
             </div>
             <div class="col s12 m4">
-                <button class="btn wave-effects wave-light" {{action "cancelarEdicao"}}>Cancelar</button>
+                <a class="btn wave-effects wave-light" {{action "cancelarEdicao"}}>Cancelar</a>
                 <button type="submit" class="btn wave-effects wave-light">Salvar</button>
             </div>
           </div>

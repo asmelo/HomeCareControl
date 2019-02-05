@@ -26,8 +26,9 @@ export default Service.extend({
             let usuario = response.objectAt(0);
             usuario.set('userFirebase', user);
             this2.set('usuario', usuario);
-            $('loading').css('display', 'none');            
-          })
+            $('loading').css('display', 'none');
+          });
+          this2.get('router').transitionTo('/');
           resolve(user);
         } else {
           this2.set('usuario', null);
@@ -77,6 +78,7 @@ export default Service.extend({
 
   signOut() {
     $('loading').css('display', '');
+    this.set('usuario', null);
     firebase.auth().signOut();
   },
 

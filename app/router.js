@@ -12,6 +12,7 @@ Router.map(function() {
       this.route('novo');
       this.route('edicao', { path: '/paciente/edicao/:idPaciente'});
     });
+    this.route('atendimento');
   });
   this.route('conta');
   this.route('login');
