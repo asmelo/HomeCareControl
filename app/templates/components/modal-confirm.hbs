@@ -1,0 +1,12 @@
+<div id="{{idModal}}" name="{{name}}" class="modal">
+  <div class="modal-content">
+    <h4>{{title}}</h4>
+    <p>{{content}}</p>
+  </div>
+  <div class="modal-footer">
+    <button class="modal-action modal-close waves-effect waves-green btn-flat">Não</button>
+    <button class="modal-action modal-close waves-effect waves-green btn-flat" {{action "actionConfirm"}}>Sim</button>
+  </div>
+</div>
+
+{{yield}}

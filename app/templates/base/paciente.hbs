@@ -5,7 +5,10 @@
     {{#each pacientesOrdenados as |paciente|}}
       <li class="collection-item">
         <div>{{paciente.nome}}
-          <a href="#" {{action "editarPaciente" paciente.id}} class="secondary-content">
+          <a href="#" {{action "confirmarExclusao" paciente}} class="secondary-content">
+            <i class="material-icons">delete</i>
+          </a>
+          <a href="#" {{action "editarPaciente" paciente}} class="secondary-content">
             <i class="material-icons">edit</i>
           </a>
         </div>
@@ -13,3 +16,5 @@
     {{/each}}
   </ul>
 </div>
+
+{{modal-confirm idModal="modalConfirmarExclusao" title="Confirmação" content="Deseja excluir este paciente?" actionConfirm=(action "excluirPaciente")}}

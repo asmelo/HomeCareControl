@@ -5,10 +5,12 @@
         <form {{action "cadastrarPaciente" on="submit"}}>
           <div class="row">
             <h4>Novo Paciente</h4>
-            <div class="col s12 m10">
+            <div class="col s12">
                 {{input value=nome required=true placeholder="Nome do paciente"}}
             </div>
-            <div class="col s12 m2">
+          </div>
+          <div class="row">
+            <div class="col s12 right-align">
                 <button type="submit" class="btn wave-effects wave-light">Salvar</button>
             </div>
           </div>

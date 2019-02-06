@@ -5,10 +5,12 @@
         <form {{action "atualizarPaciente" on="submit"}}>
           <div class="row">
             <h4>Atualizar Paciente</h4>
-            <div class="col s12 m8">
+            <div class="col s12">
                 {{input id="inputNome" value=model.nome required=true placeholder="Nome do paciente"}}
             </div>
-            <div class="col s12 m4">
+          </div>
+          <div class="row">
+            <div class="col s12 right-align">
                 <a class="btn wave-effects wave-light" {{action "cancelarEdicao"}}>Cancelar</a>
                 <button type="submit" class="btn wave-effects wave-light">Salvar</button>
             </div>
