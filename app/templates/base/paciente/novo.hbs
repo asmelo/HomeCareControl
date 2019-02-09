@@ -5,8 +5,9 @@
         <form {{action "cadastrarPaciente" on="submit"}}>
           <div class="row">
             <h4>Novo Paciente</h4>
-            <div class="col s12">
-                {{input value=nome required=true placeholder="Nome do paciente"}}
+            <div class="input-field col s12">
+                <label>Nome do paciente</label>
+                {{input id="inputNome" value=nome required=true}}
             </div>
           </div>
           <div class="row">

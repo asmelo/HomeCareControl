@@ -27,6 +27,7 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
 
   app.import('vendor/materialize/js/bin/materialize.js');
+  app.import('vendor/jquery.mask.js');
 
   return app.toTree();
 };

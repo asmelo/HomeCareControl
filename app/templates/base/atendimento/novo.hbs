@@ -1,0 +1,37 @@
+<div class="row formulario">
+  <div class="col s12 m8 offset-m2">
+    <div class="card">
+      <div class="card-content">
+        <form {{action "salvarAtendimento" on="submit"}}>
+          <div class="row">
+            <h4>Novo Atendimento</h4>
+            <div class="input-field col s12 m3">
+                <label>Data</label>
+                {{pikaday-input value=dtAtendimento onSelection=(action 'selecionaData') required=true format="DD/MM/YYYY"}}
+            </div>
+            <div class="input-field col s12 m6 combo">
+              <div class="labelForm">Paciente</div>
+              {{#power-select selected=paciente
+                              options=pacientes
+                              onchange=(action "selecionaPaciente")
+                              searchField="nome"
+                              required="required" as |paciente|}}
+                  {{paciente.nome}}
+              {{/power-select}}
+            </div>
+            <div class="col s12 m3">
+                {{input-text label="Valor" value=valor required=true mask="#.##0,00" reverseMask=true}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12 right-align">
+                <button type="submit" class="btn wave-effects wave-light">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{outlet}}

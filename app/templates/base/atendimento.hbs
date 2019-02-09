@@ -1,1 +1,25 @@
 {{outlet}}
+
+<div class="tabela-dados">
+  <h4>Atendimentos</h4>
+
+  <table class="highlight">
+    <thead>
+      <tr>
+          <th>Data</th>
+          <th>Paciente</th>
+          <th>Valor</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each atendimentosOrdenados as |atendimento|}}
+        <tr class="linha-link" {{action "editarAtendimento" atendimento}}>
+          <td>{{moment-format atendimento.dtAtendimento 'DD/MM/YYYY'}}</td>
+          <td>{{atendimento.paciente.nome}}</td>
+          <td>{{atendimento.valor}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
