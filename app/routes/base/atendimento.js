@@ -24,8 +24,7 @@ export default Route.extend({
     return this.store.query('atendimento', {
       orderBy: 'usuario',
       equalTo: this.get('usuario').usuario.get('id')
-    })
-    //return this.store.findAll('atendimento');
+    })    
   },
 
   setupController(controller, model) {
@@ -33,6 +32,7 @@ export default Route.extend({
     controller.set('mes', this.get('dicionarioMeses')[hoje.getMonth()]);
     controller.set('ano', hoje.getYear());
     controller.set('atendimentos', model);
+    controller.set('dicionarioMeses', this.get('dicionarioMeses'));
   },
 
 });

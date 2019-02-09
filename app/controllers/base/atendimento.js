@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { sort } from '@ember/object/computed';
 
 export default Controller.extend({
 
@@ -13,7 +14,8 @@ export default Controller.extend({
       var this2 = this;
       return this.get('atendimentos').filter(function(value) {
         //Compara com o mês selecionado
-        if (value.get('dtAtendimento').getMonth() == this2.get('mes')) {
+        let mesPorExtenso = this2.get('dicionarioMeses')[value.get('dtAtendimento').getMonth()]
+        if (mesPorExtenso == this2.get('mes')) {
           return true;
         }else{
           return false;
@@ -25,16 +27,14 @@ export default Controller.extend({
 
   }),
 
-  atendimentosOrdenados: computed('atendimentosFiltrados.[]', function() {
-    if(this.get('atendimentosFiltrados')) {
-      if (this.get('atendimentos')) {
-        return this.get('atendimentos').sortBy('data');
-      }
-    }
+  ordenacao: 'dtAtendimento:asc',
 
-    return null;
-
+  funcaoOrdenacao: computed('ordenacao', function() {
+    let ordenacao = Object.freeze([this.get('ordenacao')])
+    return ordenacao;
   }),
+
+  atendimentosOrdenados: sort('atendimentosFiltrados', 'funcaoOrdenacao'),
 
   actions: {
 
