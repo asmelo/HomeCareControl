@@ -27,6 +27,7 @@ export default Service.extend({
             usuario.set('userFirebase', user);
             this2.set('usuario', usuario);
             $('loading').css('display', 'none');
+            this2.get('router').transitionTo('base.atendimento.novo');
           });
           this2.get('router').transitionTo('/');
           resolve(user);
@@ -36,6 +37,7 @@ export default Service.extend({
           this2.get('router').transitionTo('login');
         }
       });
+      this2.set('listenerAuthCriado', true);
     });
   },
 

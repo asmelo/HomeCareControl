@@ -10,6 +10,10 @@ export default Route.extend({
       orderBy: 'usuario',
       equalTo: this.get('usuario').usuario.get('id')
     })
-  }
+  },
+/*
+  setupController(controller, model) {
+    this.get('usuario').set('transitionAposUsuario', 'base.paciente.novo')
+  },*/
 
 });
