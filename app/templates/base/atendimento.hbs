@@ -6,15 +6,45 @@
   <table class="highlight">
     <thead>
       <tr>
-          <th>Data</th>
-          <th>Paciente</th>
-          <th>Valor</th>
+          <th>
+            <a class="link" {{action "ordenar" "dtAtendimento"}}>
+              Data
+              {{#if (eq ordenacaoESentido 'dtAtendimento:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentido 'dtAtendimento:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th class="tituloPaciente">
+            <a class="link" {{action "ordenar" "nmPaciente"}}>
+              Paciente
+              {{#if (eq ordenacaoESentido 'nmPaciente:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentido 'nmPaciente:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th class="tituloValor">
+            <a class="link" {{action "ordenar" "valorNumber"}}>
+              Valor
+              {{#if (eq ordenacaoESentido 'valorNumber:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentido 'valorNumber:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
       </tr>
     </thead>
 
     <tbody>
       {{#each atendimentosOrdenados as |atendimento|}}
-        <tr class="linha-link" {{action "editarAtendimento" atendimento}}>
+        <tr class="link" {{action "editarAtendimento" atendimento}}>
           <td>{{moment-format atendimento.dtAtendimento 'DD/MM/YYYY'}}</td>
           <td>{{atendimento.paciente.nome}}</td>
           <td>{{atendimento.valor}}</td>
@@ -22,4 +52,10 @@
       {{/each}}
     </tbody>
   </table>
+</div>
+
+<div class="fixed-action-btn" style="opacity: 0.3">
+  <a class="btn-floating btn-medium waves-effects waves-light" {{action "scrollUp"}}>
+    <i class="material-icons">arrow_upward</i>
+  </a>
 </div>

@@ -8,7 +8,6 @@ export default Controller.extend({
   usuario: service(),
   alerta: service(),
 
-
   atendimentosFiltrados: computed('atendimentos.[]', 'mes', 'ano', function() {
     if (this.get('atendimentos')) {
       var this2 = this;
@@ -27,10 +26,16 @@ export default Controller.extend({
 
   }),
 
-  ordenacao: 'dtAtendimento:asc',
+  sentidoOrdenacao: 'asc',
 
-  funcaoOrdenacao: computed('ordenacao', function() {
-    let ordenacao = Object.freeze([this.get('ordenacao')])
+  ordenacao: 'dtAtendimento',
+
+  ordenacaoESentido: computed('ordenacao', 'sentidoOrdenacao', function() {
+    return this.get('ordenacao') + ':' + this.get('sentidoOrdenacao');
+  }),
+
+  funcaoOrdenacao: computed('ordenacaoESentido', function() {
+    let ordenacao = Object.freeze([this.get('ordenacaoESentido')])
     return ordenacao;
   }),
 
@@ -41,6 +46,22 @@ export default Controller.extend({
     editarAtendimento(atendimento) {
       this.transitionToRoute('base.atendimento.edicao', atendimento.get('id'));
       window.scrollTo(0,0);
+    },
+
+    scrollUp() {
+      window.scrollTo(0,0);
+    },
+
+    ordenar(campo) {
+      if (this.get('ordenacao') == campo) {
+        if (this.get('sentidoOrdenacao') == 'asc') {
+          this.set('sentidoOrdenacao', 'desc');
+        }else{
+          this.set('sentidoOrdenacao', 'asc');
+        }
+      } else {
+        this.set('ordenacao', campo);
+      }
     }
 
   }

@@ -71,6 +71,10 @@ input:-webkit-autofill:active  {
   padding: 0 30px 60px 30px;
 }
 
-.linha-link {
+.link {
   cursor: pointer;
+}
+
+.hidden {
+  display: none;
 }
