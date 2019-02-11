@@ -48,6 +48,7 @@ export default Controller.extend({
       atendimento.save().then(response => {
         this.get('alerta').sucesso('Registro salvo com sucesso', { timeOut: 4000 });
         this.send('inicializarCampos');
+        window.scrollTo(0,0);
       }).catch(error => {
         this.get('alerta').sucesso('Erro ao salvar o atendimento');
       })

@@ -1,16 +1,16 @@
-<page>
-  <header>
-    <nav class="navbar">
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper">
       <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right">
         <li><a href="#" {{action "signOut"}}>Sair</a></li>
       </ul>
-    </nav>
-  </header>
+    </div>
+  </nav>
+</div>
 
-  {{menu-esquerdo}}
+{{menu-esquerdo}}
 
-  <main>
-    {{outlet}}
-  </main>
-</page>
+<main>  
+  {{outlet}}
+</main>

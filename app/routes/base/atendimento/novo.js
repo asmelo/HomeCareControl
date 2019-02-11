@@ -26,7 +26,7 @@ export default Route.extend({
 
     window.scrollTo(0,0);
 
-    controller.set('pacientes', model.pacientes);
+    controller.set('pacientes', model.pacientes.sortBy('nome'));
 
     //Transfere os grupos para uma lista comum para poder inserir o
     //item "Nenhum", pois o resultSet do grupo-compartilhamento é imutável

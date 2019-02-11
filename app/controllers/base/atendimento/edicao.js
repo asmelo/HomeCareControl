@@ -39,6 +39,7 @@ export default Controller.extend({
       this.get('atendimento').save().then(response => {
         this.get('alerta').sucesso('Atendimento atualizado com sucesso!', { timeOut: 4000 });
         this.transitionToRoute('base.atendimento.novo');
+        window.scrollTo(0,0);
       })
     },
 
