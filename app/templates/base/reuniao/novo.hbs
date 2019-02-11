@@ -1,0 +1,43 @@
+<div class="row formulario">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <form {{action "salvarReuniao" on="submit"}}>
+          <div class="row">
+            <h4>Nova Reunião</h4>
+            <div class="input-field col s12 m3">
+                <label>Data</label>
+                {{pikaday-input value=dtReuniao onSelection=(action 'selecionaData') required=true format="DD/MM/YYYY"}}
+            </div>
+            <div class="col s12 m3">
+                {{input-text label="Duração" value=duracao required=true mask="00:00"}}
+            </div>
+            <div class="col s12 m3">
+                {{input-text label="Valor" value=valor disabled=true mask="#.##0,00" reverseMask=true}}
+            </div>
+            <div class="input-field col s12 m3 combo">
+              <div class="labelForm">Grupo de Compartilhamento</div>
+              {{#power-select selected=grupoCompartilhamento
+                              options=gruposCompartilhamento
+                              onchange=(action "selecionaGrupoCompartilhamento")
+                              noMatchesMessage="Sem registros cadastrado"
+                              searchField="nome" as |grupo|}}
+                  {{grupo.nome}}
+              {{/power-select}}
+            </div>
+            <div class="col s12">
+                {{input-text label="Descricao" value=descricao required=true}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12 right-align">
+                <button type="submit" class="btn wave-effects wave-light">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{outlet}}

@@ -17,6 +17,10 @@ Router.map(function() {
       this.route('edicao', { path: '/atendimento/edicao/:idAtendimento'});
     });
     this.route('grupoCompartilhamento');
+    this.route('reuniao', function() {
+      this.route('novo');
+      this.route('edicao', { path: '/reuniao/edicao/:idReuniao'});
+    });
   });
   this.route('conta');
   this.route('login');
