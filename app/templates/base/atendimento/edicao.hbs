@@ -1,15 +1,15 @@
 <div class="row formulario">
-  <div class="col s12 m8 offset-m2">
+  <div class="col s12">
     <div class="card">
       <div class="card-content">
         <form {{action "atualizarAtendimento" on="submit"}}>
           <div class="row">
             <h4>Atualizar Atendimento</h4>
-            <div class="input-field col s12 m3">
+            <div class="input-field col s12 m2">
                 <label>Data</label>
                 {{pikaday-input value=atendimento.dtAtendimento onSelection=(action 'selecionaData') required=true format="DD/MM/YYYY"}}
             </div>
-            <div class="input-field col s12 m6 combo">
+            <div class="input-field col s12 m5 combo">
               <div class="labelForm">Paciente</div>
               {{#power-select selected=atendimento.paciente
                               options=pacientes
@@ -18,8 +18,18 @@
                   {{paciente.nome}}
               {{/power-select}}
             </div>
-            <div class="col s12 m3">
+            <div class="col s12 m2">
                 {{input-text label="Valor" value=atendimento.valor required=true mask="#.##0,00" reverseMask=true}}
+            </div>
+            <div class="input-field col s12 m3 combo">
+              <div class="labelForm">Grupo de Compartilhamento</div>
+              {{#power-select selected=grupoCompartilhamento
+                              options=gruposCompartilhamento
+                              onchange=(action "selecionaGrupoCompartilhamento")
+                              noMatchesMessage="Sem registros cadastrado"
+                              searchField="nome" as |grupo|}}
+                  {{grupo.nome}}
+              {{/power-select}}
             </div>
           </div>
           <div class="row">

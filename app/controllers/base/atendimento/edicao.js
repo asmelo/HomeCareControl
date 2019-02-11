@@ -17,6 +17,10 @@ export default Controller.extend({
       this.set('atendimento.paciente', paciente);
     },
 
+    selecionaGrupoCompartilhamento(grupoCompartilhamento) {
+      this.set('grupoCompartilhamento', grupoCompartilhamento);
+    },
+
     atualizarAtendimento() {
       if(!this.get('atendimento.paciente')) {
         this.get('alerta').erro('Informe o paciente');
@@ -26,8 +30,14 @@ export default Controller.extend({
       let valorTratado = this.get('util').tratarValor(this.get('atendimento.valor'));
       this.set('atendimento.valor', valorTratado);
 
+      if (this.get('grupoCompartilhamento.id') == -1) {
+        this.set('atendimento.grupoCompartilhamento', null);
+      } else {
+        this.set('atendimento.grupoCompartilhamento', this.get('grupoCompartilhamento'));
+      }
+
       this.get('atendimento').save().then(response => {
-        this.get('alerta').sucesso('Atendimento atualizado com sucesso!');
+        this.get('alerta').sucesso('Atendimento atualizado com sucesso!', { timeOut: 4000 });
         this.transitionToRoute('base.atendimento.novo');
       })
     },
@@ -39,7 +49,7 @@ export default Controller.extend({
     excluirAtendimento() {
       this.get('atendimento').deleteRecord();
       this.get('atendimento').save().then(response => {
-        this.get('alerta').sucesso('Atendimento excluído com sucesso!');
+        this.get('alerta').sucesso('Atendimento excluído com sucesso!', { timeOut: 4000 });
         this.get('router').transitionTo('base.atendimento.novo');
       })
     },

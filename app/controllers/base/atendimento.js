@@ -8,23 +8,63 @@ export default Controller.extend({
   usuario: service(),
   alerta: service(),
 
-  atendimentosFiltrados: computed('atendimentos.[]', 'mes', 'ano', function() {
+  atendimentosDoMes: computed('atendimentos.[]', 'mes', 'ano', function() {
+    //Aplica os filtros obrigatórios Ano e Mês
     if (this.get('atendimentos')) {
-      var this2 = this;
-      return this.get('atendimentos').filter(function(value) {
-        //Compara com o mês selecionado
-        let mesPorExtenso = this2.get('dicionarioMeses')[value.get('dtAtendimento').getMonth()]
-        if (mesPorExtenso == this2.get('mes')) {
+      return this.get('atendimentos').filter(function(atendimento) {
+        let mesPorExtenso = this.get('dicionarioMeses')[atendimento.get('dtAtendimento').getMonth()]
+        let ano = atendimento.get('dtAtendimento').getFullYear();
+        if (mesPorExtenso == this.get('mes') && ano == this.get('ano')) {
           return true;
-        }else{
+        } else {
           return false;
         }
-      })
+      }, this);
     }
 
     return [];
 
   }),
+
+  atendimentosFiltrados: computed('atendimentosDoMes', 'nmPaciente', 'nmGrupoCompartilhamento', function() {
+    //Aplica o filtro do Paciente e do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
+    if (this.get('atendimentosDoMes')) {
+      return this.get('atendimentosDoMes').filter(function(atendimento) {
+        if (this.get('nmPaciente') != 'Todos') {
+          let nmPaciente = atendimento.get('paciente.nome');
+          if (nmPaciente == this.get('nmPaciente')) {
+            if (this.get('nmGrupoCompartilhamento') != 'Todos') {
+              let nmGrupoCompartilhamento = atendimento.get('nmGrupoCompartilhamento');
+              if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
+                return true;
+              } else {
+                return false;
+              }
+            } else {
+              return true;
+            }
+          } else {
+            return false;
+          }
+        } else {
+          if (this.get('nmGrupoCompartilhamento') != 'Todos') {
+            let nmGrupoCompartilhamento = atendimento.get('nmGrupoCompartilhamento');
+            if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
+              return true;
+            }else{
+              return false;
+            }
+          } else {
+            return true;
+          }
+        }
+      }, this);
+    } else {
+      return [];
+    }
+  }),
+
+  exibirFiltro: $('body').width() >= 992,
 
   sentidoOrdenacao: 'asc',
 
@@ -40,6 +80,23 @@ export default Controller.extend({
   }),
 
   atendimentosOrdenados: sort('atendimentosFiltrados', 'funcaoOrdenacao'),
+
+  listaPacientes: computed('atendimentosDoMes', function() {
+    let listaPacientes = [];
+    for (let i = 0; i < this.get('atendimentosDoMes').length; i++) {
+      if (!listaPacientes.includes(this.get('atendimentosDoMes').objectAt(i).get('paciente.nome'))) {
+        listaPacientes.pushObject(this.get('atendimentosDoMes').objectAt(i).get('paciente.nome'));
+      }
+    }
+
+    listaPacientes.sort();
+    listaPacientes.insertAt(0, 'Todos');
+
+    return listaPacientes;
+  }),
+
+  nmPaciente: 'Todos',
+  nmGrupoCompartilhamento: 'Todos',
 
   actions: {
 
@@ -62,6 +119,26 @@ export default Controller.extend({
       } else {
         this.set('ordenacao', campo);
       }
+    },
+
+    selecionaMes(mes) {
+      this.set('mes', mes)
+    },
+
+    selecionaAno(ano) {
+      this.set('ano', ano)
+    },
+
+    selecionaPaciente(nmPaciente) {
+      this.set('nmPaciente', nmPaciente);
+    },
+
+    selecionaCompartilhamento(nmGrupoCompartilhamento) {
+      this.set('nmGrupoCompartilhamento', nmGrupoCompartilhamento)
+    },
+
+    exibirFiltroAction() {
+      this.set('exibirFiltro', !this.get('exibirFiltro'));
     }
 
   }

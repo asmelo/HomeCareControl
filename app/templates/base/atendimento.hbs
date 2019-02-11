@@ -1,7 +1,51 @@
 {{outlet}}
 
 <div class="tabela-dados">
-  <h4>Atendimentos</h4>
+  <div class="titulo-tabela">
+    <h4>Atendimentos</h4>
+    <a class='link' {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
+  </div>
+
+  {{#if exibirFiltro}}
+    <div class="row" style="padding-top: 20px">
+      <div class="input-field col s12 m3 combo">
+        <div class="labelForm">Mês</div>
+        {{#power-select selected=mes
+                        options=listaMeses
+                        onchange=(action "selecionaMes")
+                        as |mes|}}
+            {{mes}}
+        {{/power-select}}
+      </div>
+      <div class="input-field col s12 m3 combo">
+        <div class="labelForm">Ano</div>
+        {{#power-select selected=ano
+                        options=listaAnos
+                        onchange=(action "selecionaAno")
+                        as |ano|}}
+            {{ano}}
+        {{/power-select}}
+      </div>
+      <div class="input-field col s12 m3 combo">
+        <div class="labelForm">Paciente</div>
+        {{#power-select selected=nmPaciente
+                        options=listaPacientes
+                        onchange=(action "selecionaPaciente")
+                        as |paciente|}}
+            {{paciente}}
+        {{/power-select}}
+      </div>
+      <div class="input-field col s12 m3 combo">
+        <div class="labelForm">Compatilhamento</div>
+        {{#power-select selected=nmGrupoCompartilhamento
+                        options=gruposCompartilhamento
+                        onchange=(action "selecionaCompartilhamento")
+                        as |grupo|}}
+            {{grupo}}
+        {{/power-select}}
+      </div>
+    </div>
+  {{/if}}
 
   <table class="highlight">
     <thead>
@@ -17,7 +61,7 @@
               {{/if}}
             </a>
           </th>
-          <th class="tituloPaciente">
+          <th>
             <a class="link" {{action "ordenar" "nmPaciente"}}>
               Paciente
               {{#if (eq ordenacaoESentido 'nmPaciente:desc')}}
@@ -28,13 +72,24 @@
               {{/if}}
             </a>
           </th>
-          <th class="tituloValor">
+          <th>
             <a class="link" {{action "ordenar" "valorNumber"}}>
               Valor
               {{#if (eq ordenacaoESentido 'valorNumber:desc')}}
                 <i class="material-icons">arrow_drop_up</i>
               {{/if}}
               {{#if (eq ordenacaoESentido 'valorNumber:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" {{action "ordenar" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+              Comp.
+              {{#if (eq ordenacaoESentido 'nmGrupoCompartilhamento:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentido 'nmGrupoCompartilhamento:asc')}}
                 <i class="material-icons">arrow_drop_down</i>
               {{/if}}
             </a>
@@ -46,15 +101,16 @@
       {{#each atendimentosOrdenados as |atendimento|}}
         <tr class="link" {{action "editarAtendimento" atendimento}}>
           <td>{{moment-format atendimento.dtAtendimento 'DD/MM/YYYY'}}</td>
-          <td>{{atendimento.paciente.nome}}</td>
+          <td>{{atendimento.nmPaciente}}</td>
           <td>{{atendimento.valor}}</td>
+          <td>{{atendimento.nmGrupoCompartilhamento}}</td>
         </tr>
       {{/each}}
     </tbody>
   </table>
 </div>
 
-<div class="fixed-action-btn" style="opacity: 0.3">
+<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top" style="display: none;">
   <a class="btn-floating btn-medium waves-effects waves-light" {{action "scrollUp"}}>
     <i class="material-icons">arrow_upward</i>
   </a>

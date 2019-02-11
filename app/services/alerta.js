@@ -9,7 +9,6 @@ export default Service.extend({
         newestOnTop: true,
         progressBar: true,
         positionClass: 'toast-top-right',
-        preventDuplicates: true,
         onclick: null,
         showDuration: '300',
         hideDuration: '1000',

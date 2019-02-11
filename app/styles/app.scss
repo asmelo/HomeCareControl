@@ -5,6 +5,7 @@
 @import 'conta';
 @import 'login';
 @import 'toastr';
+@import 'atendimento';
 
 
 html {
@@ -69,6 +70,19 @@ input:-webkit-autofill:active  {
 
 .tabela-dados {
   padding: 0 30px 60px 30px;
+  overflow: auto;
+  overflow-y: hidden;
+
+  table {
+    min-width: 430px;
+  }
+}
+
+.titulo-tabela {
+  a {
+    float: right;
+    margin-top: -40px;
+  }
 }
 
 .link {
