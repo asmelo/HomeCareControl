@@ -7,7 +7,7 @@
             <h4>Atualizar Atendimento</h4>
             <div class="input-field col s12 m2">
                 <label>Data</label>
-                {{pikaday-input value=atendimento.dtAtendimento onSelection=(action 'selecionaData') required=true format="DD/MM/YYYY"}}
+                {{pikaday-input readonly="readonly" value=atendimento.dtAtendimento onSelection=(action 'selecionaData') format="DD/MM/YYYY"}}
             </div>
             <div class="input-field col s12 m5 combo">
               <div class="labelForm">Paciente</div>
@@ -19,7 +19,7 @@
               {{/power-select}}
             </div>
             <div class="col s12 m2">
-                {{input-text label="Valor" value=atendimento.valor required=true mask="#.##0,00" reverseMask=true}}
+                {{input-text label="Valor" value=atendimento.valor mask="#.##0,00" reverseMask=true}}
             </div>
             <div class="input-field col s12 m3 combo">
               <div class="labelForm">Grupo de Compartilhamento</div>

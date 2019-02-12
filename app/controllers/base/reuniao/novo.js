@@ -1,13 +1,34 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
-import { computed } from '@ember/object'
+import { computed } from '@ember/object';
+
+const constraints = {
+    descricao: {
+      presence: {
+        allowEmpty: false,
+        message: "Informe a descrição da reunião"
+      }
+    },
+
+    duracao: {
+      presence: {
+        message: "Informe a duração da reunião"
+      },
+      format: {
+        pattern: /^\d{2}:\d{2}$/,
+        message: "O formato da duração deve ser hh:mm. (Ex.: 01:00)"
+      }
+    }
+};
+
 
 export default Controller.extend({
 
   alerta: service(),
   usuario: service(),
   util: service(),
+  validacao: service(),
 
   valor: computed('duracao', function() {
     return this.get('util').calculaValorReuniao(this.get('duracao'));
@@ -24,6 +45,9 @@ export default Controller.extend({
     },
 
     salvarReuniao() {
+
+      let campos = this.getProperties('descricao', 'duracao');
+      if (!this.get('validacao').validar(campos, constraints)) return;
 
       let grupoCompartilhamento = this.get('grupoCompartilhamento');
       if (grupoCompartilhamento.get('id') == '-1') {

@@ -1,11 +1,27 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 
+const constraints = {
+  paciente: {
+    presence: {
+      message: "Selecione um paciente"
+    }
+  },
+
+  valor: {
+    presence: {
+      allowEmpty: false,
+      message: "Informe o valor do atendimento"
+    }
+  }
+}
+
 export default Controller.extend({
 
   alerta: service(),
   router: service(),
   util: service(),
+  validacao: service(),
 
   actions: {
 
@@ -22,10 +38,6 @@ export default Controller.extend({
     },
 
     atualizarAtendimento() {
-      if(!this.get('atendimento.paciente')) {
-        this.get('alerta').erro('Informe o paciente');
-        return;
-      }
 
       let valorTratado = this.get('util').tratarValor(this.get('atendimento.valor'));
       this.set('atendimento.valor', valorTratado);
@@ -35,6 +47,8 @@ export default Controller.extend({
       } else {
         this.set('atendimento.grupoCompartilhamento', this.get('grupoCompartilhamento'));
       }
+
+      if (!this.get('validacao').validar(this.get('atendimento'), constraints)) return;
 
       this.get('atendimento').save().then(response => {
         this.get('alerta').sucesso('Atendimento atualizado com sucesso!', { timeOut: 4000 });

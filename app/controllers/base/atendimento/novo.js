@@ -3,11 +3,27 @@ import { inject as service } from '@ember/service';
 import config from 'homecarecontrol/config/environment';
 import { isEmpty } from '@ember/utils';
 
+const constraints = {  
+  paciente: {
+    presence: {
+      message: "Selecione um paciente"
+    }
+  },
+
+  valor: {
+    presence: {
+      allowEmpty: false,
+      message: "Informe o valor do atendimento"
+    }
+  }
+}
+
 export default Controller.extend({
 
   alerta: service(),
   usuario: service(),
   util: service(),
+  validacao: service(),
 
   actions: {
 
@@ -24,6 +40,9 @@ export default Controller.extend({
     },
 
     salvarAtendimento() {
+
+      let campos = this.getProperties('dtAtendimento', 'paciente', 'valor', 'grupoCompartilhamento');
+      if (!this.get('validacao').validar(campos, constraints)) return;
 
       if(!this.get('paciente')) {
         this.get('alerta').erro('Informe o paciente');

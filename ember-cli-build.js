@@ -28,6 +28,7 @@ module.exports = function(defaults) {
 
   app.import('vendor/materialize/js/bin/materialize.js');
   app.import('vendor/jquery.mask.js');
+  app.import('vendor/validate.min.js');
 
   return app.toTree();
 };

@@ -5,7 +5,7 @@ import { later } from '@ember/runloop';
 
 export default Route.extend({
 
-  usuario: service(),
+  usuario: service(),  
 
   model() {
     if (!this.get('usuario').listenerAuthCriado) {

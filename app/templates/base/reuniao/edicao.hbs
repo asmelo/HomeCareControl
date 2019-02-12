@@ -7,10 +7,10 @@
             <h4>Atualizar Reunião</h4>
             <div class="input-field col s12 m3">
                 <label>Data</label>
-                {{pikaday-input value=reuniao.dtReuniao onSelection=(action 'selecionaData') required=true format="DD/MM/YYYY"}}
+                {{pikaday-input readonly="readonly" readonly="readonly" value=reuniao.dtReuniao onSelection=(action 'selecionaData') format="DD/MM/YYYY"}}
             </div>
             <div class="col s12 m3">
-                {{input-text label="Duração" value=reuniao.duracao required=true mask="00:00"}}
+                {{input-text label="Duração" value=reuniao.duracao mask="00:00"}}
             </div>
             <div class="col s12 m3">
                 {{input-text label="Valor" value=valor disabled=true mask="#.##0,00" reverseMask=true}}
@@ -26,7 +26,7 @@
               {{/power-select}}
             </div>
             <div class="col s12">
-                {{input-text label="Descricao" value=reuniao.descricao required=true}}
+                {{input-text label="Descricao" value=reuniao.descricao}}
             </div>
           </div>
           <div class="row">

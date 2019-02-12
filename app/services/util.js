@@ -5,6 +5,9 @@ import config from 'homecarecontrol/config/environment';
 export default Service.extend({
 
   tratarValor(valorParam) {
+
+    if (!valorParam) return null;
+
     let valor = String(valorParam.replace('R$', '').trim());
 
     if (valor.length == 1) {
