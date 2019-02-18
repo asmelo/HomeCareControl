@@ -14,7 +14,7 @@ export default DS.Model.extend({
     return Number(this.get('valor').replace('R$', '').replace('.', '').replace(',', '.').trim());
   }),
 
-  nmGrupoCompartilhamento: computed('grupoCompartilhamento', function() {
+  nmGrupoCompartilhamento: computed('grupoCompartilhamento.nome', function() {
     if (this.get('grupoCompartilhamento.nome')) {
       return this.get('grupoCompartilhamento.nome');
     } else {

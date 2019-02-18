@@ -8,6 +8,11 @@ export default Service.extend({
 
     if (!valorParam) return null;
 
+    if (typeof(valorParam) == 'number') {
+      valorParam = valorParam.toFixed(2);
+      valorParam = valorParam.replace('.', ',')
+    }
+
     let valor = String(valorParam.replace('R$', '').trim());
 
     if (valor.length == 1) {

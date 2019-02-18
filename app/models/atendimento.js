@@ -9,7 +9,7 @@ export default DS.Model.extend({
   usuario:                  DS.belongsTo('usuario', { inverse: false }),
   grupoCompartilhamento:    DS.belongsTo('grupo-compartilhamento', { inverse: false }),
 
-  nmPaciente: computed('paciente', function() {
+  nmPaciente: computed('paciente.nome', function() {
     return this.get('paciente.nome');
   }),
 
@@ -17,7 +17,7 @@ export default DS.Model.extend({
     return Number(this.get('valor').replace('R$', '').replace('.', '').replace(',', '.').trim());
   }),
 
-  nmGrupoCompartilhamento: computed('grupoCompartilhamento', function() {
+  nmGrupoCompartilhamento: computed('grupoCompartilhamento.nome', function() {
     if (this.get('grupoCompartilhamento.nome')) {
       return this.get('grupoCompartilhamento.nome');
     } else {

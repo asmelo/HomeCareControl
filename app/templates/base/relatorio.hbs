@@ -1,0 +1,267 @@
+
+{{js-pdf steps filename="tomster-facts"}}
+
+<div class="relatorio-header">
+  <h4>Relatório de Atendimento e Reuniões</h4>
+  <ul>
+    <!--<li><a class="link"><i class="material-icons">assignment</i></a></li>
+    <li><a class="link"><i class="material-icons">save</i></a></li>-->
+    <li>
+      {{#js-pdf steps showPdf=false as |pdf|}}
+        <a class="link" {{action pdf.save}}><i class="material-icons">picture_as_pdf</i></a>
+      {{/js-pdf}}
+    </li>
+  </ul>
+</div>
+
+
+
+<div class="row" style="padding: 20px 30px 0 30px;">
+  <div class="input-field col s12 m3 combo">
+    <div class="labelForm">Profissional</div>
+    {{#power-select selected=usuarioFiltro
+                    options=listaUsuarios
+                    onchange=(action "selecionaUsuario")
+                    as |usuario|}}
+        {{usuario.nome}}
+    {{/power-select}}
+  </div>
+  <div class="input-field col s12 m3 combo">
+    <div class="labelForm">Mês</div>
+    {{#power-select selected=mes
+                    options=listaMeses
+                    onchange=(action "selecionaMes")
+                    as |mes|}}
+        {{mes}}
+    {{/power-select}}
+  </div>
+  <div class="input-field col s12 m3 combo">
+    <div class="labelForm">Ano</div>
+    {{#power-select selected=ano
+                    options=listaAnos
+                    onchange=(action "selecionaAno")
+                    as |ano|}}
+        {{ano}}
+    {{/power-select}}
+  </div>
+  <div class="input-field col s12 m3 combo">
+    <div class="labelForm">Grupo</div>
+    {{#power-select selected=nmGrupoCompartilhamento
+                    options=gruposCompartilhamento
+                    onchange=(action "selecionaCompartilhamento")
+                    disabled=(not isAtendimentoDoUsuario)
+                    as |grupo|}}
+        {{grupo}}
+    {{/power-select}}
+  </div>
+</div>
+
+<div class="tabela-header">
+  <div class="titulo-tabela">
+    <h4>Resumo</h4>
+  </div>
+</div>
+<div class="tabela-dados">
+  <table class="highlight">
+    <thead>
+      <tr>
+          <th>Descrição</th>
+          <th>Quantidade</th>
+          <th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each listaResumo as |resumo|}}
+        <tr class={{resumo.formatacao}}>
+          <td>{{resumo.descricao}}</td>
+          <td>{{resumo.quantidade}}</td>
+          <td>{{resumo.totalFormatado}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="tabela-header">
+  <div class="titulo-tabela">
+    <h4>Reuniões</h4>
+  </div>
+</div>
+<div class="tabela-dados">
+  <table class="highlight">
+    <thead>
+      <tr>
+          <th>
+            <a class="link" {{action "ordenarReunioes" "dtReuniao"}}>
+              Data
+              {{#if (eq ordenacaoESentidoReunioes 'dtReuniao:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoReunioes 'dtReuniao:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" {{action "ordenarReunioes" "descricao"}}>
+              Descricao
+              {{#if (eq ordenacaoESentidoReunioes 'descricao:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoReunioes 'descricao:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" {{action "ordenarReunioes" "duracao"}}>
+              Duração
+              {{#if (eq ordenacaoESentidoReunioes 'duracao:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoReunioes 'duracao:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" {{action "ordenarReunioes" "valorNumber"}}>
+              Valor
+              {{#if (eq ordenacaoESentidoReunioes 'valorNumber:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoReunioes 'valorNumber:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" {{action "ordenarReunioes" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+              Comp.
+              {{#if (eq ordenacaoESentidoReunioes 'nmGrupoCompartilhamento:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoReunioes 'nmGrupoCompartilhamento:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each reunioesOrdenadas as |reuniao|}}
+        <tr>
+          <td>{{moment-format reuniao.dtReuniao 'DD/MM/YYYY'}}</td>
+          <td>{{reuniao.descricao}}</td>
+          <td>{{reuniao.duracao}}</td>
+          <td>{{reuniao.valor}}</td>
+          <td>{{reuniao.nmGrupoCompartilhamento}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="tabela-header">
+  <div class="titulo-tabela">
+    <h4>Atendimentos</h4>
+  </div>
+</div>
+<div class="tabela-dados">
+  <table class="highlight">
+    <thead>
+      <tr>
+          <th>
+            <a class="link" {{action "ordenarAtendimentos" "dtAtendimento"}}>
+              Data
+              {{#if (eq ordenacaoESentidoAtendimentos 'dtAtendimento:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoAtendimentos 'dtAtendimento:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" {{action "ordenarAtendimentos" "nmPaciente"}}>
+              Paciente
+              {{#if (eq ordenacaoESentidoAtendimentos 'nmPaciente:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoAtendimentos 'nmPaciente:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" {{action "ordenarAtendimentos" "valorNumber"}}>
+              Valor
+              {{#if (eq ordenacaoESentidoAtendimentos 'valorNumber:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoAtendimentos 'valorNumber:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" {{action "ordenarAtendimentos" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+              Comp.
+              {{#if (eq ordenacaoESentidoAtendimentos 'nmGrupoCompartilhamento:desc')}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoAtendimentos 'nmGrupoCompartilhamento:asc')}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each atendimentosOrdenados as |atendimento|}}
+        <tr>
+          <td>{{moment-format atendimento.dtAtendimento 'DD/MM/YYYY'}}</td>
+          <td>{{atendimento.nmPaciente}}</td>
+          <td>{{atendimento.valor}}</td>
+          <td>{{atendimento.nmGrupoCompartilhamento}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="tabela-header">
+  <div class="titulo-tabela">
+    <h4>Atendimentos por paciente</h4>
+  </div>
+</div>
+<div class="tabela-dados">
+  <table class="highlight">
+    <thead>
+      <tr>
+          <th>Paciente</th>
+          <th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each listaAtendimentosPorPacienteOrdenada as |paciente|}}
+        <tr>
+          <td>{{paciente.paciente.nome}}</td>
+          <td>{{paciente.total}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top" style="display: none;">
+  <a class="btn-floating btn-medium waves-effects waves-light" {{action "scrollUp"}}>
+    <i class="material-icons">arrow_upward</i>
+  </a>
+</div>
+
+{{outlet}}

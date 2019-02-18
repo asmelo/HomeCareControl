@@ -14,7 +14,7 @@ export default Route.extend({
       reuniao: this.store.findRecord('reuniao', params.idReuniao),
       gruposCompartilhamento: this.store.query('grupo-compartilhamento', {
         orderBy: 'usuario',
-        equalTo: this.get('usuario').usuario.get('id')
+        equalTo: this.get('usuario').userId
       })
     })
   },

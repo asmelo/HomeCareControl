@@ -13,6 +13,8 @@ export default Route.extend({
         document.getElementById('inputNome').focus();
       });
 
+      return true;
+
     }
   }
 

@@ -39,6 +39,7 @@
     "ember-composability": "^0.3.8",
     "ember-data": "~3.7.0",
     "ember-export-application-global": "^2.0.0",
+    "ember-js-pdf": "^0.4.2",
     "ember-keyboard": "^3.0.0",
     "ember-load-initializers": "^1.1.0",
     "ember-maybe-import-regenerator": "^0.1.6",
@@ -59,8 +60,7 @@
     "loader.js": "^4.7.0",
     "qunit-dom": "^0.8.0",
     "sass": "^1.16.1",
-    "toastr": "^2.1.4",
-    "torii": "^0.10.1"
+    "toastr": "^2.1.4"
   },
   "engines": {
     "node": "6.* || 8.* || >= 10.*"

@@ -1,0 +1,21 @@
+.relatorio-header {
+  text-align: center;
+
+  ul {
+    float: right !important;
+    margin-top: -41px;
+    margin-right: 20px;
+  }
+
+  @media only screen and (max-width : 450px) {
+    ul {
+      margin-left: 20px;
+      float: left !important;
+      margin-top: 0px;
+    }
+  }
+}
+
+.total-resumo {
+  font-weight: bold;
+}

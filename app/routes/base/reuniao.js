@@ -25,11 +25,11 @@ export default Route.extend({
     return RSVP.hash({
       reunioes: this.store.query('reuniao', {
         orderBy: 'usuario',
-        equalTo: this.get('usuario').usuario.get('id')
+        equalTo: this.get('usuario').userId
       }),
       gruposCompartilhamento: this.store.query('grupo-compartilhamento', {
         orderBy: 'usuario',
-        equalTo: this.get('usuario').usuario.get('id')
+        equalTo: this.get('usuario').userId
       })
     });
   },

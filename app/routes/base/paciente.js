@@ -8,12 +8,12 @@ export default Route.extend({
   model() {
     return this.store.query('paciente', {
       orderBy: 'usuario',
-      equalTo: this.get('usuario').usuario.get('id')
+      equalTo: this.get('usuario').userId
     })
   },
 /*
   setupController(controller, model) {
     this.get('usuario').set('transitionAposUsuario', 'base.paciente.novo')
-  },*/
+  },*/  
 
 });

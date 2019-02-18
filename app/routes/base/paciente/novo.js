@@ -9,6 +9,8 @@ export default Route.extend({
       schedule("afterRender",this,function() {
         document.getElementById('inputNome').focus();
       });
+
+      return true;
     }
   }
 

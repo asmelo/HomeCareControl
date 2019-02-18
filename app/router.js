@@ -21,6 +21,7 @@ Router.map(function() {
       this.route('novo');
       this.route('edicao', { path: '/reuniao/edicao/:idReuniao'});
     });
+    this.route('relatorio');
   });
   this.route('conta');
   this.route('login');

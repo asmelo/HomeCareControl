@@ -3,7 +3,6 @@ import { inject as service } from '@ember/service';
 
 export default Service.extend({
 
-  session: service(),
   store: service(),
   router: service(),
   toastr: service('toast'),
@@ -11,34 +10,69 @@ export default Service.extend({
 
   usuario: null,
 
-  criaListenerAuth() {
-    $('loading').css('display', '');
-    var this2 = this;
-    return new Promise(function(resolve, reject) {
-      //Cria listener no firebase.auth().
-      firebase.auth().onAuthStateChanged(function(user) {
-        //Sempre que houver mudança de estado esta função será executada.
-        if (user) {
-          this2.get('store').query('usuario', {
-            orderBy: 'email',
-            equalTo: user.email
-          }).then(response => {
-            let usuario = response.objectAt(0);
-            usuario.set('userFirebase', user);
-            this2.set('usuario', usuario);
-            $('loading').css('display', 'none');
-            this2.get('router').transitionTo('base.atendimento.novo');
-          });
-          this2.get('router').transitionTo('/');
-          resolve(user);
-        } else {
-          this2.set('usuario', null);
-          $('loading').css('display', 'none');
-          this2.get('router').transitionTo('login');
+  init() {
+    this._super(...arguments);
+
+    this.inicializarUsuario();
+
+    if (!this.get('listenerAuthCriado')) {
+        this.criaListenerAuth();
+    }
+
+  },
+
+  inicializarUsuario() {
+    this.set('userId', localStorage.getItem('userId'));
+    this.set('userEmail', localStorage.getItem('userEmail'));
+
+    if (this.get('userEmail')) {
+      this.get('store').query('usuario', {
+        orderBy: 'email',
+        equalTo: this.get('userEmail')
+      }).then(response => {
+        let usuario = response.objectAt(0);
+        this.set('usuario', usuario);
+        localStorage.setItem('userId', usuario.get('id'));
+        this.set('userId', usuario.get('id'));
+
+        if (this.get('redirecionarParaAtendimento')) {
+          this.get('router').transitionTo('base.atendimento.novo');
+          this.set('redirecionarParaAtendimento', false);
         }
       });
-      this2.set('listenerAuthCriado', true);
+    }
+  },
+
+  criaListenerAuth() {
+    if (!this.get('userId')) {
+      //Caso o userId carregado do localStora esteja vazio exibe o loading para aguardar o
+      //listerner do firebase.auth executar e recuperar os dados do usuario logado
+        $('loading').css('display', '');
+    }
+
+    //Cria listener no firebase.auth().
+    var this2 = this;
+    firebase.auth().onAuthStateChanged(function(user) {
+      //Sempre que houver mudança de estado esta função será executada.
+      if (user) {
+        this2.set('userFirebase', user);
+        localStorage.setItem('userEmail', user.email);
+        this2.inicializarUsuario();
+      } else {
+        this2.set('usuario', null);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userEmail');
+        this2.inicializarUsuario();
+
+        $('loading').css('display', 'none');
+        if (window.location.pathname != '/login') {
+          this2.get('router').transitionTo('login');
+          location.reload();
+        }
+      }
     });
+
+    this.set('listenerAuthCriado', true);
   },
 
   criarConta(nome, registro, email, senha) {
@@ -50,10 +84,11 @@ export default Service.extend({
         email: email
       });
       usuario.save().then(response => {
-        this.get('router').transitionTo('/');
+        this.set('redirecionarParaAtendimento', true);
         this.get('alerta').sucesso('Conta cadastrada com sucesso!');
       })
     }).catch(error => {
+      this.get('alerta').erro('Ocorreu um erro ao cadastrada a conta!');
       console.log(error.code);
       console.log(error.message);
       $('loading').css('display', 'none');
@@ -62,25 +97,29 @@ export default Service.extend({
 
   signIn(email, senha) {
     $('loading').css('display', '');
-    let user = firebase.auth().currentUser;
-    if(user) {
-      this.get('router').transitionTo('/');
-    }else{
-      var this2 = this;
-      firebase.auth().signInWithEmailAndPassword(email, senha).catch(function(error) {
-        if (error.code == 'auth/user-not-found') {
-          this2.get('alerta').erro('Usuário ou senha inválido!');
-        }
-        console.log('Erro: ' + error.code + ' - ' + error.message);
-        $('loading').css('display', 'none');
-      });
-    }
+
+    this.set('redirecionarParaAtendimento', true);
+    var this2 = this;
+    console.log('email: ' + email);
+    console.log('senha: ' + senha);
+    firebase.auth().signInWithEmailAndPassword(email, senha).catch(function(error) {
+      if (error.code == 'auth/user-not-found') {
+        this2.get('alerta').erro('Usuário ou senha inválido!');
+      }
+      console.log('Erro: ' + error.code + ' - ' + error.message);
+      $('loading').css('display', 'none');
+    });
 
   },
 
   signOut() {
     $('loading').css('display', '');
     this.set('usuario', null);
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userNome');
+    localStorage.removeItem('userRegistro');
+    localStorage.removeItem('userEmail');
+    this.inicializarUsuario();
     firebase.auth().signOut();
   },
 

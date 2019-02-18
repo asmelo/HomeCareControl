@@ -25,11 +25,11 @@ export default Route.extend({
     return RSVP.hash({
       atendimentos: this.store.query('atendimento', {
         orderBy: 'usuario',
-        equalTo: this.get('usuario').usuario.get('id')
+        equalTo: this.get('usuario').userId
       }),
       gruposCompartilhamento: this.store.query('grupo-compartilhamento', {
         orderBy: 'usuario',
-        equalTo: this.get('usuario').usuario.get('id')
+        equalTo: this.get('usuario').userId
       })
     });
   },
@@ -58,5 +58,7 @@ export default Route.extend({
     controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
 
   },
+
+  
 
 });

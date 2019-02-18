@@ -8,10 +8,10 @@ export default Controller.extend({
   actions: {
 
     signIn() {
-      let email = this.get('email')
-      let senha = this.get('senha')
+      let email = this.get('email');
+      let senha = this.get('senha');
 
-      this.get('usuario').signIn(email, senha)
+      this.get('usuario').signIn(email, senha);
     }
 
   }

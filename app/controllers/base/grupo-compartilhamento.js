@@ -8,7 +8,7 @@ export default Controller.extend({
 
   actions: {
 
-    criarGrupoSOSVida() {
+    criarGrupoSOSVidaFono() {
       let grupo = this.get('store').createRecord('grupo-compartilhamento', {
         nome: 'SOS Vida',
         usuario: this.get('usuario').usuario
@@ -20,6 +20,34 @@ export default Controller.extend({
         this.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
       }).catch(error => {
         this.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
+      })
+    },
+
+    criarGrupoSOSVidaFisio() {
+      let grupo = this.get('store').createRecord('grupo-compartilhamento', {
+        nome: 'SOS Vida',
+        usuario: this.get('usuario').usuario
+      });
+
+      grupo.get('listaUsuarios').pushObject(this.get('carol'));
+
+      grupo.save().then(response => {
+        this.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
+      }).catch(error => {
+        this.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
+      })
+    },
+
+    criarGrupoParticular() {
+      let grupo = this.get('store').createRecord('grupo-compartilhamento', {
+        nome: 'Particulares',
+        usuario: this.get('usuario').usuario
+      });
+
+      grupo.save().then(response => {
+        this.get('alerta').sucesso('Grupo Particulares Criado com sucesso!');
+      }).catch(error => {
+        this.get('alerta').erro('Ocorreu um erro ao criar o grupo Particulares!');
       })
     }
 

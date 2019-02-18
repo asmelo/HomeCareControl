@@ -13,11 +13,11 @@ export default Route.extend({
     return RSVP.hash({
       pacientes: this.store.query('paciente', {
         orderBy: 'usuario',
-        equalTo: this.get('usuario').usuario.get('id')
+        equalTo: this.get('usuario').userId
       }),
       gruposCompartilhamento: this.store.query('grupo-compartilhamento', {
         orderBy: 'usuario',
-        equalTo: this.get('usuario').usuario.get('id')
+        equalTo: this.get('usuario').userId
       })
     });
   },
