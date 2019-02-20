@@ -6,7 +6,7 @@ export default Service.extend({
 
   tratarValor(valorParam) {
 
-    if (!valorParam) return null;
+    if (!valorParam) return 'R$ 0,00';
 
     if (typeof(valorParam) == 'number') {
       valorParam = valorParam.toFixed(2);

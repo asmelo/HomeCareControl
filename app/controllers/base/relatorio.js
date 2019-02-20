@@ -11,7 +11,7 @@ export default Controller.extend({
   alerta: service(),
   util: service(),
 
-  steps: computed('atendimentosFiltrados', 'reunioesFiltradas', function() {
+  steps: computed('atendimentosFiltrados', 'reunioesFiltradas', 'ordenaListaAtd', function() {
     let steps = []
 
     steps.push({setFontSize: 25});
@@ -32,7 +32,7 @@ export default Controller.extend({
     let largura = 82;
     let x1 = 12;
     let y2 = 61;
-    let y1 = y2 + 5 + (listaResumo.length * 7);
+    let y1 = y2 + 9 + (listaResumo.length * 5);
     let x2 = x1 + largura;
     steps.push({line: [x1, y2, x2, y2]});
     steps.push({line: [x1, y2, x1, y1]});
@@ -52,6 +52,138 @@ export default Controller.extend({
       steps.push({text: [3 + x1 + 30, y, String(resumo.quantidade)]});
       steps.push({text: [3 + x1 + 60, y, resumo.totalFormatado]});
       y += 5;
+    })
+
+
+    steps.push({setFontSize: 15});
+    steps.push({text: [10, y1 + 15, 'Reuniões']});
+
+    let reunioesOrdenadas = this.get('reunioesOrdenadas');
+
+    largura = 142;
+    x1 = 12;
+    y2 = y1 + 21;
+    y1 = y2 + 9 + (reunioesOrdenadas.length * 5);
+    if (y1 > 284) {
+      y1 = 285;
+    }
+    x2 = x1 + largura;
+
+    if (y1 >= 285) {
+      steps.push({line: [x1, y1, x1, y2]});
+      steps.push({line: [x1, y2, x2, y2]});
+      steps.push({line: [x2, y2, x2, y1]});
+    }
+
+    steps.push({setFontSize: 10});
+    steps.push({setFontStyle: 'bold'});
+    steps.push({text: [3 + x1, y2 + 5, 'Descrição']});
+    steps.push({text: [3 + x1 + 60, y2 + 5, 'Duração']});
+    steps.push({text: [3 + x1 + 90, y2 + 5, 'Valor']});
+    steps.push({text: [3 + x1 + 120, y2 + 5, 'Grupo']});
+
+    var houveQuebraPagina = false;
+    var quebraLinha = 0;
+    var y = y2 + 12;
+    steps.push({setFontStyle: 'normal'});
+    reunioesOrdenadas.forEach(function(reuniao, index) {
+      steps.push({text: [3 + x1, y + quebraLinha, reuniao.descricao, { maxWidth: '58'}]});
+      steps.push({text: [3 + x1 + 60, y + quebraLinha, reuniao.duracao]});
+      steps.push({text: [3 + x1 + 90, y + quebraLinha, reuniao.valor]});
+      steps.push({text: [3 + x1 + 120, y + quebraLinha, reuniao.nmGrupoCompartilhamento]});
+      if (reuniao.descricao.length > 34) {
+          quebraLinha += 8;
+      }
+      y += 5;
+      if (y > 284) {
+        houveQuebraPagina = true;
+        steps.push({addPage: []})
+        y = 15;
+        y2 = y - 5;
+        y1 = y2 + 3 + ((reunioesOrdenadas.length - (index + 1)) * 5);
+        if (y1 > 284) {
+          y1 = 285;
+        }
+        quebraLinha = 0;
+      }
+    })
+
+    y1 = y1 + quebraLinha;
+
+    steps.push({line: [x1, y1, x1, y2]});
+    if (!houveQuebraPagina) {
+        steps.push({line: [x1, y2, x2, y2]});
+    }
+
+    steps.push({line: [x2, y2, x2, y1]});
+    steps.push({line: [x2, y1, x1, y1]});
+
+
+    //steps.push({addPage: []})
+    //Atendimentos
+
+    steps.push({setFontSize: 15});
+    steps.push({text: [10, y1 + 15, 'Atendimentos']});
+
+    let atendimentosOrdenados = this.get('atendimentosOrdenados');
+
+    largura = 142;
+    x1 = 12;
+    y2 = y1 + 21;
+    y1 = y2 + 9 + (atendimentosOrdenados.length * 5);
+    if (y1 > 284) {
+      y1 = 285;
+    }
+    x2 = x1 + largura;
+
+    steps.push({line: [x1, y1, x1, y2]});
+    steps.push({line: [x1, y2, x2, y2]});
+    steps.push({line: [x2, y2, x2, y1]});
+    if (y1 < 285) {
+      steps.push({line: [x2, y1, x1, y1]});
+    }
+
+    steps.push({setFontSize: 10});
+    steps.push({setFontStyle: 'bold'});
+    steps.push({text: [3 + x1, y2 + 5, 'Data']});
+    steps.push({text: [3 + x1 + 30, y2 + 5, 'Paciente']});
+    steps.push({text: [3 + x1 + 90, y2 + 5, 'Valor']});
+    steps.push({text: [3 + x1 + 120, y2 + 5, 'Grupo']});
+
+    var y = y2 + 12;
+    steps.push({setFontStyle: 'normal'});
+    atendimentosOrdenados.forEach(function(atendimento, index) {
+      let dia = atendimento.get('dtAtendimento').getDate();
+      if (String(dia).length == 1) {
+        dia = '0' + dia;
+      }
+      let mes = atendimento.get('dtAtendimento').getMonth() + 1;
+      if (String(mes).length == 1) {
+        mes = '0' + mes;
+      }
+      let ano = atendimento.get('dtAtendimento').getFullYear();
+      let dataFormatada = dia + '/' + mes + '/' + ano;
+
+      steps.push({text: [3 + x1, y, dataFormatada]});
+      steps.push({text: [3 + x1 + 30, y, String(atendimento.nmPaciente)]});
+      steps.push({text: [3 + x1 + 90, y, atendimento.valor]});
+      steps.push({text: [3 + x1 + 120, y, atendimento.nmGrupoCompartilhamento]});
+      y += 5;
+      if (y > 284) {
+        steps.push({addPage: []})
+        y = 15;
+        y2 = y - 5;
+        y1 = y2 + 3 + ((atendimentosOrdenados.length - (index + 1)) * 5);
+        if (y1 > 284) {
+          y1 = 285;
+        }
+
+        steps.push({line: [x1, y1, x1, y2]});
+        steps.push({line: [x2, y2, x2, y1]});
+        if (y1 < 285) {
+          steps.push({line: [x2, y1, x1, y1]});
+        }
+      }
     })
 
 
