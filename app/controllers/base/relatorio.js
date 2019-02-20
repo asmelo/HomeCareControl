@@ -24,6 +24,9 @@ export default Controller.extend({
     let periodo = 'Período: ' + this.get('mes') + ' de ' + this.get('ano');
     steps.push({text: [200, 40, periodo, {align: 'right'}]})
 
+
+    //===============RESUMO=====================//
+
     steps.push({setFontSize: 15});
     steps.push({text: [10, 55, 'Resumo']});
 
@@ -55,25 +58,16 @@ export default Controller.extend({
     })
 
 
+    //===============REUNIÕES=====================//
+
     steps.push({setFontSize: 15});
     steps.push({text: [10, y1 + 15, 'Reuniões']});
-
-    let reunioesOrdenadas = this.get('reunioesOrdenadas');
 
     largura = 142;
     x1 = 12;
     y2 = y1 + 21;
-    y1 = y2 + 9 + (reunioesOrdenadas.length * 5);
-    if (y1 > 284) {
-      y1 = 285;
-    }
+    y1 = y2 + 12;
     x2 = x1 + largura;
-
-    if (y1 >= 285) {
-      steps.push({line: [x1, y1, x1, y2]});
-      steps.push({line: [x1, y2, x2, y2]});
-      steps.push({line: [x2, y2, x2, y1]});
-    }
 
     steps.push({setFontSize: 10});
     steps.push({setFontStyle: 'bold'});
@@ -83,75 +77,64 @@ export default Controller.extend({
     steps.push({text: [3 + x1 + 120, y2 + 5, 'Grupo']});
 
     var houveQuebraPagina = false;
-    var quebraLinha = 0;
-    var y = y2 + 12;
+
     steps.push({setFontStyle: 'normal'});
+
+    let reunioesOrdenadas = this.get('reunioesOrdenadas');
     reunioesOrdenadas.forEach(function(reuniao, index) {
-      steps.push({text: [3 + x1, y + quebraLinha, reuniao.descricao, { maxWidth: '58'}]});
-      steps.push({text: [3 + x1 + 60, y + quebraLinha, reuniao.duracao]});
-      steps.push({text: [3 + x1 + 90, y + quebraLinha, reuniao.valor]});
-      steps.push({text: [3 + x1 + 120, y + quebraLinha, reuniao.nmGrupoCompartilhamento]});
+      steps.push({text: [3 + x1, y1, reuniao.descricao, { maxWidth: '58'}]});
+      steps.push({text: [3 + x1 + 60, y1, reuniao.duracao]});
+      steps.push({text: [3 + x1 + 90, y1, reuniao.valor]});
+      steps.push({text: [3 + x1 + 120, y1, reuniao.nmGrupoCompartilhamento]});
+      y1 += 5;
+
       if (reuniao.descricao.length > 34) {
-          quebraLinha += 8;
+          y1 += 8;
       }
-      y += 5;
-      if (y > 284) {
+
+      if (y1 > 284 && index != (reunioesOrdenadas.length - 1)) {
         houveQuebraPagina = true;
+        y1 = 285;
+        steps.push({line: [x1, y1, x1, y2]});
+        steps.push({line: [x1, y2, x2, y2]});
+        steps.push({line: [x2, y2, x2, y1]});
         steps.push({addPage: []})
-        y = 15;
-        y2 = y - 5;
-        y1 = y2 + 3 + ((reunioesOrdenadas.length - (index + 1)) * 5);
-        if (y1 > 284) {
-          y1 = 285;
-        }
-        quebraLinha = 0;
+        y2 = 10;
+        y1 = 15;
       }
     })
 
-    y1 = y1 + quebraLinha;
-
     steps.push({line: [x1, y1, x1, y2]});
     if (!houveQuebraPagina) {
-        steps.push({line: [x1, y2, x2, y2]});
+      steps.push({line: [x1, y2, x2, y2]});
     }
-
     steps.push({line: [x2, y2, x2, y1]});
     steps.push({line: [x2, y1, x1, y1]});
 
 
-    //steps.push({addPage: []})
-    //Atendimentos
+    //===============ATENDIMENTO=====================//
 
     steps.push({setFontSize: 15});
     steps.push({text: [10, y1 + 15, 'Atendimentos']});
 
-    let atendimentosOrdenados = this.get('atendimentosOrdenados');
-
     largura = 142;
     x1 = 12;
     y2 = y1 + 21;
-    y1 = y2 + 9 + (atendimentosOrdenados.length * 5);
-    if (y1 > 284) {
-      y1 = 285;
-    }
+    y1 = y2 + 12;
     x2 = x1 + largura;
-
-    steps.push({line: [x1, y1, x1, y2]});
-    steps.push({line: [x1, y2, x2, y2]});
-    steps.push({line: [x2, y2, x2, y1]});
-    if (y1 < 285) {
-      steps.push({line: [x2, y1, x1, y1]});
-    }
 
     steps.push({setFontSize: 10});
     steps.push({setFontStyle: 'bold'});
     steps.push({text: [3 + x1, y2 + 5, 'Data']});
-    steps.push({text: [3 + x1 + 30, y2 + 5, 'Paciente']});
-    steps.push({text: [3 + x1 + 90, y2 + 5, 'Valor']});
-    steps.push({text: [3 + x1 + 120, y2 + 5, 'Grupo']});
+    steps.push({text: [3 + x1 + 25, y2 + 5, 'Paciente']});
+    steps.push({text: [3 + x1 + 103, y2 + 5, 'Valor']});
+    steps.push({text: [3 + x1 + 133, y2 + 5, 'Grupo']});
 
-    var y = y2 + 12;
+    houveQuebraPagina = false;
+
     steps.push({setFontStyle: 'normal'});
+
+    let atendimentosOrdenados = this.get('atendimentosOrdenados');
     atendimentosOrdenados.forEach(function(atendimento, index) {
       let dia = atendimento.get('dtAtendimento').getDate();
       if (String(dia).length == 1) {
@@ -164,27 +147,75 @@ export default Controller.extend({
       let ano = atendimento.get('dtAtendimento').getFullYear();
       let dataFormatada = dia + '/' + mes + '/' + ano;
 
-      steps.push({text: [3 + x1, y, dataFormatada]});
-      steps.push({text: [3 + x1 + 30, y, String(atendimento.nmPaciente)]});
-      steps.push({text: [3 + x1 + 90, y, atendimento.valor]});
-      steps.push({text: [3 + x1 + 120, y, atendimento.nmGrupoCompartilhamento]});
-      y += 5;
-      if (y > 284) {
-        steps.push({addPage: []})
-        y = 15;
-        y2 = y - 5;
-        y1 = y2 + 3 + ((atendimentosOrdenados.length - (index + 1)) * 5);
-        if (y1 > 284) {
-          y1 = 285;
-        }
-
+      steps.push({text: [3 + x1, y1, dataFormatada]});
+      steps.push({text: [3 + x1 + 25, y1, String(atendimento.nmPaciente)]});
+      steps.push({text: [3 + x1 + 103, y1, atendimento.valor]});
+      steps.push({text: [3 + x1 + 133, y1, atendimento.nmGrupoCompartilhamento]});
+      y1 += 5;
+      if (y1 > 284) {
+        houveQuebraPagina = true;
+        y1 = 285;
         steps.push({line: [x1, y1, x1, y2]});
+        steps.push({line: [x1, y2, x2, y2]});
         steps.push({line: [x2, y2, x2, y1]});
-        if (y1 < 285) {
-          steps.push({line: [x2, y1, x1, y1]});
-        }
+        steps.push({addPage: []})
+        y2 = 10;
+        y1 = 15;
       }
-    })
+    });
+
+    steps.push({line: [x1, y1, x1, y2]});
+    if (!houveQuebraPagina) {
+      steps.push({line: [x1, y2, x2, y2]});
+    }
+    steps.push({line: [x2, y2, x2, y1]});
+    steps.push({line: [x2, y1, x1, y1]});
+
+
+
+    //===============ATENDIMENTO POR PACIENTE=====================//
+
+    steps.push({setFontSize: 15});
+    steps.push({text: [10, y1 + 15, 'Atendimentos por Paciente']});
+
+    largura = 100;
+    x1 = 12;
+    y2 = y1 + 21;
+    y1 = y2 + 12;
+    x2 = x1 + largura;
+
+    steps.push({setFontSize: 10});
+    steps.push({setFontStyle: 'bold'});
+    steps.push({text: [3 + x1, y2 + 5, 'Paciente']});
+    steps.push({text: [3 + x1 + 73, y2 + 5, 'Total']});
+
+    houveQuebraPagina = false;
+
+    steps.push({setFontStyle: 'normal'});
+
+    let atendimentosPorPaciente = this.get('listaAtendimentosPorPacienteOrdenada');
+    atendimentosPorPaciente.forEach(function(paciente, index) {
+      steps.push({text: [3 + x1, y1, String(paciente.paciente.get('nome'))]});
+      steps.push({text: [3 + x1 + 73, y1, String(paciente.total)]});
+      y1 += 5;
+      if (y1 > 284) {
+        houveQuebraPagina = true;
+        y1 = 285;
+        steps.push({line: [x1, y1, x1, y2]});
+        steps.push({line: [x1, y2, x2, y2]});
+        steps.push({line: [x2, y2, x2, y1]});
+        steps.push({addPage: []})
+        y2 = 10;
+        y1 = 15;
+      }
+    });
+
+    steps.push({line: [x1, y1, x1, y2]});
+    if (!houveQuebraPagina) {
+      steps.push({line: [x1, y2, x2, y2]});
+    }
+    steps.push({line: [x2, y2, x2, y1]});
+    steps.push({line: [x2, y1, x1, y1]});
 
 
     return steps;
