@@ -5,6 +5,12 @@
     float: right !important;
     margin-top: -41px;
     margin-right: 20px;
+    width: 90px;
+
+    li {
+      float: right;
+      margin-left: 20px;
+    }
   }
 
   @media only screen and (max-width : 450px) {
@@ -12,8 +18,16 @@
       margin-left: 20px;
       float: left !important;
       margin-top: 0px;
+      width: 90px;
+
+      li {
+        float: left;
+        margin-left: 0px;
+        margin-right: 20px;
+      }
     }
   }
+
 }
 
 .total-resumo {

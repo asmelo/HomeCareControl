@@ -221,6 +221,7 @@ export default Route.extend({
     controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
 
     controller.set('nmGrupoCompartilhamento', 'Todos');
+    controller.set('nmGrupoCompartilhamentoUsuario', 'Todos');    
 
   },
 

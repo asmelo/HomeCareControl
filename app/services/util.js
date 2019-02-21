@@ -23,6 +23,16 @@ export default Service.extend({
       }
     }
 
+    //Coloca o ponto em valores como 99.999,99
+    if (valor.length == 8) {
+      valor = valor.slice(0, 2) + '.' + valor.slice(2);
+    }
+
+    //Coloca o ponto em valores como 9.999,99
+    if (valor.length == 7) {
+      valor = valor.slice(0, 1) + '.' + valor.slice(1);
+    }
+    
     return 'R$ ' + valor;
   },
 

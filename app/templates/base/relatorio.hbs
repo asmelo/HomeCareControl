@@ -1,16 +1,30 @@
-
-{{js-pdf steps filename="tomster-facts"}}
-
+<!--
+js-pdf stepsTodos filename="tomster-facts"
+js-pdf stepsUsuario filename="tomster-facts"
+-->
 <div class="relatorio-header">
   <h4>Relatório de Atendimento e Reuniões</h4>
   <ul>
     <!--<li><a class="link"><i class="material-icons">assignment</i></a></li>
     <li><a class="link"><i class="material-icons">save</i></a></li>-->
-    <li>
-      {{#js-pdf steps showPdf=false as |pdf|}}
-        <a class="link" {{action pdf.save}}><i class="material-icons">picture_as_pdf</i></a>
-      {{/js-pdf}}
-    </li>
+    {{#each steps as |step index|}}
+      {{#if (eq index 0)}}
+        <li>
+          {{#js-pdf step showPdf=false id=(concat "Rel_" usuarioFiltro.nome "_" mes "_" ano) as |pdf|}}
+            <a title="Gerar PDF" class="link" {{action pdf.save}}><i class="material-icons">assignment</i></a>
+          {{/js-pdf}}
+        </li>
+      {{/if}}
+      {{#if (eq index 1)}}
+        {{#if (gt listaUsuarios.length 1)}}
+          <li>
+            {{#js-pdf step showPdf=false id=(concat "Relatorio_" mes "_" ano) as |pdf|}}
+              <a title="Gerar PDF de todos os profissionais" class="link" {{action pdf.save}}><i class="material-icons">library_books</i></a>
+            {{/js-pdf}}
+          </li>
+        {{/if}}
+      {{/if}}
+    {{/each}}
   </ul>
 </div>
 
