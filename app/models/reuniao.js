@@ -22,4 +22,17 @@ export default DS.Model.extend({
     }
   }),
 
+  dataFormatada: computed('dtReuniao', function() {
+    let dia = this.get('dtReuniao').getDate();
+    if (String(dia).length == 1) {
+      dia = '0' + dia;
+    }
+    let mes = this.get('dtReuniao').getMonth() + 1;
+    if (String(mes).length == 1) {
+      mes = '0' + mes;
+    }
+    let ano = this.get('dtReuniao').getFullYear();
+    return dia + '/' + mes + '/' + ano;
+  })
+
 });
