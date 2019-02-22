@@ -47,11 +47,7 @@ export default Route.extend({
       model.atendimento.get('grupoCompartilhamento').then(grupo => {
           controller.set('grupoCompartilhamento', grupo);
       });
-    }
-
-    later(function() {
-      $('label').addClass('active');
-    }, 200);
+    }    
 
   },
 
