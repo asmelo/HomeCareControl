@@ -10,6 +10,10 @@ export default Component.extend({
   didInsertElement() {
         this._super(...arguments);
 
+      if (!this.get('type')) {
+        this.set('type', 'text');
+      }
+
       let inputId = this.$('input').attr('id');
           this.$('label').attr('for', inputId);
 
