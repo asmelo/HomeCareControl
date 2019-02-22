@@ -63,7 +63,6 @@ export default Controller.extend({
 
   reunioesOrdenadas: sort('reunioesFiltradas', 'funcaoOrdenacao'),
 
-  nmGrupoCompartilhamento: 'Todos',
 
   actions: {
 

@@ -57,6 +57,15 @@ export default Route.extend({
     listaGruposCompartilhamento.insertAt(1, 'Nenhum');
     controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
 
+    let grupoPrincipal = model.gruposCompartilhamento.filter(function(grupo) {
+      return grupo.get('principal');
+    });
+    if (grupoPrincipal.length > 0) {
+      controller.set('nmGrupoCompartilhamento', grupoPrincipal.objectAt(0).get('nome'));
+    } else {
+      controller.set('nmGrupoCompartilhamento', 'Todos');
+    }
+
   },
 
 });

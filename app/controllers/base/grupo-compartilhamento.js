@@ -11,6 +11,7 @@ export default Controller.extend({
     criarGrupoSOSVidaFono() {
       let grupo = this.get('store').createRecord('grupo-compartilhamento', {
         nome: 'SOS Vida',
+        principal: true,
         usuario: this.get('usuario').usuario
       });
 
@@ -26,6 +27,7 @@ export default Controller.extend({
     criarGrupoSOSVidaFisio() {
       let grupo = this.get('store').createRecord('grupo-compartilhamento', {
         nome: 'SOS Vida',
+        principal: true,
         usuario: this.get('usuario').usuario
       });
 

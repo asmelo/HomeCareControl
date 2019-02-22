@@ -218,10 +218,19 @@ export default Route.extend({
     let listaGruposCompartilhamento = model.gruposUsuario.mapBy('nome');
     listaGruposCompartilhamento.insertAt(0, 'Todos');
     listaGruposCompartilhamento.insertAt(1, 'Nenhum');
-    controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
+    controller.set('gruposCompartilhamento', listaGruposCompartilhamento);   
 
-    controller.set('nmGrupoCompartilhamento', 'Todos');
-    controller.set('nmGrupoCompartilhamentoUsuario', 'Todos');    
+    //Seleciona o grupo principal para o usuário logado
+    let grupoPrincipal = model.gruposUsuario.filter(function(grupo) {
+      return grupo.get('principal');
+    });
+    if (grupoPrincipal.length > 0) {
+      controller.set('nmGrupoCompartilhamento', grupoPrincipal.objectAt(0).get('nome'));
+      controller.set('nmGrupoCompartilhamentoUsuario', grupoPrincipal.objectAt(0).get('nome'));
+    } else {
+      controller.set('nmGrupoCompartilhamento', 'Todos');
+      controller.set('nmGrupoCompartilhamentoUsuario', 'Todos');
+    }
 
   },
 

@@ -95,8 +95,7 @@ export default Controller.extend({
     return listaPacientes;
   }),
 
-  nmPaciente: 'Todos',
-  nmGrupoCompartilhamento: 'Todos',
+  nmPaciente: 'Todos',  
 
   actions: {
 

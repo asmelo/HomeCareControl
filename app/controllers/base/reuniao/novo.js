@@ -79,13 +79,15 @@ export default Controller.extend({
 
       this.set('descricao', null);
       this.set('duracao', null);
-
+  
       if (isEmpty(this.get('grupoCompartilhamento'))) {
-        //Nesta primeira versão o primeiro grupo de compartilhamento será o valor padrão
-        if (this.get('gruposCompartilhamento').length > 1) {
-          this.set('grupoCompartilhamento', this.get('gruposCompartilhamento')[1]);
+        let grupoPrincipal = this.get('gruposCompartilhamento').filter(function(grupo) {
+          return grupo.get('principal');
+        });
+        if (grupoPrincipal.length > 0) {
+          this.set('grupoCompartilhamento', grupoPrincipal.objectAt(0));
         } else {
-          //Seleciona o item "Nenhum" caso não hajam grupos cadastrados
+          //Seleciona o opção Nenhum
           this.set('grupoCompartilhamento', this.get('gruposCompartilhamento')[0]);
         }
       }
