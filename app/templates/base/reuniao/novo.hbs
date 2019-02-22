@@ -10,7 +10,7 @@
                 {{pikaday-input readonly="readonly" value=dtReuniao onSelection=(action 'selecionaData') format="DD/MM/YYYY"}}
             </div>
             <div class="col s12 m3">
-                {{input-text label="Duração" value=duracao mask="00:00"}}
+                {{input-text label="Duração" type="tel" value=duracao mask="00:00"}}
             </div>
             <div class="col s12 m3">
                 {{input-text label="Valor" value=valor disabled=true mask="#.##0,00" reverseMask=true}}
