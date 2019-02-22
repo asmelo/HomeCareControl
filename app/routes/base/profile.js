@@ -6,10 +6,7 @@ export default Route.extend({
   usuario: service(),
 
   model() {
-    return this.store.query('paciente', {
-      orderBy: 'usuario',
-      equalTo: this.get('usuario').userId
-    })
-  } 
+      return this.store.findRecord('usuario', this.get('usuario').userId)
+  }
 
 });

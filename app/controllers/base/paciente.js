@@ -24,17 +24,9 @@ export default Controller.extend({
       window.scrollTo(0,0);
     },
 
-    confirmarExclusao(paciente) {
-      this.set('pacienteExclusao', paciente);
-      $('#modalConfirmarExclusao').modal('open');
+    scrollUp() {
+      window.scrollTo(0,0);
     },
-
-    excluirPaciente() {
-      this.get('pacienteExclusao').deleteRecord();
-      this.get('pacienteExclusao').save().then(response => {
-        this.get('alerta').sucesso('Paciente excluído com sucesso!');
-      })
-    }
 
   }
 });
