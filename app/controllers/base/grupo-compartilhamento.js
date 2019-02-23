@@ -1,14 +1,29 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { sort } from '@ember/object/computed';
+import { computed } from '@ember/object';
+import { filterBy } from '@ember/object/computed';
+
 
 export default Controller.extend({
 
   usuario: service(),
   alerta: service(),
 
+  funcaoOrdenacao: Object.freeze(['principal:desc']),
+  gruposCompartilhamentoOrdenado: sort('gruposCompartilhamento', 'funcaoOrdenacao'),
+
   actions: {
 
     criarGrupoSOSVidaFono() {
+      let grupoSOS = this.get('gruposCompartilhamento').filter(grupo => {
+        return grupo.get('nome') == 'SOS Vida';
+      });
+      if (grupoSOS.length > 0) {
+        this.get('alerta').erro('Este grupo já existe');
+        return;
+      }
+
       let grupo = this.get('store').createRecord('grupo-compartilhamento', {
         nome: 'SOS Vida',
         principal: true,
@@ -25,6 +40,14 @@ export default Controller.extend({
     },
 
     criarGrupoSOSVidaFisio() {
+      let grupoSOS = this.get('gruposCompartilhamento').filter(grupo => {
+        return grupo.get('nome') == 'SOS Vida';
+      });
+      if (grupoSOS.length > 0) {
+        this.get('alerta').erro('Este grupo já existe');
+        return;
+      }
+
       let grupo = this.get('store').createRecord('grupo-compartilhamento', {
         nome: 'SOS Vida',
         principal: true,
@@ -41,6 +64,14 @@ export default Controller.extend({
     },
 
     criarGrupoParticular() {
+      let grupoParticular = this.get('gruposCompartilhamento').filter(grupo => {
+        return grupo.get('nome') == 'Particulares';
+      });
+      if (grupoParticular.length > 0) {
+        this.get('alerta').erro('Este grupo já existe');
+        return;
+      }
+
       let grupo = this.get('store').createRecord('grupo-compartilhamento', {
         nome: 'Particulares',
         usuario: this.get('usuario').usuario

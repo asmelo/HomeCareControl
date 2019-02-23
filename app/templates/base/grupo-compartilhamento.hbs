@@ -1,6 +1,62 @@
-<button type="button" name="button" class="btn waves-effects waves-light" {{action "criarGrupoSOSVidaFono"}}>Criar Grupo SOS Vida Fono</button>
-<br>
-<button type="button" name="button" class="btn waves-effects waves-light" {{action "criarGrupoSOSVidaFisio"}}>Criar Grupo SOS Vida Fisio</button>
-<br>
-<button type="button" name="button" class="btn waves-effects waves-light" {{action "criarGrupoParticular"}}>Criar Grupo Particulares</button>
+<div class="row formulario">
+  <div class="col s12 m8 offset-m2">
+    <div class="card">
+      <div class="card-content">
+        <div class="row">
+          <h4 style="margin-bottom: 60px;">Novo Grupo</h4>
+          <div class="col s12 m6 center-align">
+              <button type="button" name="button" class="btn waves-effects waves-light"
+                      style="margin-bottom: 20px;" {{action "criarGrupoSOSVidaFono"}}>
+                SOS Vida Fono
+              </button>
+          </div>
+          <!--<div class="col s12 m6">
+              <button type="button" name="button" class="btn waves-effects waves-light" {{action "criarGrupoSOSVidaFisio"}}>
+                SOS Vida Fisio
+              </button>
+          </div>-->
+          <div class="col s12 m6 center-align">
+              <button type="button" name="button" class="btn waves-effects waves-light"
+                      style="margin-bottom: 20px;" {{action "criarGrupoParticular"}}>
+                Particulares
+              </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tabela-header">
+  <div class="titulo-tabela">
+    <h4>Grupos</h4>
+  </div>
+</div>
+<div class="tabela-dados">
+  {{#card-collapsible}}
+    <ul class="collapsible" data-collapsible="accordion">
+      {{#each gruposCompartilhamentoOrdenado as |grupo|}}
+        <li>
+          <div class="collapsible-header">
+            <i class="material-icons">share</i>{{grupo.nome}}
+            {{#if grupo.principal}}
+              <i class="material-icons" title="Grupo principal" style="color: green; margin-left: 20px">check</i>
+            {{/if}}
+          </div>
+          <div class="collapsible-body">
+            {{#if (gt grupo.listaUsuarios.length  0)}}
+              <span>Este grupo está sendo compartilhado com:</span>
+              {{#each grupo.listaUsuarios as |usuario|}}
+                  <div style="padding: 10px;"> {{usuario.nome}} ({{usuario.email}})</div>
+              {{/each}}
+            {{else}}
+              <span>Este grupo não é compartilhado</span>
+            {{/if}}
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  {{/card-collapsible}}
+</div>
+
 {{outlet}}

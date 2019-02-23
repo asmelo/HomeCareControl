@@ -77,6 +77,7 @@ export default Service.extend({
 
   criarConta(nome, registro, email, senha) {
     $('loading').css('display', '');
+    this.set('redirecionarParaAtendimento', true);
     firebase.auth().createUserWithEmailAndPassword(email, senha).then(response => {
       let usuario = this.get('store').createRecord('usuario', {
         nome: nome,

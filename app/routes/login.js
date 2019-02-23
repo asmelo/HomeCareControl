@@ -5,10 +5,16 @@ export default Route.extend({
 
   usuario: service(),
 
-  beforeModel(transition) {    
+  beforeModel(transition) {
     if (this.get('usuario').userId) {
       this.transitionTo('base.atendimento.novo');
     }
   },
+
+  actions: {
+    didTransition() {
+      $('loading').css('display', 'none');
+    }
+  }
 
 });
