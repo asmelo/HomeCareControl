@@ -14,7 +14,8 @@
               {{#power-select selected=paciente
                               options=pacientes
                               onchange=(action "selecionaPaciente")
-                              searchField="nome" as |paciente|}}
+                              noMatchesMessage="Sem registros"
+                              searchField="nome" as |paciente|}}                  
                   {{paciente.nome}}
               {{/power-select}}
             </div>
@@ -26,7 +27,7 @@
               {{#power-select selected=grupoCompartilhamento
                               options=gruposCompartilhamento
                               onchange=(action "selecionaGrupoCompartilhamento")
-                              noMatchesMessage="Sem registros cadastrado"
+                              noMatchesMessage="Sem registros"
                               searchField="nome" as |grupo|}}
                   {{grupo.nome}}
               {{/power-select}}

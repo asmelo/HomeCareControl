@@ -65,7 +65,7 @@ export default Service.extend({
         this2.inicializarUsuario();
 
         $('loading').css('display', 'none');
-        if (window.location.pathname != '/login') {
+        if (window.location.pathname != '/login' && window.location.pathname != '/conta') {
           this2.get('router').transitionTo('login');
           location.reload();
         }
@@ -89,10 +89,20 @@ export default Service.extend({
         this.get('alerta').sucesso('Conta cadastrada com sucesso!');
       })
     }).catch(error => {
-      this.get('alerta').erro('Ocorreu um erro ao cadastrada a conta!');
       console.log(error.code);
       console.log(error.message);
       $('loading').css('display', 'none');
+      
+      if (error.code == 'auth/email-already-in-use') {
+        this.get('alerta').erro('E-mail já cadastrado');
+        return;
+      }
+      if (error.code == 'auth/weak-password') {
+        this.get('alerta').erro('Sua senha deve possuir no mínimo 6 caracteres');
+        return;
+      }
+
+      this.get('alerta').erro('Ocorreu um erro ao cadastrada a conta!');
     })
   },
 
@@ -104,7 +114,10 @@ export default Service.extend({
     console.log('email: ' + email);
     console.log('senha: ' + senha);
     firebase.auth().signInWithEmailAndPassword(email, senha).catch(function(error) {
-      if (error.code == 'auth/user-not-found') {
+      if (error.code == 'auth/invalid-email') {
+        this2.get('alerta').erro('E-mail inválido!');
+      }
+      if (error.code == 'auth/user-not-found' || error.code == 'auth/wrong-password') {
         this2.get('alerta').erro('Usuário ou senha inválido!');
       }
       console.log('Erro: ' + error.code + ' - ' + error.message);

@@ -64,6 +64,7 @@ js-pdf stepsUsuario filename="tomster-facts"
                     options=gruposCompartilhamento
                     onchange=(action "selecionaCompartilhamento")
                     disabled=(not isAtendimentoDoUsuario)
+                    noMatchesMessage="Sem registros"
                     as |grupo|}}
         {{grupo}}
     {{/power-select}}

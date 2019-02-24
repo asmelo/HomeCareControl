@@ -27,10 +27,11 @@
         {{/power-select}}
       </div>
       <div class="input-field col s12 m4 combo">
-        <div class="labelForm">Compatilhamento</div>
+        <div class="labelForm">Compartilhamento</div>
         {{#power-select selected=nmGrupoCompartilhamento
                         options=gruposCompartilhamento
                         onchange=(action "selecionaCompartilhamento")
+                        noMatchesMessage="Sem registros"
                         as |grupo|}}
             {{grupo}}
         {{/power-select}}

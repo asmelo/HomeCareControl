@@ -8,7 +8,8 @@ export default Controller.extend({
 
   actions: {
 
-    atualizarPaciente() {
+    atualizarPaciente() {      
+      this.set('model.nome', this.get('model.nome').trim());
       this.get('model').save().then(response => {
         this.get('alerta').sucesso('Paciente atualizado com sucesso!');
         this.transitionToRoute('base.paciente.novo');

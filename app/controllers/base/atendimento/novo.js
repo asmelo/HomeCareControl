@@ -32,11 +32,19 @@ export default Controller.extend({
     },
 
     selecionaPaciente(paciente) {
-      this.set('paciente', paciente);
+      if (paciente.get('nome') == 'Cadastrar novo paciente') {
+        this.transitionToRoute('base.paciente.novo', { queryParams: { from: 'base.atendimento.novo' }});
+      } else {
+        this.set('paciente', paciente);
+      }
     },
 
     selecionaGrupoCompartilhamento(grupoCompartilhamento) {
-      this.set('grupoCompartilhamento', grupoCompartilhamento);
+      if (grupoCompartilhamento.get('nome') == 'Cadastrar novo grupo') {
+        this.transitionToRoute('base.grupoCompartilhamento');
+      } else {
+        this.set('grupoCompartilhamento', grupoCompartilhamento);
+      }
     },
 
     salvarAtendimento() {

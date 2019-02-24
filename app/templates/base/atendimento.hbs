@@ -31,15 +31,17 @@
         {{#power-select selected=nmPaciente
                         options=listaPacientes
                         onchange=(action "selecionaPaciente")
+                        noMatchesMessage="Sem registros"
                         as |paciente|}}
             {{paciente}}
         {{/power-select}}
       </div>
       <div class="input-field col s12 m3 combo">
-        <div class="labelForm">Compatilhamento</div>
+        <div class="labelForm">Compartilhamento</div>
         {{#power-select selected=nmGrupoCompartilhamento
                         options=gruposCompartilhamento
                         onchange=(action "selecionaCompartilhamento")
+                        noMatchesMessage="Sem registros"
                         as |grupo|}}
             {{grupo}}
         {{/power-select}}

@@ -16,7 +16,10 @@ export default Component.extend({
 
     abrirItemMenu(rota) {
       $('loading').css('display', '');
-      this.get('router').transitionTo(rota);
+      let transition = this.get('router').transitionTo(rota);
+      if (!transition.targetName) {
+        $('loading').css('display', 'none');
+      }
       if ($('body').width() < 992) {
         $('.sidenav-overlay').click();
       }

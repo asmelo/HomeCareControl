@@ -54,7 +54,7 @@ export default Route.extend({
     //Preenche filtro de Grupos de Compartilhamento
     let listaGruposCompartilhamento = model.gruposCompartilhamento.mapBy('nome');
     listaGruposCompartilhamento.insertAt(0, 'Todos');
-    listaGruposCompartilhamento.insertAt(1, 'Nenhum');
+    listaGruposCompartilhamento.insertAt(1, 'Nenhum');    
     controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
 
     let grupoPrincipal = model.gruposCompartilhamento.filter(function(grupo) {

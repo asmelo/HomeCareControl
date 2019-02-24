@@ -84,9 +84,11 @@ export default Controller.extend({
   listaPacientes: computed('atendimentosDoMes', function() {
     let listaPacientes = [];
     for (let i = 0; i < this.get('atendimentosDoMes').length; i++) {
-      if (!listaPacientes.includes(this.get('atendimentosDoMes').objectAt(i).get('paciente.nome'))) {
-        listaPacientes.pushObject(this.get('atendimentosDoMes').objectAt(i).get('paciente.nome'));
-      }
+      if (this.get('atendimentosDoMes').objectAt(i).get('paciente.nome')) {
+        if (!listaPacientes.includes(this.get('atendimentosDoMes').objectAt(i).get('paciente.nome'))) {
+          listaPacientes.pushObject(this.get('atendimentosDoMes').objectAt(i).get('paciente.nome'));
+        }
+      }      
     }
 
     listaPacientes.sort();
@@ -95,7 +97,7 @@ export default Controller.extend({
     return listaPacientes;
   }),
 
-  nmPaciente: 'Todos',  
+  nmPaciente: 'Todos',
 
   actions: {
 

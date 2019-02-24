@@ -32,6 +32,16 @@ export default Route.extend({
       nome: 'Nenhum'
     });
     gruposCompartilhamento.insertAt(0, itemNenhum);
+
+    if (gruposCompartilhamento.length == 1) {
+      let novoGrupo = EmberObject.create({
+        id: '-2',
+        nome: 'Cadastrar novo grupo'
+      });
+      gruposCompartilhamento.insertAt(0, novoGrupo);
+      controller.set('grupoCompartilhamento', itemNenhum)
+    }
+
     controller.set('gruposCompartilhamento', gruposCompartilhamento);
 
     controller.send('inicializarCampos');

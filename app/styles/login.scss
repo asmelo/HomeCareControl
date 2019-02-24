@@ -1,5 +1,4 @@
 .login-page {
-  position: fixed;
   height: 100%;
   width: 100%;
   background-color: #7edaf1;
@@ -30,4 +29,14 @@
     font-weight: bold;
   }
 
+}
+
+.fundo-login {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #7edaf1;
+  z-index: -1000;
 }

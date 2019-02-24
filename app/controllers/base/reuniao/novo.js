@@ -41,7 +41,11 @@ export default Controller.extend({
     },
 
     selecionaGrupoCompartilhamento(grupoCompartilhamento) {
-      this.set('grupoCompartilhamento', grupoCompartilhamento);
+      if (grupoCompartilhamento.get('nome') == 'Cadastrar novo grupo') {
+        this.transitionToRoute('base.grupoCompartilhamento');
+      } else {
+        this.set('grupoCompartilhamento', grupoCompartilhamento);
+      }
     },
 
     salvarReuniao() {
@@ -79,7 +83,7 @@ export default Controller.extend({
 
       this.set('descricao', null);
       this.set('duracao', null);
-  
+
       if (isEmpty(this.get('grupoCompartilhamento'))) {
         let grupoPrincipal = this.get('gruposCompartilhamento').filter(function(grupo) {
           return grupo.get('principal');
