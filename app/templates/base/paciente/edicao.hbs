@@ -5,9 +5,18 @@
         <form {{action "atualizarPaciente" on="submit"}}>
           <div class="row">
             <h4>Atualizar Paciente</h4>
-            <div class="input-field col s12">
+            <div class="input-field col s12 m8">
                 <label>Nome do paciente</label>
                 {{input id="inputNome" value=model.nome required=true maxlength=33}}
+            </div>
+            <div class="input-field col s12 m4 combo">
+              <div class="labelForm">Situação</div>
+              {{#power-select selected=model.situacao
+                              options=listaSituacao
+                              onchange=(action "selecionaSituacao")
+                              as |situacao|}}
+                  {{situacao}}
+              {{/power-select}}
             </div>
           </div>
           <div class="row">

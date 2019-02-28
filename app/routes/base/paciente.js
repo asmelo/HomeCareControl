@@ -10,6 +10,6 @@ export default Route.extend({
       orderBy: 'usuario',
       equalTo: this.get('usuario').userId
     })
-  } 
+  }
 
 });

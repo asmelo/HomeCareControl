@@ -3,13 +3,33 @@
 <div class="tabela-header">
   <div class="titulo-tabela">
     <h4>Pacientes</h4>
+    <a class='link' {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
   </div>
+
+  {{#if exibirFiltro}}
+    <div class="row" style="padding-top: 20px">
+      <div class="input-field col s12 m3">
+        <label>Nome</label>
+        {{input value=nome maxlength=33}}
+      </div>
+      <div class="input-field col s12 m3 combo">
+        <div class="labelForm">Situação</div>
+        {{#power-select selected=situacao
+                        options=listaSituacao
+                        onchange=(action "selecionaSituacao")
+                        as |situacao|}}
+            {{situacao}}
+        {{/power-select}}
+      </div>
+    </div>
+  {{/if}}
 </div>
 <div class="tabela-dados">
   <table class="highlight">
     <thead>
       <tr>
           <th>Nome</th>
+          <th>Situação</th>
       </tr>
     </thead>
 
@@ -17,6 +37,7 @@
       {{#each pacientesOrdenados as |paciente|}}
         <tr class="link" {{action "editarPaciente" paciente}}>
           <td>{{paciente.nome}}</td>
+          <td>{{paciente.situacao}}</td>
         </tr>
       {{/each}}
     </tbody>
