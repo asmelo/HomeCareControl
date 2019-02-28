@@ -10,23 +10,23 @@
       <div class="row margin">
         <div class="input-field col s12">
           <i class="material-icons prefix pt-5">person_outline</i>
-          {{input value=nome required=true placeholder="Nome"}}
+          {{input value=nome required=true placeholder="Nome" maxlength=30}}
         </div>
         <div class="input-field col s12">
           <i class="material-icons prefix pt-5">assignment</i>
-          {{input value=registro required=true placeholder="Registro"}}
+          {{input value=registro required=true placeholder="Registro" maxlength=20}}
         </div>
         <div class="input-field col s12">
           <i class="material-icons prefix pt-5">email</i>
-          {{input value=email required=true placeholder="E-mail"}}
+          {{input value=email required=true placeholder="E-mail" maxlength=50}}
         </div>
         <div class="input-field col s12">
           <i class="material-icons prefix pt-5">lock_outline</i>
-          {{input type="password" required=true value=senha placeholder="Senha"}}
+          {{input type="password" required=true value=senha placeholder="Senha" maxlength=20}}
         </div>
         <div class="input-field col s12">
           <i class="material-icons prefix pt-5">lock_outline</i>
-          {{input type="password" required=true value=senhaConfirm placeholder="Repita sua senha"}}
+          {{input type="password" required=true value=senhaConfirm placeholder="Repita sua senha"  maxlength=20}}
         </div>
       </div>
       <div class="row">

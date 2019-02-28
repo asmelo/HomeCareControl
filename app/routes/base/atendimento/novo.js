@@ -7,12 +7,6 @@ import EmberObject from '@ember/object';
 
 export default Route.extend({
 
-  queryParams: {
-     paciente: {
-       refreshModel: false
-     }
-  },
-
   usuario: service(),
 
   model(params) {
@@ -33,7 +27,8 @@ export default Route.extend({
 
     window.scrollTo(0,0);
 
-    let pacientes = model.pacientes.sortBy('nome');
+    let pacientes = model.pacientes.filter(paciente => { return !paciente.get('inativo') })
+    pacientes = pacientes.sortBy('nome');
     let novoPaciente = this.store.createRecord('paciente', {
       nome: "Cadastrar novo paciente"
     })
@@ -63,9 +58,10 @@ export default Route.extend({
 
     controller.set('gruposCompartilhamento', gruposCompartilhamento);
 
-    if (model.params.paciente) {
-        let pacienteCadastrado = this.store.peekRecord('paciente', model.params.paciente);
+    if (localStorage.getItem('novoPaciente')) {
+        let pacienteCadastrado = this.store.peekRecord('paciente', localStorage.getItem('novoPaciente'));
         controller.set('paciente', pacienteCadastrado);
+        localStorage.removeItem('novoPaciente')
     } else {
         controller.send('inicializarCampos');
     }

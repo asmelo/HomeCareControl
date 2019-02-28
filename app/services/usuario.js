@@ -92,13 +92,17 @@ export default Service.extend({
       console.log(error.code);
       console.log(error.message);
       $('loading').css('display', 'none');
-      
+
       if (error.code == 'auth/email-already-in-use') {
         this.get('alerta').erro('E-mail já cadastrado');
         return;
       }
       if (error.code == 'auth/weak-password') {
         this.get('alerta').erro('Sua senha deve possuir no mínimo 6 caracteres');
+        return;
+      }
+      if (error.code == 'auth/invalid-email') {
+        this.get('alerta').erro('E-mail inválido!');
         return;
       }
 

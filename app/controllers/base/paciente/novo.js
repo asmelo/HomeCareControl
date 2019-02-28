@@ -34,7 +34,8 @@ export default Controller.extend({
             this.set('nome', null);
             this.get('alerta').sucesso('Paciente salvo com sucesso!');
             if (this.get('from')) {
-              this.transitionToRoute(this.get('from'), { queryParams: { paciente: paciente.get('id') }});
+              localStorage.setItem('novoPaciente', paciente.get('id'));
+              this.transitionToRoute(this.get('from'));
             }
           })
         }
