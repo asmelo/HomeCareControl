@@ -1,7 +1,10 @@
-# homecarecontrol
+# Home Care Control
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+An Ember web application to manage home care attendance. Using Firebase as backend (Authentication and NoSQL Database).
+Functionalities:
+  * Management of patients, attendances and meetings.
+  * Web and PDF Report of attendances e meetings of the month.
+  * Sharing of attendences and meetings between users.
 
 ## Prerequisites
 
