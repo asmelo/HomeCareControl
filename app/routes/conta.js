@@ -1,4 +1,5 @@
 import Route from '@ember/routing/route';
+import $ from 'jquery';
 
 export default Route.extend({
 
@@ -7,5 +8,5 @@ export default Route.extend({
       $('loading').css('display', 'none');
     }
   }
-  
+
 });

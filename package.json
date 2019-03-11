@@ -50,6 +50,7 @@
     "ember-power-select": "^2.2.1",
     "ember-qunit": "^3.4.1",
     "ember-radio-button": "^1.2.4",
+    "ember-require-module": "^0.3.0",
     "ember-resolver": "^5.0.1",
     "ember-source": "~3.7.0",
     "ember-toastr": "^1.7.2",

@@ -1,5 +1,5 @@
 {{#if label}}
-  <label class="{{if active "active"}}">{{label}}</label>
+  <label class={{if active "active"}}>{{label}}</label>
 {{/if}}
 
 {{input type="text" id=name name=name value=value disabled=disabled readonly=readonly maxlength=maxlength  key-up="keyUp" enter="keyPress" focus-out="focusOut"  placeholder=placeholder}}

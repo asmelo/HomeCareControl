@@ -3674,7 +3674,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           }
           this.$photoCaption = $('<div class="materialbox-caption"></div>');
           this.$photoCaption.text(this.caption);
-          $('body').append(this.$photoCaption);
+          this.$('body').append(this.$photoCaption);
           this.$photoCaption.css({ display: 'inline' });
 
           anim({
@@ -6967,7 +6967,7 @@ $jscomp.polyfill = function (e, r, p, m) {
     var hiddenDiv = $('.hiddendiv').first();
     if (!hiddenDiv.length) {
       hiddenDiv = $('<div class="hiddendiv common"></div>');
-      $('body').append(hiddenDiv);
+      this.$('body').append(hiddenDiv);
     }
 
     // Set font properties of hiddenDiv

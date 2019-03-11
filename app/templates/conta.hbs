@@ -1,7 +1,7 @@
 <div id="conta-page" class="row conta-page">
   <div class="col s12 m4 offset-m4 z-depth-4 card-panel">
     <form {{action "criarConta" on="submit"}}>
-      <div class="row margin" style="margin-bottom: 0px;">
+      <div class="row margin div-titulo">
         <div class="col s12 center">
           <h4>Cadastro</h4>
         </div>
@@ -36,9 +36,9 @@
       </div>
       <div class="row">
         <div class="col s12">
-            <p class="center medium-small">
-              {{#link-to 'login' class="link-text" }}Já possuo conta!{{/link-to}}
-            </p>
+          <p class="center medium-small">
+            {{#link-to "login" class="link-text" }}Já possuo conta!{{/link-to}}
+          </p>
         </div>
       </div>
     </form>

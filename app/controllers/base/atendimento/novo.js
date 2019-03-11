@@ -41,7 +41,7 @@ export default Controller.extend({
 
     selecionaGrupoCompartilhamento(grupoCompartilhamento) {
       if (grupoCompartilhamento.get('nome') == 'Cadastrar novo grupo') {
-        this.transitionToRoute('base.grupoCompartilhamento');
+        this.transitionToRoute('base.grupo-compartilhamento');
       } else {
         this.set('grupoCompartilhamento', grupoCompartilhamento);
       }
@@ -72,12 +72,13 @@ export default Controller.extend({
         usuario: this.get('usuario').usuario
       });
 
-      atendimento.save().then(response => {
-        this.get('alerta').sucesso('Registro salvo com sucesso', { timeOut: 4000 });
-        this.send('inicializarCampos');
+      let self = this;
+      atendimento.save().then(function() {
+        self.get('alerta').sucesso('Registro salvo com sucesso', { timeOut: 4000 });
+        self.send('inicializarCampos');
         window.scrollTo(0,0);
-      }).catch(error => {
-        this.get('alerta').sucesso('Erro ao salvar o atendimento');
+      }).catch(function() {
+        self.get('alerta').sucesso('Erro ao salvar o atendimento');
       })
     },
 

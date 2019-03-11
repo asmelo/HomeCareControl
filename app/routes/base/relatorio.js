@@ -8,23 +8,8 @@ export default Route.extend({
 
   usuario: service(),
 
-  dicionarioMeses: {
-    0: "Janeiro",
-    1: "Fevereiro",
-    2: "Março",
-    3: "Abril",
-    4: "Maio",
-    5: "Junho",
-    6: "Julho",
-    7: "Agosto",
-    8: "Setembro",
-    9: "Outubro",
-    10: "Novembro",
-    11: "Dezembro"
-  },
-
   consultaListaUsuarios(this2) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       var promiseList = [];
       var this3 = this2;
       this2.store.findAll('grupo-compartilhamento', { reload: true }).then(grupos => {
@@ -55,7 +40,7 @@ export default Route.extend({
   },
 
   consultaListaAtendimentos(this2) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       var promiseListUsuario = [];
       var listaGrupos = [];
       var this3 = this2;
@@ -115,9 +100,8 @@ export default Route.extend({
   },
 
   consultaListaReunioes(this2) {
-    return new Promise(function(resolve, reject) {
-      var promiseListUsuario = [];
-      var listaReunioes = [];
+    return new Promise(function(resolve) {
+      var promiseListUsuario = [];      
       var listaGrupos = [];
       var this3 = this2;
       this2.store.findAll('grupo-compartilhamento', { reload: true }).then(grupos => {
@@ -188,6 +172,21 @@ export default Route.extend({
 
   setupController(controller, model) {
 
+    let dicionarioMeses = {
+      0: "Janeiro",
+      1: "Fevereiro",
+      2: "Março",
+      3: "Abril",
+      4: "Maio",
+      5: "Junho",
+      6: "Julho",
+      7: "Agosto",
+      8: "Setembro",
+      9: "Outubro",
+      10: "Novembro",
+      11: "Dezembro"
+    };
+
     controller.set('listaAtendimentos', model.listaAtendimentos);
     controller.set('listaReunioes', model.listaReunioes);
 
@@ -211,14 +210,14 @@ export default Route.extend({
     //Preenche filtro de Meses
     let listaMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     controller.set('listaMeses', listaMeses);
-    controller.set('mes', this.get('dicionarioMeses')[hoje.getMonth()]);
-    controller.set('dicionarioMeses', this.get('dicionarioMeses'));
+    controller.set('mes', dicionarioMeses[hoje.getMonth()]);
+    controller.set('dicionarioMeses', dicionarioMeses);
 
     //Preenche filtro de Grupos de Compartilhamento
     let listaGruposCompartilhamento = model.gruposUsuario.mapBy('nome');
     listaGruposCompartilhamento.insertAt(0, 'Todos');
     listaGruposCompartilhamento.insertAt(1, 'Nenhum');
-    controller.set('gruposCompartilhamento', listaGruposCompartilhamento);   
+    controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
 
     //Seleciona o grupo principal para o usuário logado
     let grupoPrincipal = model.gruposUsuario.filter(function(grupo) {

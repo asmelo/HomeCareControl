@@ -1,13 +1,19 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+
+/*global validate*/
+/*eslint no-undef: "error"*/
 
 export default Service.extend({
 
   alerta: service(),
 
   init() {
+    this._super(...arguments);
+
     validate.validators.cpf = function(cpf) {
-      if(Ember.isEmpty(cpf)) return "CPF inválido";
+      if(isEmpty(cpf)) return "CPF inválido";
 
       cpf = cpf.replace(/\./g, '');
       cpf = cpf.replace(/-/g, '');
@@ -44,7 +50,7 @@ export default Service.extend({
     };
 
     validate.validators.cnpj = function(cnpj) {
-      if(!Ember.isEmpty(cnpj)){
+      if(!isEmpty(cnpj)){
         cnpj = cnpj.replace(/[^\d]+/g,'');
 
          if (cnpj.length != 14)
@@ -95,7 +101,7 @@ export default Service.extend({
     }
 
     validate.validators.data = function(valor) {
-      if(!Ember.isEmpty(valor)){
+      if(!isEmpty(valor)){
         let date = null;
         if(typeof(valor) == "object"){
           let dia = valor.getDate().toString();
@@ -130,7 +136,7 @@ export default Service.extend({
     };
 
     validate.validators.mesAno = function(date) {
-      if(!Ember.isEmpty(date)){
+      if(!isEmpty(date)){
         var ardt=new Array;
         var ExpReg=new RegExp("(0[1-9]|1[012])/[12][0-9]{3}");
         ardt=date.split("/");
@@ -170,14 +176,14 @@ export default Service.extend({
   },
 
   validarConfirmaSenha(nameSenha, nameConfirmaSenha, valueSenha, valueConfirmaSenha, constraints, iniciarValidacao) {
-    if(!Ember.isEmpty(iniciarValidacao) && Object.keys(iniciarValidacao.fields).length===0)
+    if(!isEmpty(iniciarValidacao) && Object.keys(iniciarValidacao.fields).length===0)
        iniciarValidacao = this.inicializarValidacao(iniciarValidacao, constraints);
 
-    if(!Ember.isEmpty(iniciarValidacao) && eval('!iniciarValidacao.fields.' + nameConfirmaSenha))
-        if(!Ember.isEmpty(valueConfirmaSenha))
+    if(!isEmpty(iniciarValidacao) && eval('!iniciarValidacao.fields.' + nameConfirmaSenha))
+        if(!isEmpty(valueConfirmaSenha))
             eval('iniciarValidacao.fields.'+ nameConfirmaSenha + '= true');
 
-    if(Ember.isEmpty(iniciarValidacao) || eval('iniciarValidacao.fields.' + nameConfirmaSenha)){
+    if(isEmpty(iniciarValidacao) || eval('iniciarValidacao.fields.' + nameConfirmaSenha)){
       let erro = (validate({ [nameSenha]: valueSenha, [nameConfirmaSenha]: valueConfirmaSenha }, { [nameSenha]: constraints[nameSenha], [nameConfirmaSenha]: constraints[nameConfirmaSenha] }, {fullMessages: false}));
       if(erro)
         if(eval('erro.' + nameConfirmaSenha))

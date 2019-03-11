@@ -26,6 +26,15 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  app.import('vendor/firebase/firebase.js');
+  app.import('vendor/firebase/firebase-app.js');
+  app.import('vendor/firebase/firebase-auth.js');
+  app.import('vendor/firebase/firebase-database.js');
+  app.import('vendor/firebase/firebase-firestore.js');
+  app.import('vendor/firebase/firebase-messaging.js');
+  app.import('vendor/firebase/firebase-functions.js');
+  app.import('vendor/firebase/initialize-firebase.js');
+
   app.import('vendor/materialize/js/bin/materialize.js');
   app.import('vendor/jquery.mask.js');
   app.import('vendor/validate.min.js');

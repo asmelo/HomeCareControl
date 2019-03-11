@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import config from 'homecarecontrol/config/environment';
 import RSVP from 'rsvp';
 import EmberObject from '@ember/object';
 

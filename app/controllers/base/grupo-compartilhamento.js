@@ -1,8 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { sort } from '@ember/object/computed';
-import { computed } from '@ember/object';
-import { filterBy } from '@ember/object/computed';
 
 
 export default Controller.extend({
@@ -32,10 +30,11 @@ export default Controller.extend({
 
       grupo.get('listaUsuarios').pushObject(this.get('analu'));
 
-      grupo.save().then(response => {
-        this.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
-      }).catch(error => {
-        this.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
+      let self = this;
+      grupo.save().then(function() {
+        self.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
+      }).catch(function() {
+        self.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
       })
     },
 
@@ -56,10 +55,11 @@ export default Controller.extend({
 
       grupo.get('listaUsuarios').pushObject(this.get('carol'));
 
-      grupo.save().then(response => {
-        this.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
-      }).catch(error => {
-        this.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
+      let self = this;
+      grupo.save().then(function() {
+        self.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
+      }).catch(function() {
+        self.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
       })
     },
 
@@ -77,10 +77,11 @@ export default Controller.extend({
         usuario: this.get('usuario').usuario
       });
 
-      grupo.save().then(response => {
-        this.get('alerta').sucesso('Grupo Particulares Criado com sucesso!');
-      }).catch(error => {
-        this.get('alerta').erro('Ocorreu um erro ao criar o grupo Particulares!');
+      let self = this;
+      grupo.save().then(function() {
+        self.get('alerta').sucesso('Grupo Particulares Criado com sucesso!');
+      }).catch(function() {
+        self.get('alerta').erro('Ocorreu um erro ao criar o grupo Particulares!');
       })
     }
 

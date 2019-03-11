@@ -4,6 +4,7 @@ import { computed } from '@ember/object';
 import { sort } from '@ember/object/computed';
 import { isPresent, isEmpty } from '@ember/utils';
 import { later } from '@ember/runloop';
+import $ from 'jquery';
 
 export default Controller.extend({
 
@@ -158,7 +159,7 @@ export default Controller.extend({
     steps.push({setFontStyle: 'normal'});
 
     let atendimentosPorPaciente = listaAtendimentosPorPacienteOrdenada;
-    atendimentosPorPaciente.forEach(function(paciente, index) {
+    atendimentosPorPaciente.forEach(function(paciente) {
       steps.push({text: [3 + x1, y1, String(paciente.paciente.get('nome'))]});
       steps.push({text: [3 + x1 + 54, y1, String(paciente.total), { align: 'center' }]});
       y1 += 5;
@@ -213,7 +214,7 @@ export default Controller.extend({
 
     steps.push({setFontStyle: 'normal'});
 
-    atendimentosOrdenados.forEach(function(atendimento, index) {
+    atendimentosOrdenados.forEach(function(atendimento) {
 
       steps.push({text: [3 + x1, y1, atendimento.dataFormatada]});
       steps.push({text: [3 + x1 + 19, y1, String(atendimento.nmPaciente)]});

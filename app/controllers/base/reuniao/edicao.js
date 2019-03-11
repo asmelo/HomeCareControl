@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
+import $ from 'jquery';
 
 const constraints = {
     descricao: {
@@ -54,9 +55,10 @@ export default Controller.extend({
 
       if (!this.get('validacao').validar(this.get('reuniao'), constraints)) return;
 
-      this.get('reuniao').save().then(response => {
-        this.get('alerta').sucesso('Reunião atualizada com sucesso!', { timeOut: 4000 });
-        this.transitionToRoute('base.reuniao.novo');
+      let self = this;
+      this.get('reuniao').save().then(function() {
+        self.get('alerta').sucesso('Reunião atualizada com sucesso!', { timeOut: 4000 });
+        self.transitionToRoute('base.reuniao.novo');
         window.scrollTo(0,0);
       })
     },
@@ -67,9 +69,10 @@ export default Controller.extend({
 
     excluirReuniao() {
       this.get('reuniao').deleteRecord();
-      this.get('reuniao').save().then(response => {
-        this.get('alerta').sucesso('Reunião excluída com sucesso!', { timeOut: 4000 });
-        this.get('router').transitionTo('base.reuniao.novo');
+      let self = this;
+      this.get('reuniao').save().then(function() {
+        self.get('alerta').sucesso('Reunião excluída com sucesso!', { timeOut: 4000 });
+        self.get('router').transitionTo('base.reuniao.novo');
       })
     },
 

@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import $ from 'jquery';
 
 export default Controller.extend({
 
@@ -12,7 +13,7 @@ export default Controller.extend({
   actions: {
 
     cadastrarPaciente() {
-      let existente = this.get('store').query('paciente', {
+      this.get('store').query('paciente', {
         orderBy: 'nomeLowerCase',
         equalTo: this.get('nome').toLowerCase().trim()
       }).then(response => {
@@ -30,12 +31,13 @@ export default Controller.extend({
             nomeLowerCase: this.get('nome').toLowerCase().trim(),
             usuario: this.get('usuario').usuario
           })
-          paciente.save().then(response => {
-            this.set('nome', null);
-            this.get('alerta').sucesso('Paciente salvo com sucesso!');
-            if (this.get('from')) {
+          let self = this;
+          paciente.save().then(function() {
+            self.set('nome', null);
+            self.get('alerta').sucesso('Paciente salvo com sucesso!');
+            if (self.get('from')) {
               localStorage.setItem('novoPaciente', paciente.get('id'));
-              this.transitionToRoute(this.get('from'));
+              self.transitionToRoute(self.get('from'));
             }
           })
         }
@@ -44,8 +46,9 @@ export default Controller.extend({
 
     reativarPaciente() {
       this.set('pacienteReativacao.inativo', false);
-      this.get('pacienteReativacao').save().then(response => {
-        this.get('alerta').sucesso('Paciente reativado com sucesso');
+      let self = this;
+      this.get('pacienteReativacao').save().then(function() {
+        self.get('alerta').sucesso('Paciente reativado com sucesso');
       })
     }
 

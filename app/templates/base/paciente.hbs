@@ -3,11 +3,11 @@
 <div class="tabela-header">
   <div class="titulo-tabela">
     <h4>Pacientes</h4>
-    <a class='link' {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
+    <a class="link" role="button" {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
   </div>
 
   {{#if exibirFiltro}}
-    <div class="row" style="padding-top: 20px">
+    <div class="row filtro-div">
       <div class="input-field col s12 m3">
         <label>Nome</label>
         {{input value=nome maxlength=33}}
@@ -18,7 +18,7 @@
                         options=listaSituacao
                         onchange=(action "selecionaSituacao")
                         as |situacao|}}
-            {{situacao}}
+          {{situacao}}
         {{/power-select}}
       </div>
     </div>
@@ -28,14 +28,14 @@
   <table class="highlight">
     <thead>
       <tr>
-          <th>Nome</th>
-          <th>Situação</th>
+        <th>Nome</th>
+        <th>Situação</th>
       </tr>
     </thead>
 
     <tbody>
       {{#each pacientesOrdenados as |paciente|}}
-        <tr class="link" {{action "editarPaciente" paciente}}>
+        <tr class="link" role="button" {{action "editarPaciente" paciente}}>
           <td>{{paciente.nome}}</td>
           <td>{{paciente.situacao}}</td>
         </tr>
@@ -44,8 +44,8 @@
   </table>
 </div>
 
-<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top" style="display: none;">
-  <a class="btn-floating btn-medium waves-effects waves-light" {{action "scrollUp"}}>
+<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top hidden">
+  <a class="btn-floating btn-medium waves-effects waves-light" role="button" {{action "scrollUp"}}>
     <i class="material-icons">arrow_upward</i>
   </a>
 </div>

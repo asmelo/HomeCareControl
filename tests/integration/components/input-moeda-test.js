@@ -14,13 +14,5 @@ module('Integration | Component | input-moeda', function(hooks) {
 
     assert.equal(this.element.textContent.trim(), '');
 
-    // Template block usage:
-    await render(hbs`
-      {{#input-moeda}}
-        template block text
-      {{/input-moeda}}
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
   });
 });

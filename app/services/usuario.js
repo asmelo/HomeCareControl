@@ -1,5 +1,9 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
+import $ from 'jquery';
+
+/*global firebase*/
+/*eslint no-undef: "error"*/
 
 export default Service.extend({
 
@@ -78,35 +82,36 @@ export default Service.extend({
   criarConta(nome, registro, email, senha) {
     $('loading').css('display', '');
     this.set('redirecionarParaAtendimento', true);
-    firebase.auth().createUserWithEmailAndPassword(email, senha).then(response => {
-      let usuario = this.get('store').createRecord('usuario', {
+
+    let self = this;
+    firebase.auth().createUserWithEmailAndPassword(email, senha).then(function() {
+      let usuario = self.get('store').createRecord('usuario', {
         nome: nome,
         registro: registro,
         email: email
       });
-      usuario.save().then(response => {
-        this.set('redirecionarParaAtendimento', true);
-        this.get('alerta').sucesso('Conta cadastrada com sucesso!');
+      let self_2 = self;
+      usuario.save().then(function() {
+        self_2.set('redirecionarParaAtendimento', true);
+        self_2.get('alerta').sucesso('Conta cadastrada com sucesso!');
       })
     }).catch(error => {
-      console.log(error.code);
-      console.log(error.message);
       $('loading').css('display', 'none');
 
       if (error.code == 'auth/email-already-in-use') {
-        this.get('alerta').erro('E-mail já cadastrado');
+        self.get('alerta').erro('E-mail já cadastrado');
         return;
       }
       if (error.code == 'auth/weak-password') {
-        this.get('alerta').erro('Sua senha deve possuir no mínimo 6 caracteres');
+        self.get('alerta').erro('Sua senha deve possuir no mínimo 6 caracteres');
         return;
       }
       if (error.code == 'auth/invalid-email') {
-        this.get('alerta').erro('E-mail inválido!');
+        self.get('alerta').erro('E-mail inválido!');
         return;
       }
 
-      this.get('alerta').erro('Ocorreu um erro ao cadastrada a conta!');
+      self.get('alerta').erro('Ocorreu um erro ao cadastrada a conta!');
     })
   },
 
@@ -115,8 +120,6 @@ export default Service.extend({
 
     this.set('redirecionarParaAtendimento', true);
     var this2 = this;
-    console.log('email: ' + email);
-    console.log('senha: ' + senha);
     firebase.auth().signInWithEmailAndPassword(email, senha).catch(function(error) {
       if (error.code == 'auth/invalid-email') {
         this2.get('alerta').erro('E-mail inválido!');
@@ -124,7 +127,6 @@ export default Service.extend({
       if (error.code == 'auth/user-not-found' || error.code == 'auth/wrong-password') {
         this2.get('alerta').erro('Usuário ou senha inválido!');
       }
-      console.log('Erro: ' + error.code + ' - ' + error.message);
       $('loading').css('display', 'none');
     });
 

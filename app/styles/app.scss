@@ -7,6 +7,7 @@
 @import 'toastr';
 @import 'atendimento';
 @import 'relatorio';
+@import 'grupo';
 
 
 html {
@@ -86,4 +87,12 @@ input:-webkit-autofill:active  {
 
 .hidden {
   display: none;
+}
+
+.btn-form {
+  margin-bottom: 20px;
+}
+
+.filtro-div {
+  padding-top: 20px;
 }

@@ -1,17 +1,11 @@
-<!--
-js-pdf stepsTodos filename="tomster-facts"
-js-pdf stepsUsuario filename="tomster-facts"
--->
 <div class="relatorio-header">
   <h4>Relatório de Atendimento e Reuniões</h4>
   <ul>
-    <!--<li><a class="link"><i class="material-icons">assignment</i></a></li>
-    <li><a class="link"><i class="material-icons">save</i></a></li>-->
     {{#each steps as |step index|}}
       {{#if (eq index 0)}}
         <li>
           {{#js-pdf step showPdf=false id=(concat "Rel_" usuarioFiltro.nome "_" mes "_" ano) as |pdf|}}
-            <a title="Gerar PDF" class="link" {{action pdf.save}}><i class="material-icons">assignment</i></a>
+            <a title="Gerar PDF" class="link" role="button" {{action pdf.save}}><i class="material-icons">assignment</i></a>
           {{/js-pdf}}
         </li>
       {{/if}}
@@ -19,7 +13,7 @@ js-pdf stepsUsuario filename="tomster-facts"
         {{#if (gt listaUsuarios.length 1)}}
           <li>
             {{#js-pdf step showPdf=false id=(concat "Relatorio_" mes "_" ano) as |pdf|}}
-              <a title="Gerar PDF de todos os profissionais" class="link" {{action pdf.save}}><i class="material-icons">library_books</i></a>
+              <a title="Gerar PDF de todos os profissionais" class="link" role="button" {{action pdf.save}}><i class="material-icons">library_books</i></a>
             {{/js-pdf}}
           </li>
         {{/if}}
@@ -30,14 +24,14 @@ js-pdf stepsUsuario filename="tomster-facts"
 
 
 
-<div class="row" style="padding: 20px 30px 0 30px;">
+<div class="row div-relatorio">
   <div class="input-field col s12 m3 combo">
     <div class="labelForm">Profissional</div>
     {{#power-select selected=usuarioFiltro
                     options=listaUsuarios
                     onchange=(action "selecionaUsuario")
                     as |usuario|}}
-        {{usuario.nome}}
+      {{usuario.nome}}
     {{/power-select}}
   </div>
   <div class="input-field col s12 m3 combo">
@@ -46,7 +40,7 @@ js-pdf stepsUsuario filename="tomster-facts"
                     options=listaMeses
                     onchange=(action "selecionaMes")
                     as |mes|}}
-        {{mes}}
+      {{mes}}
     {{/power-select}}
   </div>
   <div class="input-field col s12 m3 combo">
@@ -55,7 +49,7 @@ js-pdf stepsUsuario filename="tomster-facts"
                     options=listaAnos
                     onchange=(action "selecionaAno")
                     as |ano|}}
-        {{ano}}
+      {{ano}}
     {{/power-select}}
   </div>
   <div class="input-field col s12 m3 combo">
@@ -66,7 +60,7 @@ js-pdf stepsUsuario filename="tomster-facts"
                     disabled=(not isAtendimentoDoUsuario)
                     noMatchesMessage="Sem registros"
                     as |grupo|}}
-        {{grupo}}
+      {{grupo}}
     {{/power-select}}
   </div>
 </div>
@@ -80,9 +74,9 @@ js-pdf stepsUsuario filename="tomster-facts"
   <table class="highlight">
     <thead>
       <tr>
-          <th>Descrição</th>
-          <th>Quantidade</th>
-          <th>Total</th>
+        <th>Descrição</th>
+        <th>Quantidade</th>
+        <th>Total</th>
       </tr>
     </thead>
 
@@ -107,68 +101,68 @@ js-pdf stepsUsuario filename="tomster-facts"
   <table class="highlight">
     <thead>
       <tr>
-          <th>
-            <a class="link" {{action "ordenarReunioes" "dtReuniao"}}>
-              Data
-              {{#if (eq ordenacaoESentidoReunioes 'dtReuniao:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoReunioes 'dtReuniao:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenarReunioes" "descricao"}}>
-              Descricao
-              {{#if (eq ordenacaoESentidoReunioes 'descricao:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoReunioes 'descricao:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenarReunioes" "duracao"}}>
-              Duração
-              {{#if (eq ordenacaoESentidoReunioes 'duracao:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoReunioes 'duracao:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenarReunioes" "valorNumber"}}>
-              Valor
-              {{#if (eq ordenacaoESentidoReunioes 'valorNumber:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoReunioes 'valorNumber:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenarReunioes" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-              Comp.
-              {{#if (eq ordenacaoESentidoReunioes 'nmGrupoCompartilhamento:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoReunioes 'nmGrupoCompartilhamento:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarReunioes" "dtReuniao"}}>
+            Data
+            {{#if (eq ordenacaoESentidoReunioes "dtReuniao:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoReunioes "dtReuniao:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarReunioes" "descricao"}}>
+            Descricao
+            {{#if (eq ordenacaoESentidoReunioes "descricao:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoReunioes "descricao:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarReunioes" "duracao"}}>
+            Duração
+            {{#if (eq ordenacaoESentidoReunioes "duracao:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoReunioes "duracao:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarReunioes" "valorNumber"}}>
+            Valor
+            {{#if (eq ordenacaoESentidoReunioes "valorNumber:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoReunioes "valorNumber:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarReunioes" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+            Comp.
+            {{#if (eq ordenacaoESentidoReunioes "nmGrupoCompartilhamento:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoReunioes "nmGrupoCompartilhamento:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
       </tr>
     </thead>
 
     <tbody>
       {{#each reunioesOrdenadas as |reuniao|}}
         <tr>
-          <td>{{moment-format reuniao.dtReuniao 'DD/MM/YYYY'}}</td>
+          <td>{{moment-format reuniao.dtReuniao "DD/MM/YYYY"}}</td>
           <td>{{reuniao.descricao}}</td>
           <td>{{reuniao.duracao}}</td>
           <td>{{reuniao.valor}}</td>
@@ -188,57 +182,57 @@ js-pdf stepsUsuario filename="tomster-facts"
   <table class="highlight">
     <thead>
       <tr>
-          <th>
-            <a class="link" {{action "ordenarAtendimentos" "dtAtendimento"}}>
-              Data
-              {{#if (eq ordenacaoESentidoAtendimentos 'dtAtendimento:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoAtendimentos 'dtAtendimento:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenarAtendimentos" "nmPaciente"}}>
-              Paciente
-              {{#if (eq ordenacaoESentidoAtendimentos 'nmPaciente:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoAtendimentos 'nmPaciente:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenarAtendimentos" "valorNumber"}}>
-              Valor
-              {{#if (eq ordenacaoESentidoAtendimentos 'valorNumber:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoAtendimentos 'valorNumber:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenarAtendimentos" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-              Comp.
-              {{#if (eq ordenacaoESentidoAtendimentos 'nmGrupoCompartilhamento:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoAtendimentos 'nmGrupoCompartilhamento:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarAtendimentos" "dtAtendimento"}}>
+            Data
+            {{#if (eq ordenacaoESentidoAtendimentos "dtAtendimento:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoAtendimentos "dtAtendimento:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarAtendimentos" "nmPaciente"}}>
+            Paciente
+            {{#if (eq ordenacaoESentidoAtendimentos "nmPaciente:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoAtendimentos "nmPaciente:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarAtendimentos" "valorNumber"}}>
+            Valor
+            {{#if (eq ordenacaoESentidoAtendimentos "valorNumber:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoAtendimentos "valorNumber:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenarAtendimentos" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+            Comp.
+            {{#if (eq ordenacaoESentidoAtendimentos "nmGrupoCompartilhamento:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoAtendimentos "nmGrupoCompartilhamento:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
       </tr>
     </thead>
 
     <tbody>
       {{#each atendimentosOrdenados as |atendimento|}}
         <tr>
-          <td>{{moment-format atendimento.dtAtendimento 'DD/MM/YYYY'}}</td>
+          <td>{{moment-format atendimento.dtAtendimento "DD/MM/YYYY"}}</td>
           <td>{{atendimento.nmPaciente}}</td>
           <td>{{atendimento.valor}}</td>
           <td>{{atendimento.nmGrupoCompartilhamento}}</td>
@@ -257,8 +251,8 @@ js-pdf stepsUsuario filename="tomster-facts"
   <table class="highlight">
     <thead>
       <tr>
-          <th>Paciente</th>
-          <th>Total</th>
+        <th>Paciente</th>
+        <th>Total</th>
       </tr>
     </thead>
 
@@ -273,8 +267,8 @@ js-pdf stepsUsuario filename="tomster-facts"
   </table>
 </div>
 
-<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top" style="display: none;">
-  <a class="btn-floating btn-medium waves-effects waves-light" {{action "scrollUp"}}>
+<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top hidden">
+  <a class="btn-floating btn-medium waves-effects waves-light" role="button" {{action "scrollUp"}}>
     <i class="material-icons">arrow_upward</i>
   </a>
 </div>

@@ -62,7 +62,7 @@
     let hiddenDiv = $('.hiddendiv').first();
     if (!hiddenDiv.length) {
       hiddenDiv = $('<div class="hiddendiv common"></div>');
-      $('body').append(hiddenDiv);
+      this.$('body').append(hiddenDiv);
     }
 
     // Set font properties of hiddenDiv

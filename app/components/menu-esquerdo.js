@@ -15,13 +15,13 @@ export default Component.extend({
   actions: {
 
     abrirItemMenu(rota) {
-      $('loading').css('display', '');
+      this.$('loading').css('display', '');
       let transition = this.get('router').transitionTo(rota);
       if (!transition.targetName) {
-        $('loading').css('display', 'none');
+        this.$('loading').css('display', 'none');
       }
-      if ($('body').width() < 992) {
-        $('.sidenav-overlay').click();
+      if (this.$('body').width() < 992) {
+        this.$('.sidenav-overlay').click();
       }
     }
   }

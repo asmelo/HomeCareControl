@@ -3,18 +3,18 @@
 <div class="tabela-header">
   <div class="titulo-tabela">
     <h4>Atendimentos</h4>
-    <a class='link' {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
+    <a class="link" role="button" {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
   </div>
 
   {{#if exibirFiltro}}
-    <div class="row" style="padding-top: 20px">
+    <div class="row filtro-div">
       <div class="input-field col s12 m3 combo">
         <div class="labelForm">Mês</div>
         {{#power-select selected=mes
                         options=listaMeses
                         onchange=(action "selecionaMes")
                         as |mes|}}
-            {{mes}}
+          {{mes}}
         {{/power-select}}
       </div>
       <div class="input-field col s12 m3 combo">
@@ -23,7 +23,7 @@
                         options=listaAnos
                         onchange=(action "selecionaAno")
                         as |ano|}}
-            {{ano}}
+          {{ano}}
         {{/power-select}}
       </div>
       <div class="input-field col s12 m3 combo">
@@ -33,7 +33,7 @@
                         onchange=(action "selecionaPaciente")
                         noMatchesMessage="Sem registros"
                         as |paciente|}}
-            {{paciente}}
+          {{paciente}}
         {{/power-select}}
       </div>
       <div class="input-field col s12 m3 combo">
@@ -43,7 +43,7 @@
                         onchange=(action "selecionaCompartilhamento")
                         noMatchesMessage="Sem registros"
                         as |grupo|}}
-            {{grupo}}
+          {{grupo}}
         {{/power-select}}
       </div>
     </div>
@@ -53,57 +53,57 @@
   <table class="highlight">
     <thead>
       <tr>
-          <th>
-            <a class="link" {{action "ordenar" "dtAtendimento"}}>
-              Data
-              {{#if (eq ordenacaoESentido 'dtAtendimento:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'dtAtendimento:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenar" "nmPaciente"}}>
-              Paciente
-              {{#if (eq ordenacaoESentido 'nmPaciente:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'nmPaciente:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenar" "valorNumber"}}>
-              Valor
-              {{#if (eq ordenacaoESentido 'valorNumber:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'valorNumber:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenar" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-              Comp.
-              {{#if (eq ordenacaoESentido 'nmGrupoCompartilhamento:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'nmGrupoCompartilhamento:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "dtAtendimento"}}>
+            Data
+            {{#if (eq ordenacaoESentido "dtAtendimento:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "dtAtendimento:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "nmPaciente"}}>
+            Paciente
+            {{#if (eq ordenacaoESentido "nmPaciente:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "nmPaciente:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "valorNumber"}}>
+            Valor
+            {{#if (eq ordenacaoESentido "valorNumber:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "valorNumber:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+            Comp.
+            {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
       </tr>
     </thead>
 
     <tbody>
       {{#each atendimentosOrdenados as |atendimento|}}
-        <tr class="link" {{action "editarAtendimento" atendimento}}>
-          <td>{{moment-format atendimento.dtAtendimento 'DD/MM/YYYY'}}</td>
+        <tr class="link" role="button" {{action "editarAtendimento" atendimento}}>
+          <td>{{moment-format atendimento.dtAtendimento "DD/MM/YYYY"}}</td>
           <td>{{atendimento.nmPaciente}}</td>
           <td>{{atendimento.valor}}</td>
           <td>{{atendimento.nmGrupoCompartilhamento}}</td>
@@ -113,8 +113,8 @@
   </table>
 </div>
 
-<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top" style="display: none;">
-  <a class="btn-floating btn-medium waves-effects waves-light" {{action "scrollUp"}}>
+<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top hidden">
+  <a class="btn-floating btn-medium waves-effects waves-light" role="button" {{action "scrollUp"}}>
     <i class="material-icons">arrow_upward</i>
   </a>
 </div>

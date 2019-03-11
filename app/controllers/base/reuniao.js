@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { sort } from '@ember/object/computed';
+import $ from 'jquery';
 
 export default Controller.extend({
 

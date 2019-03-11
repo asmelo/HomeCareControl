@@ -10,16 +10,16 @@ Router.map(function() {
   this.route('base', { path: '/' }, function() {
     this.route('paciente', function() {
       this.route('novo');
-      this.route('edicao', { path: '/edicao/:idPaciente'});
+      this.route('edicao', { path: '/edicao/:id_paciente'});
     });
     this.route('atendimento', function() {
       this.route('novo');
-      this.route('edicao', { path: '/edicao/:idAtendimento'});
+      this.route('edicao', { path: '/edicao/:id_atendimento'});
     });
-    this.route('grupoCompartilhamento');
+    this.route('grupo-compartilhamento');
     this.route('reuniao', function() {
       this.route('novo');
-      this.route('edicao', { path: '/edicao/:idReuniao'});
+      this.route('edicao', { path: '/edicao/:id_reuniao'});
     });
     this.route('relatorio');
     this.route('profile');

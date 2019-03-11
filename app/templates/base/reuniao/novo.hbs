@@ -6,14 +6,14 @@
           <div class="row">
             <h4>Nova Reunião</h4>
             <div class="input-field col s12 m3">
-                <label>Data</label>
-                {{pikaday-input readonly="readonly" value=dtReuniao onSelection=(action 'selecionaData') format="DD/MM/YYYY"}}
+              <label>Data</label>
+              {{pikaday-input readonly="readonly" value=dtReuniao onSelection=(action "selecionaData") format="DD/MM/YYYY"}}
             </div>
             <div class="col s12 m3">
-                {{input-text label="Duração" type="tel" value=duracao mask="00:00"}}
+              {{input-text label="Duração" type="tel" value=duracao mask="00:00"}}
             </div>
             <div class="col s12 m3">
-                {{input-text label="Valor" value=valor disabled=true mask="#.##0,00" reverseMask=true}}
+              {{input-text label="Valor" value=valor disabled=true mask="#.##0,00" reverseMask=true}}
             </div>
             <div class="input-field col s12 m3 combo">
               <div class="labelForm">Grupo de Compartilhamento</div>
@@ -22,16 +22,16 @@
                               onchange=(action "selecionaGrupoCompartilhamento")
                               noMatchesMessage="Sem registros"
                               searchField="nome" as |grupo|}}
-                  {{grupo.nome}}
+                {{grupo.nome}}
               {{/power-select}}
             </div>
             <div class="col s12">
-                {{input-text label="Descricao" value=descricao maxlength=70}}
+              {{input-text label="Descricao" value=descricao maxlength=70}}
             </div>
           </div>
           <div class="row">
             <div class="col s12 right-align">
-                <button type="submit" class="btn wave-effects wave-light">Salvar</button>
+              <button type="submit" class="btn wave-effects wave-light">Salvar</button>
             </div>
           </div>
         </form>

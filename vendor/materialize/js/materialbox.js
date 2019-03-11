@@ -353,7 +353,7 @@
         }
         this.$photoCaption = $('<div class="materialbox-caption"></div>');
         this.$photoCaption.text(this.caption);
-        $('body').append(this.$photoCaption);
+        this.$('body').append(this.$photoCaption);
         this.$photoCaption.css({ display: 'inline' });
 
         anim({

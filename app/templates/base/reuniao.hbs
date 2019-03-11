@@ -3,18 +3,18 @@
 <div class="tabela-header">
   <div class="titulo-tabela">
     <h4>Reuniões</h4>
-    <a class='link' {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
+    <a class="link" role="button" {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
   </div>
 
   {{#if exibirFiltro}}
-    <div class="row" style="padding-top: 20px">
+    <div class="row filtro-div">
       <div class="input-field col s12 m4 combo">
         <div class="labelForm">Mês</div>
         {{#power-select selected=mes
                         options=listaMeses
                         onchange=(action "selecionaMes")
                         as |mes|}}
-            {{mes}}
+          {{mes}}
         {{/power-select}}
       </div>
       <div class="input-field col s12 m4 combo">
@@ -23,7 +23,7 @@
                         options=listaAnos
                         onchange=(action "selecionaAno")
                         as |ano|}}
-            {{ano}}
+          {{ano}}
         {{/power-select}}
       </div>
       <div class="input-field col s12 m4 combo">
@@ -33,7 +33,7 @@
                         onchange=(action "selecionaCompartilhamento")
                         noMatchesMessage="Sem registros"
                         as |grupo|}}
-            {{grupo}}
+          {{grupo}}
         {{/power-select}}
       </div>
     </div>
@@ -43,68 +43,68 @@
   <table class="highlight">
     <thead>
       <tr>
-          <th>
-            <a class="link" {{action "ordenar" "dtReuniao"}}>
-              Data
-              {{#if (eq ordenacaoESentido 'dtReuniao:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'dtReuniao:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenar" "descricao"}}>
-              Descricao
-              {{#if (eq ordenacaoESentido 'descricao:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'descricao:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenar" "duracao"}}>
-              Duração
-              {{#if (eq ordenacaoESentido 'duracao:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'duracao:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenar" "valorNumber"}}>
-              Valor
-              {{#if (eq ordenacaoESentido 'valorNumber:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'valorNumber:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
-          <th>
-            <a class="link" {{action "ordenar" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-              Comp.
-              {{#if (eq ordenacaoESentido 'nmGrupoCompartilhamento:desc')}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido 'nmGrupoCompartilhamento:asc')}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "dtReuniao"}}>
+            Data
+            {{#if (eq ordenacaoESentido "dtReuniao:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "dtReuniao:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "descricao"}}>
+            Descricao
+            {{#if (eq ordenacaoESentido "descricao:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "descricao:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "duracao"}}>
+            Duração
+            {{#if (eq ordenacaoESentido "duracao:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "duracao:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "valorNumber"}}>
+            Valor
+            {{#if (eq ordenacaoESentido "valorNumber:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "valorNumber:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
+          <a class="link" role="button" {{action "ordenar" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+            Comp.
+            {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
       </tr>
     </thead>
 
     <tbody>
       {{#each reunioesOrdenadas as |reuniao|}}
-        <tr class="link" {{action "editarReuniao" reuniao}}>
-          <td>{{moment-format reuniao.dtReuniao 'DD/MM/YYYY'}}</td>
+        <tr class="link" role="button" {{action "editarReuniao" reuniao}}>
+          <td>{{moment-format reuniao.dtReuniao "DD/MM/YYYY"}}</td>
           <td>{{reuniao.descricao}}</td>
           <td>{{reuniao.duracao}}</td>
           <td>{{reuniao.valor}}</td>
@@ -115,8 +115,8 @@
   </table>
 </div>
 
-<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top" style="display: none;">
-  <a class="btn-floating btn-medium waves-effects waves-light" {{action "scrollUp"}}>
+<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top hidden">
+  <a class="btn-floating btn-medium waves-effects waves-light" role="button" {{action "scrollUp"}}>
     <i class="material-icons">arrow_upward</i>
   </a>
 </div>

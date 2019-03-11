@@ -6,8 +6,8 @@
           <div class="row">
             <h4>Atualizar Atendimento</h4>
             <div class="input-field col s12 m2">
-                <label>Data</label>
-                {{pikaday-input readonly="readonly" value=atendimento.dtAtendimento onSelection=(action 'selecionaData') format="DD/MM/YYYY"}}
+              <label>Data</label>
+              {{pikaday-input readonly="readonly" value=atendimento.dtAtendimento onSelection=(action "selecionaData") format="DD/MM/YYYY"}}
             </div>
             <div class="input-field col s12 m5 combo">
               <div class="labelForm">Paciente</div>
@@ -16,11 +16,11 @@
                               onchange=(action "selecionaPaciente")
                               noMatchesMessage="Sem registros"
                               searchField="nome" as |paciente|}}
-                  {{paciente.nome}}
+                {{paciente.nome}}
               {{/power-select}}
             </div>
             <div class="col s12 m2">
-                {{input-text label="Valor" type="tel" value=atendimento.valor mask="#.##0,00" reverseMask=true}}
+              {{input-text label="Valor" type="tel" value=atendimento.valor mask="#.##0,00" reverseMask=true}}
             </div>
             <div class="input-field col s12 m3 combo">
               <div class="labelForm">Grupo de Compartilhamento</div>
@@ -29,15 +29,15 @@
                               onchange=(action "selecionaGrupoCompartilhamento")
                               noMatchesMessage="Sem registros cadastrado"
                               searchField="nome" as |grupo|}}
-                  {{grupo.nome}}
+                {{grupo.nome}}
               {{/power-select}}
             </div>
           </div>
           <div class="row">
             <div class="col s12 right-align">
-                <a class="btn wave-effects wave-light" style="margin-bottom: 20px;" {{action "cancelarEdicao"}}>Cancelar</a>
-                <a class="btn wave-effects wave-light" style="margin-bottom: 20px;" {{action "confirmarExclusao"}}>Excluir</a>
-                <button type="submit" class="btn wave-effects wave-light" style="margin-bottom: 20px;">Atualizar</button>
+              <a class="btn wave-effects wave-light btn-form" role="button" {{action "cancelarEdicao"}}>Cancelar</a>
+              <a class="btn wave-effects wave-light btn-form" role="button" {{action "confirmarExclusao"}}>Excluir</a>
+              <button type="submit" class="btn wave-effects wave-light btn-form">Atualizar</button>
             </div>
           </div>
         </form>

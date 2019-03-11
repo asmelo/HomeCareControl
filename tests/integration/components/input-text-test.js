@@ -13,14 +13,6 @@ module('Integration | Component | input-text', function(hooks) {
     await render(hbs`{{input-text}}`);
 
     assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
-    await render(hbs`
-      {{#input-text}}
-        template block text
-      {{/input-text}}
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    
   });
 });

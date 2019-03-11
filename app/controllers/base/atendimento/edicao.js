@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import $ from 'jquery';
 
 const constraints = {
   paciente: {
@@ -50,9 +51,10 @@ export default Controller.extend({
 
       if (!this.get('validacao').validar(this.get('atendimento'), constraints)) return;
 
-      this.get('atendimento').save().then(response => {
-        this.get('alerta').sucesso('Atendimento atualizado com sucesso!', { timeOut: 4000 });
-        this.transitionToRoute('base.atendimento.novo');
+      let self = this;
+      this.get('atendimento').save().then(function() {
+        self.get('alerta').sucesso('Atendimento atualizado com sucesso!', { timeOut: 4000 });
+        self.transitionToRoute('base.atendimento.novo');
         window.scrollTo(0,0);
       })
     },
@@ -63,9 +65,10 @@ export default Controller.extend({
 
     excluirAtendimento() {
       this.get('atendimento').deleteRecord();
-      this.get('atendimento').save().then(response => {
-        this.get('alerta').sucesso('Atendimento excluído com sucesso!', { timeOut: 4000 });
-        this.get('router').transitionTo('base.atendimento.novo');
+      let self = this;
+      this.get('atendimento').save().then(function() {
+        self.get('alerta').sucesso('Atendimento excluído com sucesso!', { timeOut: 4000 });
+        self.get('router').transitionTo('base.atendimento.novo');
       })
     },
 

@@ -10,6 +10,13 @@ export default Route.extend({
       orderBy: 'usuario',
       equalTo: this.get('usuario').userId
     })
-  }
+  },
+
+  setupController(controller, model) {
+    controller.set('pacientes', model);
+    controller.set('listaSituacao', ['Todos', 'Ativo', 'Inativo']);
+
+  },
+
 
 });

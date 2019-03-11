@@ -1,8 +1,13 @@
 import Service from '@ember/service';
 
+/*global toastr*/
+/*eslint no-undef: "error"*/
+
 export default Service.extend({
 
   init() {
+      this._super(...arguments);
+
       toastr.options = {
         closeButton: true,
         debug: false,
@@ -19,16 +24,16 @@ export default Service.extend({
         showMethod: 'fadeIn',
         hideMethod: 'fadeOut'
       };
-    },
 
-    fixedToast: {
-      "closeButton": false,
-      "newestOnTop": false,
-      "progressBar": false,
-      "preventDuplicates": false,
-      "timeOut": 0,
-      "extendedTimeOut": 0,
-      "tapToDismiss": false
+      this.set('fixedToast', {
+        "closeButton": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "preventDuplicates": false,
+        "timeOut": 0,
+        "extendedTimeOut": 0,
+        "tapToDismiss": false
+      });
     },
 
     fechar() {

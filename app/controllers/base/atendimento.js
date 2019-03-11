@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { sort } from '@ember/object/computed';
+import $ from 'jquery';
 
 export default Controller.extend({
 
@@ -88,7 +89,7 @@ export default Controller.extend({
         if (!listaPacientes.includes(this.get('atendimentosDoMes').objectAt(i).get('paciente.nome'))) {
           listaPacientes.pushObject(this.get('atendimentosDoMes').objectAt(i).get('paciente.nome'));
         }
-      }      
+      }
     }
 
     listaPacientes.sort();

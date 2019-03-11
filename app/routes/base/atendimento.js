@@ -1,26 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { filterBy } from '@ember/object/computed';
 import RSVP from 'rsvp';
 
 export default Route.extend({
 
   usuario: service(),
-
-  dicionarioMeses: {
-    0: "Janeiro",
-    1: "Fevereiro",
-    2: "Março",
-    3: "Abril",
-    4: "Maio",
-    5: "Junho",
-    6: "Julho",
-    7: "Agosto",
-    8: "Setembro",
-    9: "Outubro",
-    10: "Novembro",
-    11: "Dezembro"
-  },
 
   model() {
     return RSVP.hash({
@@ -39,6 +23,21 @@ export default Route.extend({
 
     controller.set('atendimentos', model.atendimentos);
 
+    let dicionarioMeses = {
+      0: "Janeiro",
+      1: "Fevereiro",
+      2: "Março",
+      3: "Abril",
+      4: "Maio",
+      5: "Junho",
+      6: "Julho",
+      7: "Agosto",
+      8: "Setembro",
+      9: "Outubro",
+      10: "Novembro",
+      11: "Dezembro"
+    };
+
     var hoje = new Date;
 
     //Preenche filtro de Anos
@@ -49,8 +48,8 @@ export default Route.extend({
     //Preenche filtro de Meses
     let listaMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     controller.set('listaMeses', listaMeses);
-    controller.set('mes', this.get('dicionarioMeses')[hoje.getMonth()]);
-    controller.set('dicionarioMeses', this.get('dicionarioMeses'));
+    controller.set('mes', dicionarioMeses[hoje.getMonth()]);
+    controller.set('dicionarioMeses', dicionarioMeses);
 
     //Preenche filtro de Grupos de Compartilhamento
     let listaGruposCompartilhamento = model.gruposCompartilhamento.mapBy('nome');

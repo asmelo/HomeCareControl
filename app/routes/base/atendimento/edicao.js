@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { later } from '@ember/runloop';
 import { isEmpty } from '@ember/utils'
 import EmberObject from '@ember/object';
 import RSVP from 'rsvp';
@@ -11,7 +10,7 @@ export default Route.extend({
 
   model(params) {
     return RSVP.hash({
-      atendimento: this.store.findRecord('atendimento', params.idAtendimento),
+      atendimento: this.store.findRecord('atendimento', params.id_atendimento),
       pacientes: this.store.query('paciente', {
         orderBy: 'usuario',
         equalTo: this.get('usuario').userId
@@ -47,7 +46,7 @@ export default Route.extend({
       model.atendimento.get('grupoCompartilhamento').then(grupo => {
           controller.set('grupoCompartilhamento', grupo);
       });
-    }    
+    }
 
   },
 

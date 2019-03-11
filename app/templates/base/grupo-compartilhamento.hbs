@@ -3,23 +3,23 @@
     <div class="card">
       <div class="card-content">
         <div class="row">
-          <h4 style="margin-bottom: 60px;">Novo Grupo</h4>
+          <h4 class="titulo-grupo">Novo Grupo</h4>
           <div class="col s12 m6 center-align">
-              <button type="button" name="button" class="btn waves-effects waves-light"
-                      style="margin-bottom: 20px;" {{action "criarGrupoSOSVidaFono"}}>
-                Criar Grupo SOS Vida Fono
-              </button>
+            <button type="button" name="button" class="btn waves-effects waves-light btn-form"
+                    {{action "criarGrupoSOSVidaFono"}}>
+              Criar Grupo SOS Vida Fono
+            </button>
           </div>
-          <!--<div class="col s12 m6">
-              <button type="button" name="button" class="btn waves-effects waves-light" {{action "criarGrupoSOSVidaFisio"}}>
-                SOS Vida Fisio
-              </button>
-          </div>-->
+          <div class="col s12 m6 hidden">
+            <button type="button" name="button" class="btn waves-effects waves-light" {{action "criarGrupoSOSVidaFisio"}}>
+              SOS Vida Fisio
+            </button>
+          </div>
           <div class="col s12 m6 center-align">
-              <button type="button" name="button" class="btn waves-effects waves-light"
-                      style="margin-bottom: 20px;" {{action "criarGrupoParticular"}}>
-                Criar Grupo Particulares
-              </button>
+            <button type="button" name="button" class="btn waves-effects waves-light btn-form"
+                    {{action "criarGrupoParticular"}}>
+              Criar Grupo Particulares
+            </button>
           </div>
         </div>
       </div>
@@ -36,18 +36,18 @@
   {{#card-collapsible}}
     <ul class="collapsible" data-collapsible="accordion">
       {{#each gruposCompartilhamentoOrdenado as |grupo index|}}
-        <li class="{{if (eq index 0) 'active' ''}}">
+        <li class={{if (eq index 0) "active" ""}}>
           <div class="collapsible-header">
             <i class="material-icons">share</i>{{grupo.nome}}
             {{#if grupo.principal}}
-              <i class="material-icons" title="Grupo principal" style="color: green; margin-left: 20px">check</i>
+              <i class="material-icons grupo-principal" title="Grupo principal">check</i>
             {{/if}}
           </div>
           <div class="collapsible-body">
             {{#if (gt grupo.listaUsuarios.length  0)}}
               <span>Este grupo está sendo compartilhado com:</span>
               {{#each grupo.listaUsuarios as |usuario|}}
-                  <div style="padding: 10px;"> {{usuario.nome}} ({{usuario.email}})</div>
+                <div class="usuario-grupo"> {{usuario.nome}} ({{usuario.email}})</div>
               {{/each}}
             {{else}}
               <span>Este grupo não é compartilhado</span>

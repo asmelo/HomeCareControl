@@ -35,10 +35,11 @@ export default Controller.extend({
       this.set('model.nome', this.get('nome'));
       this.set('model.registro', this.get('registro'));
 
-      this.get('model').save().then(response => {
-        this.get('alerta').sucesso('Registro atualizado com sucesso');
-      }).catch(erro => {
-        this.get('alerta').erro('Erro ao atualizar com sucesso');
+      let self = this;
+      this.get('model').save().then(function() {
+        self.get('alerta').sucesso('Registro atualizado com sucesso');
+      }).catch(function() {
+        self.get('alerta').erro('Erro ao atualizar com sucesso');
       })
     }
 
