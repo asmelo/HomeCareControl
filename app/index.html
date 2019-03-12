@@ -10,6 +10,16 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <script>
+      function eventoScroll() {
+        if (window.scrollY == 0) {
+          $('#btnScrollTop').css('display', 'none');
+        } else {
+          $('#btnScrollTop').css('display', '');
+        }
+      };
+    </script>
+
     {{content-for "head"}}
 
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">

@@ -7,7 +7,7 @@
             <h4>Atualizar Paciente</h4>
             <div class="input-field col s12 m8">
               <label>Nome do paciente</label>
-              {{input id="inputNome" value=paciente.nome required=true maxlength=33}}
+              {{input id="inputNome" class="nome" value=paciente.nome required=true maxlength=33}}
             </div>
             <div class="input-field col s12 m4 combo">
               <div class="labelForm">Situação</div>
@@ -22,8 +22,8 @@
           <div class="row">
             <div class="col s12 right-align">
               <a class="btn wave-effects wave-light btn-form" role="button" {{action "cancelarEdicao"}}>Cancelar</a>
-              <a class="btn wave-effects wave-light btn-form" role="button" {{action "confirmarExclusao"}}>Excluir</a>
-              <button type="submit" class="btn wave-effects wave-light btn-form" >Atualizar</button>
+              <a class="excluir btn wave-effects wave-light btn-form" role="button" {{action "confirmarExclusao"}}>Excluir</a>
+              <button type="submit" class="salvar btn wave-effects wave-light btn-form" >Atualizar</button>
             </div>
           </div>
         </form>

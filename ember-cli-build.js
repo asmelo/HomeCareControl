@@ -33,7 +33,6 @@ module.exports = function(defaults) {
   app.import('vendor/firebase/firebase-firestore.js');
   app.import('vendor/firebase/firebase-messaging.js');
   app.import('vendor/firebase/firebase-functions.js');
-  app.import('vendor/firebase/initialize-firebase.js');
 
   app.import('vendor/materialize/js/bin/materialize.js');
   app.import('vendor/jquery.mask.js');

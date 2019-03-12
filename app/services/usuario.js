@@ -71,7 +71,7 @@ export default Service.extend({
         $('loading').css('display', 'none');
         if (window.location.pathname != '/login' && window.location.pathname != '/conta') {
           this2.get('router').transitionTo('login');
-          location.reload();
+          //location.reload();
         }
       }
     });

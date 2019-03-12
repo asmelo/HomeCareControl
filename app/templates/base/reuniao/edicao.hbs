@@ -10,7 +10,7 @@
               {{pikaday-input readonly="readonly" value=reuniao.dtReuniao onSelection=(action "selecionaData") format="DD/MM/YYYY"}}
             </div>
             <div class="col s12 m3">
-              {{input-text label="Duração" type="tel" value=reuniao.duracao mask="00:00"}}
+              {{input-text label="Duração" inputClass="duracao" type="tel" value=reuniao.duracao mask="00:00"}}
             </div>
             <div class="col s12 m3">
               {{input-text label="Valor" value=valor disabled=true mask="#.##0,00" reverseMask=true}}
@@ -26,14 +26,14 @@
               {{/power-select}}
             </div>
             <div class="col s12">
-              {{input-text label="Descricao" value=reuniao.descricao maxlength=70}}
+              {{input-text label="Descricao" inputClass="descricao" value=reuniao.descricao maxlength=70}}
             </div>
           </div>
           <div class="row">
             <div class="col s12 right-align">
               <a class="btn wave-effects wave-light btn-form" role="button" {{action "cancelarEdicao"}}>Cancelar</a>
-              <a class="btn wave-effects wave-light btn-form" role="button" {{action "confirmarExclusao"}}>Excluir</a>
-              <button type="submit" class="btn wave-effects wave-light btn-form">Atualizar</button>
+              <a class="excluir btn wave-effects wave-light btn-form" role="button" {{action "confirmarExclusao"}}>Excluir</a>
+              <button type="submit" class="salvar btn wave-effects wave-light btn-form">Atualizar</button>
             </div>
           </div>
         </form>

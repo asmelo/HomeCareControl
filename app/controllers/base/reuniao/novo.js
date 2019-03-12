@@ -69,7 +69,8 @@ export default Controller.extend({
 
       let self = this;
       reuniao.save().then(function() {
-        self.get('alerta').sucesso('Registro salvo com sucesso', { timeOut: 4000 });
+        self.get('alerta').sucesso('Reunião salva com sucesso!', { timeOut: 4000 });
+        self.set('ultimoIdReuniao', reuniao.get('id'));
         self.send('inicializarCampos');
         window.scrollTo(0,0);
       }).catch(function() {

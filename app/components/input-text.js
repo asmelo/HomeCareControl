@@ -8,11 +8,13 @@ export default Component.extend({
   classNames: ['input-field'],
 
   didInsertElement() {
-        this._super(...arguments);
+      this._super(...arguments);
 
       if (!this.get('type')) {
         this.set('type', 'text');
       }
+
+      this.set('inputClass', "input-text " + this.get('inputClass'));
 
       let inputId = this.$('input').attr('id');
           this.$('label').attr('for', inputId);

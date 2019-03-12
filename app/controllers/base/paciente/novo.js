@@ -35,6 +35,7 @@ export default Controller.extend({
           paciente.save().then(function() {
             self.set('nome', null);
             self.get('alerta').sucesso('Paciente salvo com sucesso!');
+            self.set('ultimoIdPaciente', paciente.get('id'))
             if (self.get('from')) {
               localStorage.setItem('novoPaciente', paciente.get('id'));
               self.transitionToRoute(self.get('from'));

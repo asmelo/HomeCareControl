@@ -74,7 +74,8 @@ export default Controller.extend({
 
       let self = this;
       atendimento.save().then(function() {
-        self.get('alerta').sucesso('Registro salvo com sucesso', { timeOut: 4000 });
+        self.get('alerta').sucesso('Atendimento salvo com sucesso!', { timeOut: 4000 });
+        self.set('ultimoIdAtendimento', atendimento.get('id'));
         self.send('inicializarCampos');
         window.scrollTo(0,0);
       }).catch(function() {
