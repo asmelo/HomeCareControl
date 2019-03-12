@@ -20,7 +20,7 @@ You will need the following things properly installed on your computer.
 * `git clone <repository-url>` this repository
 * `cd homecarecontrol`
 * `Register an account on firebase.google.com and create a project`
-* `Edit the file \config\environment-example.js and replace the firebase attributes with your Firebase project data. Rename the file to \config\environment-example.js`
+* `Edit the file \config\environment-example.js and replace the firebase attributes with your Firebase project data. Rename the file to \config\environment.js`
 * `npm install`
 
 ## Running / Development
