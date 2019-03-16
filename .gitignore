@@ -26,3 +26,5 @@
 
 /config/environment.js
 /.gitignore
+/.firebase/
+/package-lock.json

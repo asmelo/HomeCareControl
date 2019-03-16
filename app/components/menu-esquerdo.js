@@ -1,5 +1,6 @@
 import Component from '@ember/component';
-import { inject as service } from '@ember/service'
+import { inject as service } from '@ember/service';
+import $ from 'jquery';
 
 export default Component.extend({
 
@@ -15,13 +16,13 @@ export default Component.extend({
   actions: {
 
     abrirItemMenu(rota) {
-      this.$('loading').css('display', '');
+      $('loading').css('display', '');
       let transition = this.get('router').transitionTo(rota);
       if (!transition.targetName) {
-        this.$('loading').css('display', 'none');
+        $('loading').css('display', 'none');
       }
-      if (this.$('body').width() < 992) {
-        this.$('.sidenav-overlay').click();
+      if ($('body').width() < 992) {
+        $('.sidenav-overlay').click();
       }
     }
   }
