@@ -17,8 +17,11 @@ export default Controller.extend({
         orderBy: 'nomeLowerCase',
         equalTo: this.get('nome').toLowerCase().trim()
       }).then(response => {
-        if (response.length > 0) {
-          let paciente = response.objectAt(0);
+        let pacientes = response.filter(p => {
+          return p.get('usuario.id') == this.get('usuario').userId;
+        })
+        if (pacientes.length > 0) {
+          let paciente = pacientes.objectAt(0);
           if (!paciente.get('inativo')) {
             this.get('alerta').erro('Já existe um paciente com este nome');
           } else {
