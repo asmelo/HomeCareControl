@@ -445,8 +445,8 @@ export default Controller.extend({
       let supervisao = {}
       supervisao.descricao = 'Supervisão';
       supervisao.quantidade = '-';
-      supervisao.total = 800;
-      supervisao.totalFormatado = 'R$ 800,00'
+      supervisao.total = 960;
+      supervisao.totalFormatado = 'R$ 960,00'
       listaResumo.push(supervisao);
 
       totalSupervisao = supervisao.total;
