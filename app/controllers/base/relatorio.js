@@ -445,8 +445,19 @@ export default Controller.extend({
       let supervisao = {}
       supervisao.descricao = 'Supervisão';
       supervisao.quantidade = '-';
-      supervisao.total = 960;
-      supervisao.totalFormatado = 'R$ 960,00'
+      supervisao.total = 1000;
+      supervisao.totalFormatado = 'R$ 1000,00'
+      listaResumo.push(supervisao);
+
+      totalSupervisao = supervisao.total;
+    }
+
+    if (this.get('usuarioFiltro').get('email') == 'carolreina_fisio@hotmail.com') {
+      let supervisao = {}
+      supervisao.descricao = 'Supervisão';
+      supervisao.quantidade = '-';
+      supervisao.total = 1500;
+      supervisao.totalFormatado = 'R$ 1500,00'
       listaResumo.push(supervisao);
 
       totalSupervisao = supervisao.total;
