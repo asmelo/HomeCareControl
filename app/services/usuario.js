@@ -79,7 +79,7 @@ export default Service.extend({
     this.set('listenerAuthCriado', true);
   },
 
-  criarConta(nome, registro, email, senha) {
+  criarConta(nome, profissao, registro, email, senha) {
     $('loading').css('display', '');
     this.set('redirecionarParaAtendimento', true);
 
@@ -87,13 +87,42 @@ export default Service.extend({
     firebase.auth().createUserWithEmailAndPassword(email, senha).then(function() {
       let usuario = self.get('store').createRecord('usuario', {
         nome: nome,
+        profissao: profissao,
         registro: registro,
         email: email
       });
       let self_2 = self;
-      usuario.save().then(function() {
-        self_2.set('redirecionarParaAtendimento', true);
-        self_2.get('alerta').sucesso('Conta cadastrada com sucesso!');
+      usuario.save().then(function(novoUsuario) {
+        if (novoUsuario.get('profissao') == 'Fonoaudiólogo' || novoUsuario.get('profissao') == 'Fisioterapeuta') {
+            let grupo = self_2.get('store').createRecord('grupo-compartilhamento', {
+              nome: 'SOS Vida',
+              principal: true,
+              usuario: novoUsuario
+            });
+
+            var coordenadorEmail = 'analusiqueira@hotmail.com';
+            if (novoUsuario.get('profissao') == 'Fisioterapeuta')
+              coordenadorEmail = 'carolreina_fisio@hotmail.com';
+
+            let self_3 = self_2;
+            self_2.get('store').query('usuario', {
+                  orderBy: 'email',
+                  equalTo: coordenadorEmail
+                }).then(function(coordenador) {
+                  grupo.get('listaUsuarios').pushObject(coordenador.objectAt(0));
+
+                  let self_4 = self_3;
+                  grupo.save().then(function() {
+                    self_4.set('redirecionarParaAtendimento', true);
+                    self_4.get('alerta').sucesso('Conta cadastrada com sucesso!');
+                  }).catch(function() {
+                    self_4.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
+                  })
+                })
+        } else {
+          self_2.set('redirecionarParaAtendimento', true);
+          self_2.get('alerta').sucesso('Conta cadastrada com sucesso!');
+        }
       })
     }).catch(error => {
       $('loading').css('display', 'none');
@@ -141,6 +170,56 @@ export default Service.extend({
     localStorage.removeItem('userEmail');
     this.inicializarUsuario();
     firebase.auth().signOut();
+  },
+
+  criarGrupoSOSVidaFono() {
+    let grupoSOS = this.get('gruposCompartilhamento').filter(grupo => {
+      return grupo.get('nome') == 'SOS Vida';
+    });
+    if (grupoSOS.length > 0) {
+      this.get('alerta').erro('Este grupo já existe');
+      return;
+    }
+
+    let grupo = this.get('store').createRecord('grupo-compartilhamento', {
+      nome: 'SOS Vida',
+      principal: true,
+      usuario: this.get('usuario').usuario
+    });
+
+    grupo.get('listaUsuarios').pushObject(this.get('analu'));
+
+    let self = this;
+    grupo.save().then(function() {
+      self.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
+    }).catch(function() {
+      self.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
+    })
+  },
+
+  criarGrupoSOSVidaFisio() {
+    let grupoSOS = this.get('gruposCompartilhamento').filter(grupo => {
+      return grupo.get('nome') == 'SOS Vida';
+    });
+    if (grupoSOS.length > 0) {
+      this.get('alerta').erro('Este grupo já existe');
+      return;
+    }
+
+    let grupo = this.get('store').createRecord('grupo-compartilhamento', {
+      nome: 'SOS Vida',
+      principal: true,
+      usuario: this.get('usuario').usuario
+    });
+
+    grupo.get('listaUsuarios').pushObject(this.get('carol'));
+
+    let self = this;
+    grupo.save().then(function() {
+      self.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
+    }).catch(function() {
+      self.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
+    })
   },
 
 });

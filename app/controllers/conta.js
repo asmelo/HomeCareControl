@@ -4,12 +4,13 @@ import { inject as service } from '@ember/service';
 export default Controller.extend({
 
   usuario: service(),
-  alerta: service(),
+  alerta: service(),  
 
   actions: {
 
     criarConta() {
       let nome = this.get('nome').trim();
+      let profissao = this.get('profissao');
       let registro = this.get('registro').trim();
       let email = this.get('email').trim();
       let senha = this.get('senha');
@@ -21,7 +22,11 @@ export default Controller.extend({
         return;
       }
 
-      this.get('usuario').criarConta(nome, registro, email, senha)
+      this.get('usuario').criarConta(nome, profissao, registro, email, senha)
+    },
+
+    selecionaProfissao(profissao) {
+      this.set('profissao', profissao);
     }
 
   }

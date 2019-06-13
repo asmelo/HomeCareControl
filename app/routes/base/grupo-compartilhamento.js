@@ -18,7 +18,7 @@ export default Route.extend({
           }),
       carol: this.store.query('usuario', {
             orderBy: 'email',
-            equalTo: 'asmelo10@gmail.com'
+            equalTo: 'carolreina_fisio@hotmail.com'
           })
       })
   },
