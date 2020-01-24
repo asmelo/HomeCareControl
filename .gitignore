@@ -28,3 +28,6 @@
 /.gitignore
 /.firebase/
 /package-lock.json
+
+/.idea
+/homecarecontrol.iml
