@@ -177,7 +177,7 @@ export default Service.extend({
     var this2 = this;
     auth.sendPasswordResetEmail(emailAddress).then(function() {
       this2.get('alerta').sucesso('Um e-mail foi enviado com instruções para recuperar sua senha.');
-    }).catch(function(error) {
+    }).catch(function() {
       this2.get('alerta').erro('Erro ao enviar e-mail. Verifique se seu e-mail está preenchido corretamente.');
     });
   },

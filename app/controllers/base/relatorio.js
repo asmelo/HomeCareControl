@@ -263,7 +263,7 @@ export default Controller.extend({
                                              this.get('reunioesOrdenadas'),
                                              this.get('listaAtendimentosPorPacienteOrdenada'),
                                              this.get('atendimentosOrdenados'));
-        if ( i == 0 ) {
+        if ( usuarioSelecionado.get('id') == this.get('listaUsuarios').objectAt(i).get('id') ) {
           stepsUsuario = internalSteps;
         }
         stepsTodos = stepsTodos.concat(internalSteps);
