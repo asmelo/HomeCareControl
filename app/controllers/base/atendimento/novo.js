@@ -47,6 +47,19 @@ export default Controller.extend({
       }
     },
 
+    selecionaTipoAtendimento(tipoAtendimento) {
+      this.set('tipoAtendimento', tipoAtendimento);
+      if (tipoAtendimento == 'Atendimento') {
+        this.set('valor', config.APP.valorAtendimentoFisio);
+      }
+      if (tipoAtendimento == 'Intercorrência') {
+        this.set('valor', config.APP.valorIntercorrencia);
+      }
+      if (tipoAtendimento == 'Remoção') {
+        this.set('valor', config.APP.valorRemocao);
+      }
+    },
+
     salvarAtendimento() {
 
       let campos = this.getProperties('dtAtendimento', 'paciente', 'valor', 'grupoCompartilhamento');
@@ -69,7 +82,8 @@ export default Controller.extend({
         valor: valorTratado,
         paciente: this.get('paciente'),
         grupoCompartilhamento: grupoCompartilhamento,
-        usuario: this.get('usuario').usuario
+        usuario: this.get('usuario').usuario,
+        tipo: this.get('tipoAtendimento')
       });
 
       let self = this;
@@ -90,6 +104,13 @@ export default Controller.extend({
 
       if (isEmpty(this.get('valor'))) {
         this.set('valor', config.APP.valorAtendimento);
+        if (this.get('usuario.usuario.profissao') == 'Fisioterapeuta') {
+          this.set('valor', config.APP.valorAtendimentoFisio);
+        }
+      }
+
+      if (isEmpty(this.get('tipoAtendimento'))) {
+        this.set('tipoAtendimento', 'Atendimento');
       }
 
       this.set('paciente', null);

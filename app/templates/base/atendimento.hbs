@@ -36,16 +36,32 @@
           {{paciente}}
         {{/power-select}}
       </div>
-      <div class="input-field col s12 m3 combo">
-        <div class="labelForm">Compartilhamento</div>
-        {{#power-select selected=nmGrupoCompartilhamento
-                        options=gruposCompartilhamento
-                        onchange=(action "selecionaCompartilhamento")
-                        noMatchesMessage="Sem registros"
-                        as |grupo|}}
-          {{grupo}}
-        {{/power-select}}
-      </div>
+      {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
+        <div class="input-field col s12 m3 combo">
+          <div class="labelForm">Compartilhamento</div>
+          {{#power-select selected=nmGrupoCompartilhamento
+                          options=gruposCompartilhamento
+                          onchange=(action "selecionaCompartilhamento")
+                          noMatchesMessage="Sem registros"
+                          as |grupo|}}
+            {{grupo}}
+          {{/power-select}}
+        </div>
+      {{/if}}
+
+      {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
+        <div class="input-field col s12 m3 combo">
+          <div class="labelForm">Tipo</div>
+          {{#power-select selected=tipoAtendimento
+                          options=tiposAtendimento
+                          onchange=(action "selecionaTipoAntedimento")
+                          noMatchesMessage="Sem registros"
+          as |tipo|}}
+            {{tipo}}
+          {{/power-select}}
+        </div>
+      {{/if}}
+
     </div>
   {{/if}}
 </div>
@@ -75,28 +91,55 @@
             {{/if}}
           </a>
         </th>
-        <th>
-          <a class="link" role="button" {{action "ordenar" "valorNumber"}}>
-            Valor
-            {{#if (eq ordenacaoESentido "valorNumber:desc")}}
-              <i class="material-icons">arrow_drop_up</i>
-            {{/if}}
-            {{#if (eq ordenacaoESentido "valorNumber:asc")}}
-              <i class="material-icons">arrow_drop_down</i>
-            {{/if}}
-          </a>
-        </th>
-        <th>
-          <a class="link" role="button" {{action "ordenar" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-            Comp.
-            {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:desc")}}
-              <i class="material-icons">arrow_drop_up</i>
-            {{/if}}
-            {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:asc")}}
-              <i class="material-icons">arrow_drop_down</i>
-            {{/if}}
-          </a>
-        </th>
+        {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
+          <th>
+            <a class="link" role="button" {{action "ordenar" "valorNumber"}}>
+              Valor
+              {{#if (eq ordenacaoESentido "valorNumber:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentido "valorNumber:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" role="button" {{action "ordenar" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+              Comp.
+              {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+        {{/if}}
+
+        {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
+          <th>
+            <a class="link" role="button" {{action "ordenar" "tipo"}} title="Tipo de Atendimento">
+              Tipo
+              {{#if (eq ordenacaoESentido "tipo:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentido "tipo:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" role="button" {{action "ordenar" "valorNumber"}}>
+              Valor
+              {{#if (eq ordenacaoESentido "valorNumber:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentido "valorNumber:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+        {{/if}}
       </tr>
     </thead>
 
@@ -105,8 +148,14 @@
         <tr class="link" role="button" {{action "editarAtendimento" atendimento}}>
           <td>{{moment-format atendimento.dtAtendimento "DD/MM/YYYY"}}</td>
           <td>{{atendimento.nmPaciente}}</td>
-          <td>{{atendimento.valor}}</td>
-          <td>{{atendimento.nmGrupoCompartilhamento}}</td>
+          {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
+            <td>{{atendimento.valor}}</td>
+            <td>{{atendimento.nmGrupoCompartilhamento}}</td>
+          {{/if}}
+          {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
+            <td>{{atendimento.tipo}}</td>
+            <td>{{atendimento.valor}}</td>
+          {{/if}}
         </tr>
       {{/each}}
     </tbody>

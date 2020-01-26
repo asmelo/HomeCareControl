@@ -21,6 +21,7 @@ export default Controller.extend({
 
   alerta: service(),
   router: service(),
+  usuario: service(),
   util: service(),
   validacao: service(),
 
@@ -36,6 +37,10 @@ export default Controller.extend({
 
     selecionaGrupoCompartilhamento(grupoCompartilhamento) {
       this.set('grupoCompartilhamento', grupoCompartilhamento);
+    },
+
+    selecionaTipoAtendimento(tipoAtendimento) {
+      this.set('atendimento.tipo', tipoAtendimento);
     },
 
     atualizarAtendimento() {

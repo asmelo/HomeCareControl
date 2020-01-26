@@ -8,6 +8,7 @@ export default DS.Model.extend({
   valor:                    DS.attr('moeda'),
   usuario:                  DS.belongsTo('usuario', { inverse: false }),
   grupoCompartilhamento:    DS.belongsTo('grupo-compartilhamento', { inverse: false }),
+  tipo:                     DS.attr('string'),
 
   nmPaciente: computed('paciente.nome', function() {
     return this.get('paciente.nome');

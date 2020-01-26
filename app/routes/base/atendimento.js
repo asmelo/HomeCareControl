@@ -57,6 +57,10 @@ export default Route.extend({
     listaGruposCompartilhamento.insertAt(1, 'Nenhum');
     controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
 
+    //Preeche filtro de Tipo de Atendimento (Para Fisio)
+    controller.set('tiposAtendimento', ['Todos', 'Atendimento', 'Intercorrência', 'Remoção']);
+    controller.set('tipoAtendimento', 'Todos');
+
     let grupoPrincipal = model.gruposCompartilhamento.filter(function(grupo) {
       return grupo.get('principal');
     });
