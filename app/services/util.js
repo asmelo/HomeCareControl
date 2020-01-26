@@ -32,17 +32,20 @@ export default Service.extend({
     if (valor.length == 7) {
       valor = valor.slice(0, 1) + '.' + valor.slice(1);
     }
-    
+
     return 'R$ ' + valor;
   },
 
-  calculaValorReuniao(duracao) {
+  calculaValorReuniao(duracao, profissao) {
     if (duracao) {
       let possuiDoisPontos = duracao.indexOf(':') != -1;
       if (possuiDoisPontos) {
         let horas = Number(duracao.split(':')[0]);
         let minutos = Number(duracao.split(':')[1]);
         let valorReuniao = config.APP.valorReuniao;
+        if (profissao == 'Fisioterapeuta') {
+          valorReuniao = config.APP.valorReuniaoFisio;
+        }
         let totalHoras = horas * valorReuniao;
         let totalMinutos = (minutos/60) * valorReuniao
         let total = totalHoras + totalMinutos;
