@@ -1,5 +1,5 @@
 <div class="relatorio-header">
-  <h4>Relatório de Atendimento e Reuniões</h4>
+  <h4>Relatório de Atendimentos e Reuniões</h4>
   <ul>
     {{#each steps as |step index|}}
       {{#if (eq index 0)}}
@@ -205,28 +205,54 @@
             {{/if}}
           </a>
         </th>
-        <th>
-          <a class="link" role="button" {{action "ordenarAtendimentos" "valorNumber"}}>
-            Valor
-            {{#if (eq ordenacaoESentidoAtendimentos "valorNumber:desc")}}
-              <i class="material-icons">arrow_drop_up</i>
-            {{/if}}
-            {{#if (eq ordenacaoESentidoAtendimentos "valorNumber:asc")}}
-              <i class="material-icons">arrow_drop_down</i>
-            {{/if}}
-          </a>
-        </th>
-        <th>
-          <a class="link" role="button" {{action "ordenarAtendimentos" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-            Comp.
-            {{#if (eq ordenacaoESentidoAtendimentos "nmGrupoCompartilhamento:desc")}}
-              <i class="material-icons">arrow_drop_up</i>
-            {{/if}}
-            {{#if (eq ordenacaoESentidoAtendimentos "nmGrupoCompartilhamento:asc")}}
-              <i class="material-icons">arrow_drop_down</i>
-            {{/if}}
-          </a>
-        </th>
+        {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
+          <th>
+            <a class="link" role="button" {{action "ordenarAtendimentos" "valorNumber"}}>
+              Valor
+              {{#if (eq ordenacaoESentidoAtendimentos "valorNumber:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoAtendimentos "valorNumber:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" role="button" {{action "ordenarAtendimentos" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
+              Comp.
+              {{#if (eq ordenacaoESentidoAtendimentos "nmGrupoCompartilhamento:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoAtendimentos "nmGrupoCompartilhamento:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+        {{/if}}
+        {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
+          <th>
+            <a class="link" role="button" {{action "ordenarAtendimentos" "tipo"}} title="Tipo de Atendimento">
+              Tipo
+              {{#if (eq ordenacaoESentidoAtendimentos "tipo:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoAtendimentos "tipo:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+          <th>
+            <a class="link" role="button" {{action "ordenarAtendimentos" "valorNumber"}}>
+              Valor
+              {{#if (eq ordenacaoESentidoAtendimentos "valorNumber:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+              {{/if}}
+              {{#if (eq ordenacaoESentidoAtendimentos "valorNumber:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+              {{/if}}
+            </a>
+          </th>
+        {{/if}}
       </tr>
     </thead>
 
@@ -235,8 +261,14 @@
         <tr>
           <td>{{moment-format atendimento.dtAtendimento "DD/MM/YYYY"}}</td>
           <td>{{atendimento.nmPaciente}}</td>
-          <td>{{atendimento.valor}}</td>
-          <td>{{atendimento.nmGrupoCompartilhamento}}</td>
+          {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
+            <td>{{atendimento.valor}}</td>
+            <td>{{atendimento.nmGrupoCompartilhamento}}</td>
+          {{/if}}
+          {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
+            <td>{{atendimento.tipo}}</td>
+            <td>{{atendimento.valor}}</td>
+          {{/if}}
         </tr>
       {{/each}}
     </tbody>

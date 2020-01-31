@@ -207,8 +207,14 @@ export default Controller.extend({
     steps.push({setFontStyle: 'bold'});
     steps.push({text: [3 + x1, y2 + 5, 'Data']});
     steps.push({text: [3 + x1 + 19, y2 + 5, 'Paciente']});
-    steps.push({text: [3 + x1 + 76, y2 + 5, 'Valor']});
-    steps.push({text: [3 + x1 + 94, y2 + 5, 'Grupo']});
+    if (this.get('usuario').usuario.get('profissao') == 'Fisioterapeuta') {
+      steps.push({text: [3 + x1 + 76, y2 + 5, 'Tipo']});
+      steps.push({text: [3 + x1 + 97, y2 + 5, 'Valor']});
+    } else {
+      steps.push({text: [3 + x1 + 76, y2 + 5, 'Valor']});
+      steps.push({text: [3 + x1 + 94, y2 + 5, 'Grupo']});
+    }
+
 
     houveQuebraPagina = false;
 
@@ -218,8 +224,14 @@ export default Controller.extend({
 
       steps.push({text: [3 + x1, y1, atendimento.dataFormatada]});
       steps.push({text: [3 + x1 + 19, y1, String(atendimento.nmPaciente)]});
-      steps.push({text: [3 + x1 + 76, y1, atendimento.valor]});
-      steps.push({text: [3 + x1 + 94, y1, atendimento.nmGrupoCompartilhamento]});
+      if (this.get('usuario').usuario.get('profissao') == 'Fisioterapeuta') {
+        steps.push({text: [3 + x1 + 76, y1, atendimento.tipo]});
+        steps.push({text: [3 + x1 + 97, y1, atendimento.valor]});
+      } else {
+        steps.push({text: [3 + x1 + 76, y1, atendimento.valor]});
+        steps.push({text: [3 + x1 + 94, y1, atendimento.nmGrupoCompartilhamento]});
+      }
+
       y1 += 5;
       if (y1 > 284) {
         houveQuebraPagina = true;
@@ -414,67 +426,175 @@ export default Controller.extend({
   }),
 
   listaResumo: computed('atendimentosFiltrados', 'reunioesFiltradas', function() {
-    let listaResumo = [];
-
-    let qtdAtendimentos = this.get('atendimentosFiltrados').length;
-    let totalAtendimentos = 0;
-    this.get('atendimentosFiltrados').forEach(atendimento => {
-      totalAtendimentos += atendimento.get('valorNumber');
-    })
-    let atendimento = {}
-    atendimento.descricao = 'Atendimentos';
-    atendimento.quantidade = qtdAtendimentos;
-    atendimento.total = totalAtendimentos;
-    atendimento.totalFormatado = this.get('util').tratarValor(totalAtendimentos);
-    listaResumo.push(atendimento);
-
-    let qtdReunioes = this.get('reunioesFiltradas').length;
-    let totalReunioes = 0;
-    this.get('reunioesFiltradas').forEach(reuniao => {
-      totalReunioes += reuniao.get('valorNumber');
-    })
-    let reuniao = {}
-    reuniao.descricao = 'Reuniões';
-    reuniao.quantidade = qtdReunioes;
-    reuniao.total = totalReunioes;
-    reuniao.totalFormatado = this.get('util').tratarValor(totalReunioes);
-    listaResumo.push(reuniao);
-
-    var totalSupervisao = 0;
-    if (this.get('usuarioFiltro').get('email') == 'analusiqueira@hotmail.com') {
-      let supervisao = {}
-      supervisao.descricao = 'Supervisão';
-      supervisao.quantidade = '-';
-      supervisao.total = 1000;
-      supervisao.totalFormatado = 'R$ 1000,00'
-      listaResumo.push(supervisao);
-
-      totalSupervisao = supervisao.total;
+    if (this.get('usuario').usuario.get('profissao') == 'Fisioterapeuta') {
+       return this.constroiResumoFisio();
+    } else {
+     return this.constroiResumo();;
     }
-
-    if (this.get('usuarioFiltro').get('email') == 'carolreina_fisio@hotmail.com') {
-      let supervisao = {}
-      supervisao.descricao = 'Supervisão';
-      supervisao.quantidade = '-';
-      supervisao.total = 1500;
-      supervisao.totalFormatado = 'R$ 1500,00'
-      listaResumo.push(supervisao);
-
-      totalSupervisao = supervisao.total;
-    }
-
-    let total = {}
-    let valorTotal = atendimento.total + reuniao.total + totalSupervisao
-    total.descricao = 'Total';
-    total.quantidade = '-';
-    total.total = valorTotal;
-    total.totalFormatado = this.get('util').tratarValor(valorTotal);
-    total.formatacao = 'total-resumo'
-    listaResumo.push(total);
-
-    return listaResumo;
-
   }),
+
+  constroiResumo: function() {
+     let listaResumo = [];
+
+      let qtdAtendimentos = this.get('atendimentosFiltrados').length;
+      let totalAtendimentos = 0;
+      this.get('atendimentosFiltrados').forEach(atendimento => {
+        totalAtendimentos += atendimento.get('valorNumber');
+      })
+      let atendimento = {}
+      atendimento.descricao = 'Atendimentos';
+      atendimento.quantidade = qtdAtendimentos;
+      atendimento.total = totalAtendimentos;
+      atendimento.totalFormatado = this.get('util').tratarValor(totalAtendimentos);
+      listaResumo.push(atendimento);
+
+      let qtdReunioes = this.get('reunioesFiltradas').length;
+      let totalReunioes = 0;
+      this.get('reunioesFiltradas').forEach(reuniao => {
+        totalReunioes += reuniao.get('valorNumber');
+      })
+      let reuniao = {}
+      reuniao.descricao = 'Reuniões';
+      reuniao.quantidade = qtdReunioes;
+      reuniao.total = totalReunioes;
+      reuniao.totalFormatado = this.get('util').tratarValor(totalReunioes);
+      listaResumo.push(reuniao);
+
+      var totalSupervisao = 0;
+      if (this.get('usuarioFiltro').get('email') == 'analusiqueira@hotmail.com') {
+        let supervisao = {}
+        supervisao.descricao = 'Supervisão';
+        supervisao.quantidade = '-';
+        supervisao.total = 1000;
+        supervisao.totalFormatado = 'R$ 1000,00'
+        listaResumo.push(supervisao);
+
+        totalSupervisao = supervisao.total;
+      }
+
+      if (this.get('usuarioFiltro').get('email') == 'carolreina_fisio@hotmail.com') {
+        let supervisao = {}
+        supervisao.descricao = 'Supervisão';
+        supervisao.quantidade = '-';
+        supervisao.total = 1500;
+        supervisao.totalFormatado = 'R$ 1500,00'
+        listaResumo.push(supervisao);
+
+        totalSupervisao = supervisao.total;
+      }
+
+      let total = {}
+      let valorTotal = atendimento.total + reuniao.total + totalSupervisao
+      total.descricao = 'Total';
+      total.quantidade = '-';
+      total.total = valorTotal;
+      total.totalFormatado = this.get('util').tratarValor(valorTotal);
+      total.formatacao = 'total-resumo'
+      listaResumo.push(total);
+
+      return listaResumo;
+  },
+
+  constroiResumoFisio: function() {
+        let listaResumo = [];
+
+        let atendimentos = this.get('atendimentosFiltrados').filter( function( atendimento, i, array ) {
+          return atendimento.get('tipo') == 'Atendimento';
+        } );
+
+        let qtdAtendimentos = atendimentos.length;
+        let totalAtendimentos = 0;
+        atendimentos.forEach(atendimento => {
+          totalAtendimentos += atendimento.get('valorNumber');
+        })
+        let atendimento = {}
+        atendimento.descricao = 'Atendimentos';
+        atendimento.quantidade = qtdAtendimentos;
+        atendimento.total = totalAtendimentos;
+        atendimento.totalFormatado = this.get('util').tratarValor(totalAtendimentos);
+        listaResumo.push(atendimento);
+
+
+        let remocoes = this.get('atendimentosFiltrados').filter( function( atendimento, i, array ) {
+          return atendimento.get('tipo') == 'Remoção';
+        } );
+
+        let qtdRemocoes = remocoes.length;
+        let totalRemocoes = 0;
+        remocoes.forEach(remocao => {
+          totalRemocoes += remocao.get('valorNumber');
+        })
+        let remocao = {}
+        remocao.descricao = 'Remoções';
+        remocao.quantidade = qtdRemocoes;
+        remocao.total = totalRemocoes;
+        remocao.totalFormatado = this.get('util').tratarValor(totalRemocoes);
+        listaResumo.push(remocao);
+
+
+        let intercorrencias = this.get('atendimentosFiltrados').filter( function( intercorrencia, i, array ) {
+          return intercorrencia.get('tipo') == 'Intercorrência';
+        } );
+
+        let qtdIntercorrencias = intercorrencias.length;
+        let totalIntercorrencias = 0;
+        intercorrencias.forEach(intercorrencia => {
+          totalIntercorrencias += intercorrencia.get('valorNumber');
+        })
+        let intercorrencia = {}
+        intercorrencia.descricao = 'Intercorrências';
+        intercorrencia.quantidade = qtdIntercorrencias;
+        intercorrencia.total = totalIntercorrencias;
+        intercorrencia.totalFormatado = this.get('util').tratarValor(totalIntercorrencias);
+        listaResumo.push(intercorrencia);
+
+
+        let qtdReunioes = this.get('reunioesFiltradas').length;
+        let totalReunioes = 0;
+        this.get('reunioesFiltradas').forEach(reuniao => {
+          totalReunioes += reuniao.get('valorNumber');
+        })
+        let reuniao = {}
+        reuniao.descricao = 'Reuniões';
+        reuniao.quantidade = qtdReunioes;
+        reuniao.total = totalReunioes;
+        reuniao.totalFormatado = this.get('util').tratarValor(totalReunioes);
+        listaResumo.push(reuniao);
+
+        var totalSupervisao = 0;
+        if (this.get('usuarioFiltro').get('email') == 'analusiqueira@hotmail.com') {
+          let supervisao = {}
+          supervisao.descricao = 'Supervisão';
+          supervisao.quantidade = '-';
+          supervisao.total = 1000;
+          supervisao.totalFormatado = 'R$ 1000,00'
+          listaResumo.push(supervisao);
+
+          totalSupervisao = supervisao.total;
+        }
+
+        if (this.get('usuarioFiltro').get('email') == 'carolreina_fisio@hotmail.com') {
+          let supervisao = {}
+          supervisao.descricao = 'Supervisão';
+          supervisao.quantidade = '-';
+          supervisao.total = 1500;
+          supervisao.totalFormatado = 'R$ 1500,00'
+          listaResumo.push(supervisao);
+
+          totalSupervisao = supervisao.total;
+        }
+
+        let total = {}
+        let valorTotal = atendimento.total + remocao.total + intercorrencia.total + reuniao.total + totalSupervisao
+        total.descricao = 'Total';
+        total.quantidade = '-';
+        total.total = valorTotal;
+        total.totalFormatado = this.get('util').tratarValor(valorTotal);
+        total.formatacao = 'total-resumo'
+        listaResumo.push(total);
+
+        return listaResumo;
+    },
 
   ordenaListaAtd: false,
 

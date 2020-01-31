@@ -25,12 +25,13 @@ const constraints = {
 export default Controller.extend({
 
   alerta: service(),
+  usuario: service(),
   router: service(),
   util: service(),
   validacao: service(),
 
   valor: computed('reuniao.duracao', function() {
-    return this.get('util').calculaValorReuniao(this.get('reuniao.duracao', this.get('usuario.usuario.profissao')));
+    return this.get('util').calculaValorReuniao(this.get('reuniao.duracao'), this.get('usuario').usuario.get('profissao'));
   }),
 
   actions: {

@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 export default Controller.extend({
 
   usuario: service(),
-  alerta: service(),  
+  alerta: service(),
 
   actions: {
 
@@ -15,6 +15,11 @@ export default Controller.extend({
       let email = this.get('email').trim();
       let senha = this.get('senha');
       let senhaConfirm = this.get('senhaConfirm');
+
+      if (profissao == undefined) {
+        this.get('alerta').erro('Selecione a profissão');
+        return;
+      }
 
       if (senha != senhaConfirm) {
         this.set('senhaConfirm', null);
