@@ -427,9 +427,9 @@ export default Controller.extend({
 
   listaResumo: computed('atendimentosFiltrados', 'reunioesFiltradas', function() {
     if (this.get('usuario').usuario.get('profissao') == 'Fisioterapeuta') {
-       return this.constroiResumoFisio();
+      return this.constroiResumoFisio();
     } else {
-     return this.constroiResumo();;
+      return this.constroiResumo();
     }
   }),
 
@@ -498,7 +498,7 @@ export default Controller.extend({
   constroiResumoFisio: function() {
         let listaResumo = [];
 
-        let atendimentos = this.get('atendimentosFiltrados').filter( function( atendimento, i, array ) {
+        let atendimentos = this.get('atendimentosFiltrados').filter( function( atendimento ) {
           return atendimento.get('tipo') == 'Atendimento';
         } );
 
@@ -515,7 +515,7 @@ export default Controller.extend({
         listaResumo.push(atendimento);
 
 
-        let remocoes = this.get('atendimentosFiltrados').filter( function( atendimento, i, array ) {
+        let remocoes = this.get('atendimentosFiltrados').filter( function( atendimento ) {
           return atendimento.get('tipo') == 'Remoção';
         } );
 
@@ -532,7 +532,7 @@ export default Controller.extend({
         listaResumo.push(remocao);
 
 
-        let intercorrencias = this.get('atendimentosFiltrados').filter( function( intercorrencia, i, array ) {
+        let intercorrencias = this.get('atendimentosFiltrados').filter( function( intercorrencia ) {
           return intercorrencia.get('tipo') == 'Intercorrência';
         } );
 
