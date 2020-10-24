@@ -1,5 +1,6 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
+import config from 'homecarecontrol/config/environment';
 import $ from 'jquery';
 
 /*global firebase*/
@@ -93,7 +94,9 @@ export default Service.extend({
       });
       let self_2 = self;
       usuario.save().then(function(novoUsuario) {
-        if (novoUsuario.get('profissao') == 'Fonoaudiólogo' || novoUsuario.get('profissao') == 'Fisioterapeuta') {
+        if (novoUsuario.get('profissao') == config.APP.fonoaudiologo || 
+        novoUsuario.get('profissao') == config.APP.fisioterapeuta || 
+        novoUsuario.get('profissao') == config.APP.fisiohealth) {
             let grupo = self_2.get('store').createRecord('grupo-compartilhamento', {
               nome: 'SOS Vida',
               principal: true,
@@ -101,9 +104,14 @@ export default Service.extend({
             });
 
             var coordenadorEmail = 'analusiqueira@hotmail.com';
-            if (novoUsuario.get('profissao') == 'Fisioterapeuta')
+            if (novoUsuario.get('profissao') == config.APP.fisioterapeuta) {
               coordenadorEmail = 'carolreina_fisio@hotmail.com';
-
+            }
+            
+            if (novoUsuario.get('profissao') == config.APP.fisiohealth) {
+              coordenadorEmail = 'fisio.health4@hotmail.com';
+            }
+            
             let self_3 = self_2;
             self_2.get('store').query('usuario', {
                   orderBy: 'email',

@@ -24,6 +24,10 @@ Router.map(function() {
     this.route('relatorio');
     this.route('profile');
     this.route('query');
+    this.route('setor', function() {
+      this.route('novo');
+      this.route('edicao', { path: '/edicao/:id_setor'});
+    });
   });
   this.route('conta');
   this.route('login');

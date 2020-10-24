@@ -1,0 +1,51 @@
+{{outlet}}
+
+<div class="tabela-header">
+  <div class="titulo-tabela">
+    <h4>Setores</h4>
+    <a class="link" role="button" {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
+  </div>
+
+  {{#if exibirFiltro}}
+    <div class="row filtro-div">
+      <div class="input-field col s12 m3">
+        <label>Nome</label>
+        {{input value=nome maxlength=33}}
+      </div>
+      <div class="input-field col s12 m3 combo">
+        <div class="labelForm">Situação</div>
+        {{#power-select selected=situacao
+                        options=listaSituacao
+                        onchange=(action "selecionaSituacao")
+                        as |situacao|}}
+          {{situacao}}
+        {{/power-select}}
+      </div>
+    </div>
+  {{/if}}
+</div>
+<div class="tabela-dados">
+  <table class="highlight">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Situação</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each setoresOrdenados as |setor|}}
+        <tr class="link" role="button" {{action "editarSetor" setor}}>
+          <td>{{setor.nome}}</td>
+          <td>{{setor.situacao}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top hidden">
+  <a class="btn-floating btn-medium waves-effects waves-light" role="button" {{action "scrollUp"}}>
+    <i class="material-icons">arrow_upward</i>
+  </a>
+</div>

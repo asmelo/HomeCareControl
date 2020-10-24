@@ -1,4 +1,6 @@
 import DS from 'ember-data';
+import { computed } from '@ember/object';
+import config from 'homecarecontrol/config/environment';
 
 export default DS.Model.extend({
 
@@ -9,5 +11,9 @@ export default DS.Model.extend({
   profissao:  DS.attr('string'),
 
   userFirebase: null,
+
+  isFisioHealth: computed('profissao', function() {
+    return this.get('profissao') == config.APP.fisiohealth;
+  }),
 
 });

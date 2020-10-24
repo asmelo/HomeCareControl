@@ -17,10 +17,14 @@
   <li><a class="link" role="button" {{action "abrirItemMenu" "base.profile"}}><i class="material-icons">account_circle</i>Meus Dados</a></li>
   <li>
     <div class="divider"></div>
-  </li>
-  <li><a class="link" role="button" {{action "abrirItemMenu" "base.paciente.novo"}}><i class="material-icons">group</i>Pacientes</a></li>
-  <li><a class="link" role="button" {{action "abrirItemMenu" "base.atendimento.novo"}}><i class="material-icons">perm_contact_calendar</i>Atendimentos</a></li>
-  <li><a class="link" role="button" {{action "abrirItemMenu" "base.reuniao.novo"}}><i class="material-icons">event</i>Reuniões</a></li>
-  <li><a class="link" role="button" {{action "abrirItemMenu" "base.relatorio"}}><i class="material-icons">insert_drive_file</i>Relatórios</a></li>
-  <!--<li><a class="link" role="button" {{action "abrirItemMenu" "base.grupo-compartilhamento"}}><i class="material-icons">insert_drive_file</i>Grupos</a></li>-->
+  </li>  
+  {{#if usuario.usuario.isFisioHealth }}
+    <li><a class="link" role="button" {{action "abrirItemMenu" "base.setor.novo"}}><i class="material-icons">local_hospital</i>Setor</a></li>
+  {{else}}
+    <li><a class="link" role="button" {{action "abrirItemMenu" "base.paciente.novo"}}><i class="material-icons">group</i>Pacientes</a></li>
+    <li><a class="link" role="button" {{action "abrirItemMenu" "base.atendimento.novo"}}><i class="material-icons">perm_contact_calendar</i>Atendimentos</a></li>
+    <li><a class="link" role="button" {{action "abrirItemMenu" "base.reuniao.novo"}}><i class="material-icons">event</i>Reuniões</a></li>
+    <li><a class="link" role="button" {{action "abrirItemMenu" "base.relatorio"}}><i class="material-icons">insert_drive_file</i>Relatórios</a></li>
+    <!--<li><a class="link" role="button" {{action "abrirItemMenu" "base.grupo-compartilhamento"}}><i class="material-icons">insert_drive_file</i>Grupos</a></li>-->
+  {{/if}}
 </ul>
