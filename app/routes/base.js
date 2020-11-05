@@ -8,7 +8,11 @@ export default Route.extend({
 
   beforeModel() {
     if (window.location.pathname == '/') {
-      this.transitionTo('base.atendimento.novo');
+      if (this.get('usuario').usuario.isFisioHealth) {
+        this.transitionTo('base.assistencia.novo');
+      } else {
+        this.transitionTo('base.atendimento.novo');
+      }            
     }
   },
 

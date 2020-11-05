@@ -1,0 +1,47 @@
+<div class="row formulario">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <form {{action "salvarAssistencia" on="submit"}}>
+          <div class="row">
+            <h4>Nova Assistência</h4>
+            <div class="input-field col s12 m2">
+              <label>Data</label>
+              {{pikaday-input readonly="readonly" value=dtAssistencia onSelection=(action "selecionaData") format="DD/MM/YYYY"}}
+            </div>
+            <div class="input-field col s12 m5 combo">
+              <div class="labelForm">Setor</div>
+              {{#power-select selected=setor
+                              options=setores
+                              onchange=(action "selecionaSetor")
+                              noMatchesMessage="Sem registros"
+                              triggerClass="selectSetor"
+                              searchField="nome" as |setor|}}
+                {{setor.nome}}
+              {{/power-select}}
+            </div>                        
+            <div class="input-field col s12 m3 combo">
+            <div class="labelForm">Turno</div>
+            {{#power-select selected=turno
+                            options=turnos
+                            onchange=(action "selecionaTurno")
+                            noMatchesMessage="Sem registros" as |turno|}}
+                {{turno}}
+            {{/power-select}}
+            </div>
+            <div class="col s12 m2">
+            {{input-text label="Valor" type="tel" value=valor mask="#.##0,00" reverseMask=true}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12 right-align">
+              <button type="submit" class="salvar btn wave-effects wave-light">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{outlet}}

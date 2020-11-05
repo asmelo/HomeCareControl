@@ -1,0 +1,120 @@
+{{outlet}}
+
+<div class="tabela-header">
+  <div class="titulo-tabela">
+    <h4>Assistencias</h4>
+    <a class="link" role="button" {{action "exibirFiltroAction"}} title="Filtros"><i class="material-icons">filter_list</i></a>
+  </div>
+
+  {{#if exibirFiltro}}
+    <div class="row filtro-div">
+        <div class="input-field col s12 m3 combo">
+            <div class="labelForm">Mês</div>
+            {{#power-select selected=mes
+                            options=listaMeses
+                            onchange=(action "selecionaMes")
+                            as |mes|}}
+            {{mes}}
+            {{/power-select}}
+        </div>
+        <div class="input-field col s12 m3 combo">
+            <div class="labelForm">Ano</div>
+            {{#power-select selected=ano
+                            options=listaAnos
+                            onchange=(action "selecionaAno")
+                            as |ano|}}
+            {{ano}}
+            {{/power-select}}
+        </div>
+        <div class="input-field col s12 m3 combo">
+            <div class="labelForm">Setor</div>
+            {{#power-select selected=nmSetor
+                            options=listaSetores
+                            onchange=(action "selecionaSetor")
+                            noMatchesMessage="Sem registros"
+                            as |setor|}}
+                {{setor}}
+            {{/power-select}}
+        </div>      
+        <div class="input-field col s12 m3 combo">
+            <div class="labelForm">Turno</div>
+            {{#power-select selected=turno
+                            options=turnos
+                            onchange=(action "selecionaTurno")
+                            noMatchesMessage="Sem registros"
+            as |turno|}}
+                {{turno}}
+            {{/power-select}}
+        </div>      
+    </div>
+  {{/if}}
+</div>
+<div class="tabela-dados">
+  <table class="highlight">
+    <thead>
+      <tr>
+        <th>
+            <a class="link" role="button" {{action "ordenar" "dtAssistencia"}}>
+                Data
+                {{#if (eq ordenacaoESentido "dtAssistencia:desc")}}
+                    <i class="material-icons">arrow_drop_up</i>
+                {{/if}}
+                {{#if (eq ordenacaoESentido "dtAssistencia:asc")}}
+                    <i class="material-icons">arrow_drop_down</i>
+                {{/if}}
+            </a>
+        </th>
+        <th>
+            <a class="link" role="button" {{action "ordenar" "nmSetor"}}>
+                Setor
+                {{#if (eq ordenacaoESentido "nmSetor:desc")}}
+                    <i class="material-icons">arrow_drop_up</i>
+                {{/if}}
+                {{#if (eq ordenacaoESentido "nmSetor:asc")}}
+                    <i class="material-icons">arrow_drop_down</i>
+                {{/if}}
+            </a>
+        </th>                
+        <th>
+            <a class="link" role="button" {{action "ordenar" "turno"}}>
+                Turno
+                {{#if (eq ordenacaoESentido "turno:desc")}}
+                    <i class="material-icons">arrow_drop_up</i>
+                {{/if}}
+                {{#if (eq ordenacaoESentido "turno:asc")}}
+                    <i class="material-icons">arrow_drop_down</i>
+                {{/if}}
+            </a>
+        </th>
+        <th>
+            <a class="link" role="button" {{action "ordenar" "valorNumber"}}>
+                Valor
+                {{#if (eq ordenacaoESentido "valorNumber:desc")}}
+                <i class="material-icons">arrow_drop_up</i>
+                {{/if}}
+                {{#if (eq ordenacaoESentido "valorNumber:asc")}}
+                <i class="material-icons">arrow_drop_down</i>
+                {{/if}}
+            </a>
+        </th>        
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each assistenciasOrdenadas as |assistencia|}}
+        <tr class="link" role="button" {{action "editarAssistencia" assistencia}}>
+            <td>{{moment-format assistencia.dtAssistencia "DD/MM/YYYY"}}</td>
+            <td>{{assistencia.nmSetor}}</td>          
+            <td>{{assistencia.turno}}</td>
+            <td>{{assistencia.valor}}</td>          
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div id="btnScrollTop" class="fixed-action-btn btn-scroll-top hidden">
+  <a class="btn-floating btn-medium waves-effects waves-light" role="button" {{action "scrollUp"}}>
+    <i class="material-icons">arrow_upward</i>
+  </a>
+</div>

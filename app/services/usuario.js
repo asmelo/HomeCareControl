@@ -41,7 +41,11 @@ export default Service.extend({
         this.set('userId', usuario.get('id'));
 
         if (this.get('redirecionarParaAtendimento')) {
-          this.get('router').transitionTo('base.atendimento.novo');
+          if (usuario.isFisioHealth) {
+            this.get('router').transitionTo('base.assistencia.novo');
+          } else {
+            this.get('router').transitionTo('base.atendimento.novo');
+          }            
           this.set('redirecionarParaAtendimento', false);
         }
       });
