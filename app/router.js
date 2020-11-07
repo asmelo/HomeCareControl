@@ -32,6 +32,7 @@ Router.map(function() {
       this.route('novo');
       this.route('edicao', { path: '/edicao/:id_assistencia'});
     });
+    this.route('relatorio-assistencia');
   });
   this.route('conta');
   this.route('login');

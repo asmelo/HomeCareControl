@@ -5,13 +5,14 @@ import $ from 'jquery';
 export default Route.extend({
 
   usuario: service(),
+  util: service(),
 
   beforeModel() {
     if (window.location.pathname == '/') {
-      if (this.get('usuario').usuario.isFisioHealth) {
-        this.transitionTo('base.assistencia.novo');
-      } else {
-        this.transitionTo('base.atendimento.novo');
+      if (this.get('util').isLocalhostOrControleDeAssistenciaHost()) {
+          this.transitionTo('base.assistencia.novo');
+        } else {
+          this.transitionTo('base.atendimento.novo');
       }            
     }
   },

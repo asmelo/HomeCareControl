@@ -5,10 +5,11 @@ import $ from 'jquery';
 export default Route.extend({
 
   usuario: service(),
+  util: service(),
 
   beforeModel() {
-    if (this.get('usuario').userId) {
-      if (this.get('usuario').usuario.isFisioHealth) {
+    if (this.get('usuario').userId) {      
+      if (this.get('util').isLocalhostOrControleDeAssistenciaHost()) {
         this.transitionTo('base.assistencia.novo');
       } else {
         this.transitionTo('base.atendimento.novo');

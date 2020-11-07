@@ -54,7 +54,14 @@ export default Service.extend({
       }
     }
     return 'R$ 0,00';
-  }
+  },
 
+  isLocalhostOrControleDeAssistenciaHost() {
+    let hostname = window.location.hostname;
+      if (hostname == 'localhost' || hostname == 'controledeassistencias.web.app') {
+        return true;
+      }
+      return false;
+  }
 
 });

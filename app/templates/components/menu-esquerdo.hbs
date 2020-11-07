@@ -19,8 +19,11 @@
     <div class="divider"></div>
   </li>  
   {{#if usuario.usuario.isFisioHealth }}
-    <li><a class="link" role="button" {{action "abrirItemMenu" "base.setor.novo"}}><i class="material-icons">local_hospital</i>Setor</a></li>
-    <li><a class="link" role="button" {{action "abrirItemMenu" "base.assistencia.novo"}}><i class="material-icons">medical_services</i>Assitência</a></li>
+    {{#if (eq usuario.usuario.email 'fisio.health4@hotmail.com')}}
+      <li><a class="link" role="button" {{action "abrirItemMenu" "base.setor.novo"}}><i class="material-icons">local_hospital</i>Setor</a></li>
+    {{/if}}
+    <li><a class="link" role="button" {{action "abrirItemMenu" "base.assistencia.novo"}}><i class="material-icons">perm_contact_calendar</i>Assitência</a></li>
+    <li><a class="link" role="button" {{action "abrirItemMenu" "base.relatorio-assistencia"}}><i class="material-icons">insert_drive_file</i>Relatórios</a></li>
   {{else}}
     <li><a class="link" role="button" {{action "abrirItemMenu" "base.paciente.novo"}}><i class="material-icons">group</i>Pacientes</a></li>
     <li><a class="link" role="button" {{action "abrirItemMenu" "base.atendimento.novo"}}><i class="material-icons">perm_contact_calendar</i>Atendimentos</a></li>
