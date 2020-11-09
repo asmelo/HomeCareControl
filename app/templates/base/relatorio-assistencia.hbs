@@ -1,13 +1,15 @@
 <div class="relatorio-header">
   <h4>Relatório de Assistências</h4>
   {{#if (eq usuario.usuario.email 'fisio.health4@hotmail.com')}}
-    <ul>    
-        <li>
-            {{#js-pdf steps showPdf=false id=(concat "Relatorio_" mes "_" ano) as |pdf|}}
-                <a title="Gerar PDF com total por profissional" class="link" role="button" {{action pdf.save}}><i class="material-icons">library_books</i></a>
-            {{/js-pdf}}
-        </li>
-    </ul>
+    {{#each steps as |step|}}
+      <ul>    
+          <li>
+              {{#js-pdf step showPdf=false id=(concat "Relatorio_" mes "_" ano) as |pdf|}}
+                  <a title="Gerar PDF com total por profissional" class="link" role="button" {{action pdf.save}}><i class="material-icons">library_books</i></a>
+              {{/js-pdf}}
+          </li>
+      </ul>
+    {{/each}}
   {{/if}}
 </div>
 

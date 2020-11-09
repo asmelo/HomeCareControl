@@ -13,7 +13,7 @@ export default Controller.extend({
   alerta: service(),
   util: service(),
   
-  steps: computed('assistenciasFiltradas', 'ordenaListaAssist', 'funcaoOrdenacaoAssistencias', function() {    
+  constroiPDF: function() {
     let steps = [];
 
     let pagina = 1;
@@ -92,7 +92,15 @@ export default Controller.extend({
     this.send('selecionaCompartilhamento', nmGrupoCompartilhamento);
 
     return steps;
-  }),  
+  },  
+
+  steps: computed('assistenciasFiltradas', 'ordenaListaAssist', 'funcaoOrdenacaoAssistencias', function() {
+    //Precisa colocar dentro do array para alterar corretamente o nome do relatório
+    let internalSteps = this.constroiPDF();
+    let steps = [];
+    steps.push(internalSteps);
+    return steps;
+  }),
 
   //ASSISTENCIAS
 
