@@ -148,11 +148,15 @@ export default Route.extend({
     controller.set('listaAnos', listaAnos);
     controller.set('ano', hoje.getFullYear());
 
-    //Preenche filtro de Meses
+    //Preenche filtro de Meses do Filtro
     let listaMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     controller.set('listaMeses', listaMeses);
     controller.set('mes', dicionarioMeses[hoje.getMonth()]);
     controller.set('dicionarioMeses', dicionarioMeses);
+
+    //Preenche filtro de Meses das férias
+    let listaMesesFerias = ['Não definido', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    controller.set('listaMesesFerias', listaMesesFerias);
 
     //Preenche filtro de Grupos de Compartilhamento
     let listaGruposCompartilhamento = model.gruposUsuario.mapBy('nome');

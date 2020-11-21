@@ -1,15 +1,22 @@
 <div class="relatorio-header">
   <h4>Relatório de Assistências</h4>
   {{#if (eq usuario.usuario.email 'fisio.health4@hotmail.com')}}
-    {{#each steps as |step|}}
-      <ul>    
+    <ul> 
+      {{#each steps as |step|}}      
           <li>
               {{#js-pdf step showPdf=false id=(concat "Relatorio_" mes "_" ano) as |pdf|}}
                   <a title="Gerar PDF com total por profissional" class="link" role="button" {{action pdf.save}}><i class="material-icons">library_books</i></a>
               {{/js-pdf}}
-          </li>
-      </ul>
-    {{/each}}
+          </li>      
+      {{/each}}
+      {{#each stepsAniversariantes as |stepAniversariante|}}       
+          <li>
+              {{#js-pdf stepAniversariante showPdf=false id="Aniversarios" as |pdf|}}
+                  <a title="Gerar PDF com a data de nascimento dos profissionais" class="link" role="button" {{action pdf.save}}><i class="material-icons">cake</i></a>
+              {{/js-pdf}}
+          </li>      
+      {{/each}}
+    </ul>
   {{/if}}
 </div>
 
@@ -52,6 +59,31 @@
       {{grupo}}
     {{/power-select}}
   </div>
+</div>
+
+<div class="tabela-header">
+  <div class="titulo-tabela">
+    <h4>Férias</h4>
+  </div>
+</div>
+<div class="row div-relatorio"> 
+  <form {{action "salvarFerias" on="submit"}}>
+    <div class="input-field col s12 m3 combo">
+      <div class="labelForm">Mês</div>
+      {{#power-select selected=feriasMes
+                      options=listaMesesFerias
+                      onchange=(action "selecionaFeriasMes")
+                      as |mes|}}
+        {{mes}}
+      {{/power-select}}
+    </div>
+    <div class="input-ferias-ano col s12 m3 combo">
+      {{input-text id="feriasAno" label="Ano" value=feriasAno maxlength=4}}
+    </div>  
+    <div class="col s12 m3 combo">
+      <button type="submit" class="salvar btn wave-effects wave-light">Salvar</button>
+    </div>
+  </form> 
 </div>
 
 <div class="tabela-header">

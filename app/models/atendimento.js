@@ -27,16 +27,19 @@ export default DS.Model.extend({
   }),
 
   dataFormatada: computed('dtAtendimento', function() {
-    let dia = this.get('dtAtendimento').getDate();
-    if (String(dia).length == 1) {
-      dia = '0' + dia;
+    if (this.get('dtAtendimento') != null) {
+      let dia = this.get('dtAtendimento').getDate();
+      if (String(dia).length == 1) {
+        dia = '0' + dia;
+      }
+      let mes = this.get('dtAtendimento').getMonth() + 1;
+      if (String(mes).length == 1) {
+        mes = '0' + mes;
+      }
+      let ano = this.get('dtAtendimento').getFullYear();
+      return dia + '/' + mes + '/' + ano;
     }
-    let mes = this.get('dtAtendimento').getMonth() + 1;
-    if (String(mes).length == 1) {
-      mes = '0' + mes;
-    }
-    let ano = this.get('dtAtendimento').getFullYear();
-    return dia + '/' + mes + '/' + ano;
+    return "";
   })
 
 });

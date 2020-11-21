@@ -7,11 +7,28 @@ import { later } from '@ember/runloop';
 import config from 'homecarecontrol/config/environment';
 import $ from 'jquery';
 
+const constraints = {
+  feriasMes: {
+    presence: {
+      allowEmpty: false,
+      message: "Informe o mês das férias"
+    }
+  },
+
+  feriasAno: {    
+    format: {
+      pattern: /^$|\d{4}$/,
+      message: "O ano deve possuir apenas 4 dígitos. (Ex.: 2020)"
+    }
+  }
+};
+
 export default Controller.extend({
 
   usuario: service(),
   alerta: service(),
   util: service(),
+  validacao: service(),
   
   constroiPDF: function() {
     let steps = [];
@@ -57,8 +74,13 @@ export default Controller.extend({
         totalGeral += total;
 
         let totalFormatado = this.get('util').tratarValor(total);
-
-        steps.push({text: [3 + x1, y, this.get('usuarioFiltro').get('nome')]});        
+        
+        if (this.get('mes') == this.get('usuarioFiltro').get('feriasMes') &&
+            this.get('ano') == this.get('usuarioFiltro').get('feriasAno')) {
+              steps.push({text: [3 + x1, y, this.get('usuarioFiltro').get('nome') + ' (***Férias***)']});
+        } else {
+          steps.push({text: [3 + x1, y, this.get('usuarioFiltro').get('nome')]});
+        }
         steps.push({text: [3 + x1 + 75, y, totalFormatado]});   
         y += 5;
         y1 += 5;
@@ -92,11 +114,72 @@ export default Controller.extend({
     this.send('selecionaCompartilhamento', nmGrupoCompartilhamento);
 
     return steps;
-  },  
+  },
+  
+  constroiPDFAniversariantes: function() {
+    let steps = [];
 
-  steps: computed('assistenciasFiltradas', 'ordenaListaAssist', 'funcaoOrdenacaoAssistencias', function() {
+    let pagina = 1;
+    steps.push({setFontSize: 25});
+    steps.push({text: [105, 25, 'Aniversário dos Fisioterapeutas', {align: 'center'}]});        
+
+    let largura = 190;
+    let x1 = 10;
+    let y2 = 41;
+    let y1 = y2 + 12;
+    let x2 = x1 + largura;    
+
+    steps.push({setFontSize: 8});
+    steps.push({setFontStyle: 'bold'});
+    steps.push({text: [3 + x1, y2 + 5, 'Fisioterapeuta']});
+    steps.push({text: [3 + x1 + 75, y2 + 5, 'Aniversário']});
+
+    var y = y2 + 12;
+    steps.push({setFontStyle: 'normal'});        
+
+    var houveQuebraPagina = false;    
+    for(let i = 0; i < this.get('listaUsuarios').length; i++) {
+        let usuario = this.get('listaUsuarios').objectAt(i);
+        steps.push({text: [3 + x1, y, usuario.get('nome')]});        
+        steps.push({text: [3 + x1 + 75, y, usuario.get('dtNascimentoFormatada')]});   
+        y += 5;
+        y1 += 5;
+        if (y1 > 284) {
+            houveQuebraPagina = true;
+            y1 = 285;
+            steps.push({line: [x1, y1, x1, y2]});
+            steps.push({line: [x1, y2, x2, y2]});
+            steps.push({line: [x2, y2, x2, y1]});
+            steps.push({addPage: []});
+            pagina += 1;
+            steps.push({setFontSize: 6});        
+            steps.push({text: [200, 5, 'Página: ' + pagina, { align: 'right' }]});
+            steps.push({setFontSize: 8});
+            y2 = 10;
+            y1 = 15;
+        }     
+    }
+
+    steps.push({line: [x1, y1, x1, y2]});
+    if (!houveQuebraPagina) {
+      steps.push({line: [x1, y2, x2, y2]});
+    }
+    steps.push({line: [x2, y2, x2, y1]});
+    steps.push({line: [x2, y1, x1, y1]});
+          
+    return steps;
+  },
+
+  steps: computed('assistenciasFiltradas', 'ordenaListaAssist', 'funcaoOrdenacaoAssistencias', 'updateSteps', function() {
     //Precisa colocar dentro do array para alterar corretamente o nome do relatório
     let internalSteps = this.constroiPDF();
+    let steps = [];
+    steps.push(internalSteps);
+    return steps;
+  }),
+
+  stepsAniversariantes: computed('listaUsuarios', function() {    
+    let internalSteps = this.constroiPDFAniversariantes();
     let steps = [];
     steps.push(internalSteps);
     return steps;
@@ -248,6 +331,8 @@ export default Controller.extend({
       return 0;
   }),
 
+  updateSteps: true,
+
   actions: {
 
     scrollUp() {
@@ -256,6 +341,10 @@ export default Controller.extend({
 
     selecionaUsuario(usuarioFiltro) {
       this.set('usuarioFiltro', usuarioFiltro);
+
+      this.set('feriasMes', usuarioFiltro.get('feriasMes'));
+      this.set('feriasAno', usuarioFiltro.get('feriasAno'));
+      
       if (!this.get('isAssistenciaDoUsuario')) {
         this.set('nmGrupoCompartilhamento', 'Todos');
       } else {
@@ -272,6 +361,27 @@ export default Controller.extend({
 
     ordernarAssistenciaPorSetor() {
       this.set('ordenaListaAssist', !this.get('ordenaListaAssist'));
+    },
+
+    selecionaFeriasMes(mes) {
+      this.set('feriasMes', mes);
+    },
+
+    salvarFerias() {
+      let campos = this.getProperties('feriasMes', 'feriasAno');
+      if (!this.get('validacao').validar(campos, constraints)) return;
+
+      this.set('usuarioFiltro.feriasMes', this.get('feriasMes'));
+      this.set('usuarioFiltro.feriasAno', this.get('feriasAno'));      
+
+      this.set('updateSteps', !this.get('updateSteps'));
+
+      let self = this;
+      this.get('usuarioFiltro').save().then(function() {
+        self.get('alerta').sucesso('Registro de férias atualizado com sucesso');
+      }).catch(function() {
+        self.get('alerta').erro('Erro ao atualizar registro de férias');
+      })
     },
 
     selecionaMes(mes) {

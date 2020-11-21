@@ -1,5 +1,5 @@
 <div class="row formulario">
-  <div class="col s12 m8 offset-m2">
+  <div class="col s12 m10 offset-m1">
     <div class="card">
       <div class="card-content">
         <form {{action "atualizaProfile" on="submit"}}>
@@ -8,8 +8,12 @@
             <div class="col s12 m6">
               {{input-text id="nome" label="Nome" inputClass="nome" value=nome maxlength=30}}
             </div>
-            <div class="col s12 m6">
+            <div class="col s12 m3">
               {{input-text id="registro" label="Registro" inputClass="registro" value=registro maxlength=20}}
+            </div>
+            <div class="input-field col s12 m3">              
+              <label>Nascimento</label>
+              {{pikaday-input id="dtNascimento" value=dtNascimento onSelection=(action "selecionaDtNascimento") format="DD/MM/YYYY"}}
             </div>
           </div>
           <div class="row">
