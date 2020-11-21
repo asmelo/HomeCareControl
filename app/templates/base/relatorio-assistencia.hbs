@@ -61,30 +61,32 @@
   </div>
 </div>
 
-<div class="tabela-header">
-  <div class="titulo-tabela">
-    <h4>Férias</h4>
+{{#if (eq usuario.usuario.email 'fisio.health4@hotmail.com')}}
+  <div class="tabela-header">
+    <div class="titulo-tabela">
+      <h4>Férias</h4>
+    </div>
   </div>
-</div>
-<div class="row div-relatorio"> 
-  <form {{action "salvarFerias" on="submit"}}>
-    <div class="input-field col s12 m3 combo">
-      <div class="labelForm">Mês</div>
-      {{#power-select selected=feriasMes
-                      options=listaMesesFerias
-                      onchange=(action "selecionaFeriasMes")
-                      as |mes|}}
-        {{mes}}
-      {{/power-select}}
-    </div>
-    <div class="input-ferias-ano col s12 m3 combo">
-      {{input-text id="feriasAno" label="Ano" value=feriasAno maxlength=4}}
-    </div>  
-    <div class="col s12 m3 combo">
-      <button type="submit" class="salvar btn wave-effects wave-light">Salvar</button>
-    </div>
-  </form> 
-</div>
+  <div class="row div-relatorio"> 
+    <form {{action "salvarFerias" on="submit"}}>
+      <div class="input-field col s12 m3 combo">
+        <div class="labelForm">Mês</div>
+        {{#power-select selected=feriasMes
+                        options=listaMesesFerias
+                        onchange=(action "selecionaFeriasMes")
+                        as |mes|}}
+          {{mes}}
+        {{/power-select}}
+      </div>
+      <div class="input-ferias-ano col s12 m3 combo">
+        {{input-text id="feriasAno" label="Ano" value=feriasAno maxlength=4}}
+      </div>  
+      <div class="col s12 m3 combo">
+        <button type="submit" class="salvar btn wave-effects wave-light">Salvar</button>
+      </div>
+    </form> 
+  </div>
+{{/if}}
 
 <div class="tabela-header">
   <div class="titulo-tabela">
