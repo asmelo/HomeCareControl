@@ -45,7 +45,7 @@ export default Controller.extend({
 
     selecionaTurno(turno) {
       this.set('turno', turno);
-      /*if (turno == 'Manhã') {
+      if (turno == 'Manhã') {
         this.set('valor', config.APP.valorTurnoManha);
       }
       if (turno == 'Tarde') {
@@ -53,7 +53,13 @@ export default Controller.extend({
       }
       if (turno == 'Noite') {
         this.set('valor', config.APP.valorTurnoNoite);
-      }*/
+      }
+      if (turno == 'Plantão diurno') {
+        this.set('valor', config.APP.valorTurnoPlantaoDiurno);
+      }
+      if (turno == 'Plantão noturno') {
+        this.set('valor', config.APP.valorTurnoPlantaoNoturno);
+      }
     },
 
     salvarAssistencia() {
@@ -99,7 +105,7 @@ export default Controller.extend({
       }
 
       if (isEmpty(this.get('valor'))) {
-        //this.set('valor', config.APP.valorTurnoManha);        
+        this.set('valor', config.APP.valorTurnoManha);        
       }
 
       if (isEmpty(this.get('turno'))) {

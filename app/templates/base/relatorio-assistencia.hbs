@@ -21,7 +21,7 @@
 </div>
 
 <div class="row div-relatorio">
-  <div class="input-field col s12 m3 combo">
+  <div class="input-field col s12 m4 combo">
     <div class="labelForm">Profissional</div>
     {{#power-select selected=usuarioFiltro
                     options=listaUsuarios
@@ -30,7 +30,7 @@
       {{usuario.nome}}
     {{/power-select}}
   </div>
-  <div class="input-field col s12 m3 combo">
+  <div class="input-field col s12 m4 combo">
     <div class="labelForm">Mês</div>
     {{#power-select selected=mes
                     options=listaMeses
@@ -39,7 +39,7 @@
       {{mes}}
     {{/power-select}}
   </div>
-  <div class="input-field col s12 m3 combo">
+  <div class="input-field col s12 m4 combo">
     <div class="labelForm">Ano</div>
     {{#power-select selected=ano
                     options=listaAnos
@@ -47,18 +47,7 @@
                     as |ano|}}
       {{ano}}
     {{/power-select}}
-  </div>
-  <div class="input-field col s12 m3 combo">
-    <div class="labelForm">Grupo</div>
-    {{#power-select selected=nmGrupoCompartilhamento
-                    options=gruposCompartilhamento
-                    onchange=(action "selecionaCompartilhamento")
-                    disabled=(not isAtendimentoDoUsuario)
-                    noMatchesMessage="Sem registros"
-                    as |grupo|}}
-      {{grupo}}
-    {{/power-select}}
-  </div>
+  </div>  
 </div>
 
 {{#if (eq usuario.usuario.email 'fisio.health4@hotmail.com')}}
