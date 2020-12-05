@@ -21,6 +21,14 @@ export default Route.extend({
     didTransition() {
       $('loading').css('display', 'none');
     }
+  },
+
+  setupController(controller, model) {
+    let nomeAplicacao = "Home-Care Control";
+    if (this.get('util').isLocalhostOrControleDeAssistenciaHost()) {
+      nomeAplicacao = "Controle de Assistências"
+    }
+    controller.set('nomeAplicacao', nomeAplicacao);
   }
 
 });

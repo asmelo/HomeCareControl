@@ -30,7 +30,7 @@
       {{usuario.nome}}
     {{/power-select}}
   </div>
-  <div class="input-field col s12 m4 combo">
+  <div class="input-field col s12 m2 combo">
     <div class="labelForm">Mês</div>
     {{#power-select selected=mes
                     options=listaMeses
@@ -39,7 +39,7 @@
       {{mes}}
     {{/power-select}}
   </div>
-  <div class="input-field col s12 m4 combo">
+  <div class="input-field col s12 m2 combo">
     <div class="labelForm">Ano</div>
     {{#power-select selected=ano
                     options=listaAnos
@@ -48,12 +48,32 @@
       {{ano}}
     {{/power-select}}
   </div>  
+  <div class="input-field col s12 m2 combo">
+      <div class="labelForm">Setor</div>
+      {{#power-select selected=nmSetor
+                      options=listaSetores
+                      onchange=(action "selecionaSetor")
+                      noMatchesMessage="Sem registros"
+                      as |setor|}}
+          {{setor}}
+      {{/power-select}}
+  </div>      
+  <div class="input-field col s12 m2 combo">
+      <div class="labelForm">Turno</div>
+      {{#power-select selected=turno
+                      options=listaTurnos
+                      onchange=(action "selecionaTurno")
+                      noMatchesMessage="Sem registros"
+      as |turno|}}
+          {{turno}}
+      {{/power-select}}
+  </div>
 </div>
 
 {{#if (eq usuario.usuario.email 'fisio.health4@hotmail.com')}}
   <div class="tabela-header">
     <div class="titulo-tabela">
-      <h4>Férias</h4>
+      <h5>Férias</h5>
     </div>
   </div>
   <div class="row div-relatorio"> 
@@ -79,7 +99,7 @@
 
 <div class="tabela-header">
   <div class="titulo-tabela">
-    <h4>Assistências (Total: {{totalAssistenciasFiltradas}})</h4>
+    <h5>Assistências (Total: {{totalAssistenciasFiltradas}})</h5>
   </div>
 </div>
 <div class="tabela-dados">
@@ -148,7 +168,7 @@
 
 <div class="tabela-header">
   <div class="titulo-tabela">
-    <h4>Assistências por Setor</h4>
+    <h5>Assistências por Setor</h5>
   </div>
 </div>
 <div class="tabela-dados">
@@ -173,7 +193,7 @@
 
 <div class="tabela-header">
   <div class="titulo-tabela">
-    <h4>Assistências por Turno</h4>
+    <h5>Assistências por Turno</h5>
   </div>
 </div>
 <div class="tabela-dados">

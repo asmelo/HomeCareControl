@@ -20,6 +20,9 @@ export default Component.extend({
           this.$('label').attr('for', inputId);
 
       if(this.get('mask')){
+        if (this.get('mask') == '#.##0,00') {
+          this.set('value', this.get('value').replace('R$', '').trim())
+        }        
         if(this.get('mask') == 'telefone') {
             var SPMaskBehavior = function (val) {
               return val.replace(/\D/g, '').length === 11 ? '(00)00000-0000' : '(00)0000-00009';

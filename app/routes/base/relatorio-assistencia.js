@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
-
+import config from 'homecarecontrol/config/environment';
 
 export default Route.extend({
 
@@ -127,7 +127,7 @@ export default Route.extend({
       10: "Novembro",
       11: "Dezembro"
     };
-
+    
     controller.set('setores', model.setores);
     controller.set('listaAssistencias', model.listaAssistencias);    
 
@@ -157,6 +157,17 @@ export default Route.extend({
     //Preenche filtro de Meses das férias
     let listaMesesFerias = ['Não definido', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     controller.set('listaMesesFerias', listaMesesFerias);
+
+    //Preenche filtro de Setores
+    let listaSetores = model.setores.sortBy('nome').mapBy('nome');    
+    listaSetores.insertAt(0, 'Todos');
+    controller.set('listaSetores', listaSetores);
+    controller.set('nmSetor', 'Todos');
+
+    //Preeche filtro de Turnos        
+    let turnos = ['Todos'].concat(config.APP.turnos);
+    controller.set('listaTurnos', turnos);
+    controller.set('turno', 'Todos');
 
     //Preenche filtro de Grupos de Compartilhamento
     let listaGruposCompartilhamento = model.gruposUsuario.mapBy('nome');
