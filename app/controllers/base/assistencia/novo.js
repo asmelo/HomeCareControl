@@ -78,7 +78,9 @@ export default Controller.extend({
       if (grupoCompartilhamento.get('id') == '-1') {
         grupoCompartilhamento = null;
       }
-
+      
+      this.get('dtAssistencia').setHours(12);
+      
       let assistencia = this.get('store').createRecord('assistencia', {
         dtAssistencia: this.get('dtAssistencia'),
         valor: valorTratado,

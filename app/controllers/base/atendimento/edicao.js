@@ -29,6 +29,7 @@ export default Controller.extend({
 
     selecionaData(data) {
       this.set('atendimento.dtAtendimento', data);
+      this.get('atendimento.dtAtendimento').setHours(12);
     },
 
     selecionaPaciente(paciente) {
