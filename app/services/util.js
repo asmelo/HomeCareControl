@@ -58,7 +58,7 @@ export default Service.extend({
 
   isLocalhostOrControleDeAssistenciaHost() {
     let hostname = window.location.hostname;
-      if (hostname == 'localhost' || hostname == 'controledeassistencias.web.app') {
+      if (hostname == 'localhost' || hostname == 'controledeassistencias.firebaseapp.com') {
         return true;
       }
       return false;
