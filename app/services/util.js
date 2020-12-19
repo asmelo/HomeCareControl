@@ -55,10 +55,10 @@ export default Service.extend({
     }
     return 'R$ 0,00';
   },
-//teste
+
   isLocalhostOrControleDeAssistenciaHost() {
     let hostname = window.location.hostname;
-      if (hostname == 'localhost' || hostname == 'controledeassistencias.firebaseapp.com') {
+      if (hostname == 'localhost' || hostname == 'controledeassistencias.firebaseapp.com' || hostname == 'controledeassistencias.web.app') {
         return true;
       }
       return false;
