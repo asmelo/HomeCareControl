@@ -12,7 +12,7 @@ export default Controller.extend({
       let nome = this.get('nome').trim();
       let profissao = this.get('profissao');
       let registro = this.get('registro').trim();
-      let email = this.get('email').trim();
+      let email = this.get('email').trim().toLowerCase();
       let senha = this.get('senha');
       let senhaConfirm = this.get('senhaConfirm');
 

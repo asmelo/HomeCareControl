@@ -6,108 +6,22 @@ import config from 'homecarecontrol/config/environment';
 
 export default Route.extend({
 
-  usuario: service(),
+  usuario: service(),  
 
-  consultaListaUsuarios(this2) {
+  inicializarUsuario(this2) {
+    this2.get('usuario').inicializarUsuario();
     return new Promise(function(resolve) {
-      var promiseList = [];
-      var this3 = this2;
-      this2.store.findAll('grupo-compartilhamento', { reload: true }).then(grupos => {
-        //Percorre todos os grupos
-        for (let i = 0; i < grupos.length; i++) {
-          var grupo = grupos.objectAt(i);
-          for (let j = 0; j < grupo.listaUsuarios.length; j++) {
-            var usuarioCompartilhamento = grupo.listaUsuarios.objectAt(j)
-
-            //Caso o usuário logado esteja no grupo
-            if (usuarioCompartilhamento.get('id') == this3.get('usuario').usuario.get('id')) {
-              promiseList.push(grupo.get('usuario'));
-            }
-          }
-        }
-        Promise.all(promiseList).then(values => {
-          var listaUsuarios = [];
-          var i = 0;
-          while(values[i]) {
-            listaUsuarios.push(values[i]);
-            i++;
-          }
-          resolve(listaUsuarios);
-        })
-      });
-
-    });
-  },
-
-  consultaListaAssistencias(this2) {
-    return new Promise(function(resolve) {
-      var promiseListUsuario = [];
-      var listaGrupos = [];
-      var this3 = this2;
-      this2.store.findAll('grupo-compartilhamento', { reload: true }).then(grupos => {
-        //Percorre todos os grupos
-        for (let i = 0; i < grupos.length; i++) {
-          var grupo = grupos.objectAt(i);
-          for (let j = 0; j < grupo.listaUsuarios.length; j++) {
-            var usuarioCompartilhamento = grupo.listaUsuarios.objectAt(j);
-
-            //Caso o usuário logado esteja no grupo
-            if (usuarioCompartilhamento.get('id') == this3.get('usuario').usuario.get('id')) {
-              listaGrupos.push(grupo.get('id'));
-              promiseListUsuario.push(grupo.get('usuario'));
-            }
-
-          }
-        }
-        Promise.all(promiseListUsuario).then(values => {
-          var promiseListAssist = [];
-          var i = 0;
-
-          promiseListAssist.push(this3.store.query('assistencia', {
-            orderBy: 'usuario',
-            equalTo: this3.get('usuario').usuario.get('id')
-          }));
-
-          while(values[i]) {
-            //Caso o usuário logado esteja no grupo
-            promiseListAssist.push(this3.store.query('assistencia', {
-              orderBy: 'usuario',
-              equalTo: values[i].get('id')
-            }));
-            i++;
-          }
-
-          Promise.all(promiseListAssist).then(assistencias => {
-            var listaAssistencias = [];
-            var i = 0;
-            while(assistencias[i]) {
-              for (let k = 0; k < assistencias[i].length; k++) {
-                let grupoCompartilhamento = assistencias[i].objectAt(k).get('grupoCompartilhamento');
-                if (assistencias[i].objectAt(k).get('usuario.id') == this3.get('usuario').usuario.get('id') ||
-                    listaGrupos.includes(grupoCompartilhamento.get('id'))) {
-                        listaAssistencias.push(assistencias[i].objectAt(k));
-                }
-              }
-              i++;
-            }
-            resolve(listaAssistencias);
-          })
-
-        })
-      });
-
+      setTimeout(function(resolve) {
+        resolve();
+      }, 1000, resolve);
     });
   },
 
   model() {
-    return RSVP.hash({
-      gruposUsuario: this.store.query('grupo-compartilhamento', {
-        orderBy: 'usuario',
-        equalTo: this.get('usuario').userId
-      }),
-      listaUsuarios: this.get('consultaListaUsuarios')(this),
-      listaAssistencias: this.get('consultaListaAssistencias')(this),
-      setores: this.store.findAll('setor')
+    return RSVP.hash({      
+      timeout: this.get('inicializarUsuario')(this),
+      listaUsuarios: this.store.findAll('usuario'),
+      setores: this.store.findAll('setor')      
     });
   },
 
@@ -128,12 +42,30 @@ export default Route.extend({
       11: "Dezembro"
     };
     
-    controller.set('setores', model.setores);
-    controller.set('listaAssistencias', model.listaAssistencias);    
+    controller.set('setores', model.setores);    
+    
+    if (this.get('usuario').usuario.isCoordenador) {
+      this.store.findAll('assistencia').then(assistencias => {
+        controller.set('listaAssistencias', assistencias);
+      });
+    } else {        
+      this.store.query('assistencia', {
+        orderBy: 'usuario',
+        equalTo: this.get('usuario').usuario.get('id')
+      }).then(assistencias => {
+        controller.set('listaAssistencias', assistencias);
+      });
+    }
 
-    let listaUsuarios = model.listaUsuarios.sortBy('nome');
-    listaUsuarios.insertAt(0, this.get('usuario').usuario);
-    controller.set('listaUsuarios', listaUsuarios);
+    if (this.get('usuario').usuario.isCoordenador) {
+      let listaUsuarios = model.listaUsuarios.sortBy('nome');
+      this.removeUsuarioLogadoEusuarioDeDesenvolvimento(listaUsuarios);
+      listaUsuarios.insertAt(0, this.get('usuario').usuario);
+      controller.set('listaUsuarios', listaUsuarios);
+    } else {
+      controller.set('listaUsuarios', [this.get('usuario').usuario]);
+    }
+    
 
     controller.set('usuarioFiltro', this.get('usuario').usuario);
 
@@ -167,26 +99,19 @@ export default Route.extend({
     //Preeche filtro de Turnos        
     let turnos = ['Todos'].concat(config.APP.turnos);
     controller.set('listaTurnos', turnos);
-    controller.set('turno', 'Todos');
+    controller.set('turno', 'Todos');   
 
-    //Preenche filtro de Grupos de Compartilhamento
-    let listaGruposCompartilhamento = model.gruposUsuario.mapBy('nome');
-    listaGruposCompartilhamento.insertAt(0, 'Todos');
-    listaGruposCompartilhamento.insertAt(1, 'Nenhum');
-    controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
+  },
 
-    //Seleciona o grupo principal para o usuário logado
-    let grupoPrincipal = model.gruposUsuario.filter(function(grupo) {
-      return grupo.get('principal');
-    });
-    if (grupoPrincipal.length > 0) {
-      controller.set('nmGrupoCompartilhamento', grupoPrincipal.objectAt(0).get('nome'));
-      controller.set('nmGrupoCompartilhamentoUsuario', grupoPrincipal.objectAt(0).get('nome'));
-    } else {
-      controller.set('nmGrupoCompartilhamento', 'Todos');
-      controller.set('nmGrupoCompartilhamentoUsuario', 'Todos');
+  removeUsuarioLogadoEusuarioDeDesenvolvimento: function(listaUsuarios) {
+    for (let i = 0; i < listaUsuarios.length; i++) {
+      if (listaUsuarios[i].id == this.get('usuario').usuario.id) {
+        listaUsuarios.splice(i, 1);
+      }
+      if (listaUsuarios[i].isDesenvolvedor) {
+        listaUsuarios.splice(i, 1);
+      }
     }
-
   }
 
 });

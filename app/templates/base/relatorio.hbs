@@ -52,17 +52,6 @@
       {{ano}}
     {{/power-select}}
   </div>
-  <div class="input-field col s12 m3 combo">
-    <div class="labelForm">Grupo</div>
-    {{#power-select selected=nmGrupoCompartilhamento
-                    options=gruposCompartilhamento
-                    onchange=(action "selecionaCompartilhamento")
-                    disabled=(not isAtendimentoDoUsuario)
-                    noMatchesMessage="Sem registros"
-                    as |grupo|}}
-      {{grupo}}
-    {{/power-select}}
-  </div>
 </div>
 
 
@@ -145,18 +134,7 @@
               <i class="material-icons">arrow_drop_down</i>
             {{/if}}
           </a>
-        </th>
-        <th>
-          <a class="link" role="button" {{action "ordenarReunioes" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-            Comp.
-            {{#if (eq ordenacaoESentidoReunioes "nmGrupoCompartilhamento:desc")}}
-              <i class="material-icons">arrow_drop_up</i>
-            {{/if}}
-            {{#if (eq ordenacaoESentidoReunioes "nmGrupoCompartilhamento:asc")}}
-              <i class="material-icons">arrow_drop_down</i>
-            {{/if}}
-          </a>
-        </th>
+        </th>        
       </tr>
     </thead>
 
@@ -166,8 +144,7 @@
           <td>{{moment-format reuniao.dtReuniao "DD/MM/YYYY"}}</td>
           <td>{{reuniao.descricao}}</td>
           <td>{{reuniao.duracao}}</td>
-          <td>{{reuniao.valor}}</td>
-          <td>{{reuniao.nmGrupoCompartilhamento}}</td>
+          <td>{{reuniao.valor}}</td>          
         </tr>
       {{/each}}
     </tbody>
@@ -216,18 +193,7 @@
                 <i class="material-icons">arrow_drop_down</i>
               {{/if}}
             </a>
-          </th>
-          <th>
-            <a class="link" role="button" {{action "ordenarAtendimentos" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-              Comp.
-              {{#if (eq ordenacaoESentidoAtendimentos "nmGrupoCompartilhamento:desc")}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentidoAtendimentos "nmGrupoCompartilhamento:asc")}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
+          </th>          
         {{/if}}
         {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
           <th>
@@ -262,8 +228,7 @@
           <td>{{moment-format atendimento.dtAtendimento "DD/MM/YYYY"}}</td>
           <td>{{atendimento.nmPaciente}}</td>
           {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
-            <td>{{atendimento.valor}}</td>
-            <td>{{atendimento.nmGrupoCompartilhamento}}</td>
+            <td>{{atendimento.valor}}</td>            
           {{/if}}
           {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
             <td>{{atendimento.tipo}}</td>

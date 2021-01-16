@@ -12,8 +12,18 @@ export default DS.Model.extend({
   dtNascimento: DS.attr('date'),
   feriasMes:    DS.attr('string'),
   feriasAno:    DS.attr('string'),
+  coordenador:  DS.attr('string'),
+  desenvolvedor:  DS.attr('string'),
 
   userFirebase: null,
+
+  isCoordenador: computed('coordenador', function() {
+    return this.get('coordenador') == 'Sim';
+  }),
+
+  isDesenvolvedor: computed('desenvolvedor', function() {
+    return this.get('desenvolvedor') == 'Sim';
+  }),
 
   isFisioHealth: computed('profissao', function() {
     return this.get('profissao') == config.APP.fisiohealth;

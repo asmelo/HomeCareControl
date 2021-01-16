@@ -36,10 +36,6 @@ export default Controller.extend({
       this.set('atendimento.paciente', paciente);
     },
 
-    selecionaGrupoCompartilhamento(grupoCompartilhamento) {
-      this.set('grupoCompartilhamento', grupoCompartilhamento);
-    },
-
     selecionaTipoAtendimento(tipoAtendimento) {
       this.set('atendimento.tipo', tipoAtendimento);
     },
@@ -47,13 +43,7 @@ export default Controller.extend({
     atualizarAtendimento() {
 
       let valorTratado = this.get('util').tratarValor(this.get('atendimento.valor'));
-      this.set('atendimento.valor', valorTratado);
-
-      if (this.get('grupoCompartilhamento.id') == -1) {
-        this.set('atendimento.grupoCompartilhamento', null);
-      } else {
-        this.set('atendimento.grupoCompartilhamento', this.get('grupoCompartilhamento'));
-      }
+      this.set('atendimento.valor', valorTratado);      
 
       if (!this.get('validacao').validar(this.get('atendimento'), constraints)) return;
 

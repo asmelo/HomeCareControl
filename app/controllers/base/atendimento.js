@@ -27,79 +27,39 @@ export default Controller.extend({
 
   }),
 
-  atendimentosFiltrados: computed('atendimentosDoMes', 'nmPaciente', 'nmGrupoCompartilhamento', 'tipoAtendimento', function() {
-    //Aplica o filtro do Paciente e do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
+  atendimentosFiltrados: computed('atendimentosDoMes', 'nmPaciente', 'tipoAtendimento', function() {    
     if (this.get('atendimentosDoMes')) {
-      return this.get('atendimentosDoMes').filter(function(atendimento) {
-        if (this.get('nmPaciente') != 'Todos') {
-          let nmPaciente = atendimento.get('paciente.nome');
-          if (nmPaciente == this.get('nmPaciente')) {
-            if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-              let nmGrupoCompartilhamento = atendimento.get('nmGrupoCompartilhamento');
-              if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-                if (this.get('tipoAtendimento') != 'Todos') {
-                  let tipoAtendimento = atendimento.get('tipo');
-                  if (tipoAtendimento == this.get('tipoAtendimento')) {
-                    return true;
-                  }else{
-                    return false;
-                  }
-                } else {
-                  return true;
-                }
-              } else {
-                return false;
-              }
-            } else {
-              if (this.get('tipoAtendimento') != 'Todos') {
-                let tipoAtendimento = atendimento.get('tipo');
-                if (tipoAtendimento == this.get('tipoAtendimento')) {
-                  return true;
-                }else{
-                  return false;
-                }
-              } else {
-                return true;
-              }
-            }
-          } else {
-            return false;
-          }
-        } else {
-          if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-            let nmGrupoCompartilhamento = atendimento.get('nmGrupoCompartilhamento');
-            if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-              if (this.get('tipoAtendimento') != 'Todos') {
-                let tipoAtendimento = atendimento.get('tipo');
-                if (tipoAtendimento == this.get('tipoAtendimento')) {
-                  return true;
-                }else{
-                  return false;
-                }
-              } else {
-                return true;
-              }
-            }else{
-              return false;
-            }
-          } else {
-            if (this.get('tipoAtendimento') != 'Todos') {
-              let tipoAtendimento = atendimento.get('tipo');
-              if (tipoAtendimento == this.get('tipoAtendimento')) {
-                return true;
-              }else{
-                return false;
-              }
-            } else {
-              return true;
-            }
-          }
-        }
-      }, this);
+      return this.get('atendimentosDoMes').filter(this.filtrarPacienteETipo, this);
     } else {
       return [];
     }
   }),
+
+  filtrarPacienteETipo: function(atendimento) {
+    return this.filtrarPaciente(atendimento) && this.filtrarTipoAtendimento(atendimento);
+  },
+
+  filtrarPaciente: function(atendimento) {
+    if (this.get('nmPaciente') != 'Todos') {
+      let nmPaciente = atendimento.get('paciente.nome');
+      if (nmPaciente == this.get('nmPaciente')) {                
+        return true;        
+      }
+      return false;      
+    }
+    return true;          
+  },
+
+  filtrarTipoAtendimento: function(atendimento) {
+    if (this.get('tipoAtendimento') != 'Todos') {
+      let tipoAtendimento = atendimento.get('tipo');
+      if (tipoAtendimento == this.get('tipoAtendimento')) {
+        return true;
+      }
+      return false;      
+    }
+    return true;    
+  },
 
   exibirFiltro: $('body').width() >= 992,
 
@@ -169,10 +129,6 @@ export default Controller.extend({
 
     selecionaPaciente(nmPaciente) {
       this.set('nmPaciente', nmPaciente);
-    },
-
-    selecionaCompartilhamento(nmGrupoCompartilhamento) {
-      this.set('nmGrupoCompartilhamento', nmGrupoCompartilhamento)
     },
 
     selecionaTipoAntedimento(tipoAtendimento) {

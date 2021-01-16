@@ -40,20 +40,10 @@ export default Controller.extend({
       this.set('reuniao.dtReuniao', data);
     },
 
-    selecionaGrupoCompartilhamento(grupoCompartilhamento) {
-      this.set('grupoCompartilhamento', grupoCompartilhamento);
-    },
-
     atualizarReuniao() {
 
       this.set('reuniao.valor', this.get('valor'));
-
-      if (this.get('grupoCompartilhamento.id') == -1) {
-        this.set('reuniao.grupoCompartilhamento', null);
-      } else {
-        this.set('reuniao.grupoCompartilhamento', this.get('grupoCompartilhamento'));
-      }
-
+      
       if (!this.get('validacao').validar(this.get('reuniao'), constraints)) return;
 
       let self = this;

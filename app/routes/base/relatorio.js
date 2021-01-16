@@ -8,165 +8,19 @@ export default Route.extend({
 
   usuario: service(),
 
-  consultaListaUsuarios(this2) {
+  inicializarUsuario(this2) {
+    this2.get('usuario').inicializarUsuario();
     return new Promise(function(resolve) {
-      var promiseList = [];
-      var this3 = this2;
-      this2.store.findAll('grupo-compartilhamento', { reload: true }).then(grupos => {
-        //Percorre todos os grupos
-        for (let i = 0; i < grupos.length; i++) {
-          var grupo = grupos.objectAt(i);
-          for (let j = 0; j < grupo.listaUsuarios.length; j++) {
-            var usuarioCompartilhamento = grupo.listaUsuarios.objectAt(j)
-
-            //Caso o usuário logado esteja no grupo
-            if (usuarioCompartilhamento.get('id') == this3.get('usuario').usuario.get('id')) {
-              promiseList.push(grupo.get('usuario'));
-            }
-          }
-        }
-        Promise.all(promiseList).then(values => {
-          var listaUsuarios = [];
-          var i = 0;
-          while(values[i]) {
-            listaUsuarios.push(values[i]);
-            i++;
-          }
-          resolve(listaUsuarios);
-        })
-      });
-
+      setTimeout(function(resolve) {
+        resolve();
+      }, 1000, resolve);
     });
-  },
-
-  consultaListaAtendimentos(this2) {
-    return new Promise(function(resolve) {
-      var promiseListUsuario = [];
-      var listaGrupos = [];
-      var this3 = this2;
-      this2.store.findAll('grupo-compartilhamento', { reload: true }).then(grupos => {
-        //Percorre todos os grupos
-        for (let i = 0; i < grupos.length; i++) {
-          var grupo = grupos.objectAt(i);
-          for (let j = 0; j < grupo.listaUsuarios.length; j++) {
-            var usuarioCompartilhamento = grupo.listaUsuarios.objectAt(j);
-
-            //Caso o usuário logado esteja no grupo
-            if (usuarioCompartilhamento.get('id') == this3.get('usuario').usuario.get('id')) {
-              listaGrupos.push(grupo.get('id'));
-              promiseListUsuario.push(grupo.get('usuario'));
-            }
-
-          }
-        }
-        Promise.all(promiseListUsuario).then(values => {
-          var promiseListAtend = [];
-          var i = 0;
-
-          promiseListAtend.push(this3.store.query('atendimento', {
-            orderBy: 'usuario',
-            equalTo: this3.get('usuario').usuario.get('id')
-          }));
-
-          while(values[i]) {
-            //Caso o usuário logado esteja no grupo
-            promiseListAtend.push(this3.store.query('atendimento', {
-              orderBy: 'usuario',
-              equalTo: values[i].get('id')
-            }));
-            i++;
-          }
-
-          Promise.all(promiseListAtend).then(atendimentos => {
-            var listaAtendimentos = [];
-            var i = 0;
-            while(atendimentos[i]) {
-              for (let k = 0; k < atendimentos[i].length; k++) {
-                let grupoCompartilhamento = atendimentos[i].objectAt(k).get('grupoCompartilhamento');
-                if (atendimentos[i].objectAt(k).get('usuario.id') == this3.get('usuario').usuario.get('id') ||
-                    listaGrupos.includes(grupoCompartilhamento.get('id'))) {
-                  listaAtendimentos.push(atendimentos[i].objectAt(k));
-                }
-              }
-              i++;
-            }
-            resolve(listaAtendimentos);
-          })
-
-        })
-      });
-
-    });
-  },
-
-  consultaListaReunioes(this2) {
-    return new Promise(function(resolve) {
-      var promiseListUsuario = [];      
-      var listaGrupos = [];
-      var this3 = this2;
-      this2.store.findAll('grupo-compartilhamento', { reload: true }).then(grupos => {
-        //Percorre todos os grupos
-        for (let i = 0; i < grupos.length; i++) {
-          var grupo = grupos.objectAt(i);
-          for (let j = 0; j < grupo.listaUsuarios.length; j++) {
-            var usuarioCompartilhamento = grupo.listaUsuarios.objectAt(j);
-
-            //Caso o usuário logado esteja no grupo
-            if (usuarioCompartilhamento.get('id') == this3.get('usuario').usuario.get('id')) {
-              listaGrupos.push(grupo.get('id'));
-              promiseListUsuario.push(grupo.get('usuario'));
-            }
-
-          }
-        }
-        Promise.all(promiseListUsuario).then(values => {
-          var promiseListReuniao = [];
-          var i = 0;
-
-          promiseListReuniao.push(this3.store.query('reuniao', {
-            orderBy: 'usuario',
-            equalTo: this3.get('usuario').usuario.get('id')
-          }));
-
-          while(values[i]) {
-            //Caso o usuário logado esteja no grupo
-            promiseListReuniao.push(this3.store.query('reuniao', {
-              orderBy: 'usuario',
-              equalTo: values[i].get('id')
-            }));
-            i++;
-          }
-
-          Promise.all(promiseListReuniao).then(reunioes => {
-            var listaReunioes = [];
-            var i = 0;
-            while(reunioes[i]) {
-              for (let k = 0; k < reunioes[i].length; k++) {
-                let grupoCompartilhamento = reunioes[i].objectAt(k).get('grupoCompartilhamento');
-                if (reunioes[i].objectAt(k).get('usuario.id') == this3.get('usuario').usuario.get('id') ||
-                    listaGrupos.includes(grupoCompartilhamento.get('id'))) {
-                  listaReunioes.push(reunioes[i].objectAt(k));
-                }
-              }
-              i++;
-            }
-            resolve(listaReunioes);
-          })
-        })
-      });
-
-    });
-  },
+  },  
 
   model() {
-    return RSVP.hash({
-      gruposUsuario: this.store.query('grupo-compartilhamento', {
-        orderBy: 'usuario',
-        equalTo: this.get('usuario').userId
-      }),
-      listaUsuarios: this.get('consultaListaUsuarios')(this),
-      listaAtendimentos: this.get('consultaListaAtendimentos')(this),
-      listaReunioes: this.get('consultaListaReunioes')(this)
+    return RSVP.hash({      
+      timeout: this.get('inicializarUsuario')(this),
+      listaUsuarios: this.store.findAll('usuario')      
     });
   },
 
@@ -186,13 +40,41 @@ export default Route.extend({
       10: "Novembro",
       11: "Dezembro"
     };
+     
+    if (this.get('usuario').usuario.isCoordenador) {
+      this.store.findAll('atendimento').then(atendimentos => {
+        controller.set('listaAtendimentos', atendimentos);
+      });
+    } else {        
+      this.store.query('atendimento', {
+        orderBy: 'usuario',
+        equalTo: this.get('usuario').usuario.get('id')
+      }).then(assistencias => {
+        controller.set('listaAtendimentos', atendimentos);
+      });
+    }
 
-    controller.set('listaAtendimentos', model.listaAtendimentos);
-    controller.set('listaReunioes', model.listaReunioes);
+    if (this.get('usuario').usuario.isCoordenador) {
+      this.store.findAll('reuniao').then(reunioes => {
+        controller.set('listaReunioes', reunioes);
+      });
+    } else {        
+      this.store.query('reuniao', {
+        orderBy: 'usuario',
+        equalTo: this.get('usuario').usuario.get('id')
+      }).then(reunioes => {
+        controller.set('listaReunioes', reunioes);
+      });
+    }
 
-    let listaUsuarios = model.listaUsuarios.sortBy('nome');
-    listaUsuarios.insertAt(0, this.get('usuario').usuario);
-    controller.set('listaUsuarios', listaUsuarios);
+    if (this.get('usuario').usuario.isCoordenador) {
+      let listaUsuarios = model.listaUsuarios.sortBy('nome');
+      this.removeUsuarioLogadoEusuarioDeDesenvolvimento(listaUsuarios);
+      listaUsuarios.insertAt(0, this.get('usuario').usuario);
+      controller.set('listaUsuarios', listaUsuarios);
+    } else {
+      controller.set('listaUsuarios', [this.get('usuario').usuario]);
+    }    
 
     controller.set('usuarioFiltro', this.get('usuario').usuario);
 
@@ -211,28 +93,19 @@ export default Route.extend({
     let listaMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     controller.set('listaMeses', listaMeses);
     controller.set('mes', dicionarioMeses[hoje.getMonth()]);
-    controller.set('dicionarioMeses', dicionarioMeses);
-
-    //Preenche filtro de Grupos de Compartilhamento
-    let listaGruposCompartilhamento = model.gruposUsuario.mapBy('nome');
-    listaGruposCompartilhamento.insertAt(0, 'Todos');
-    listaGruposCompartilhamento.insertAt(1, 'Nenhum');
-    controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
-
-    //Seleciona o grupo principal para o usuário logado
-    let grupoPrincipal = model.gruposUsuario.filter(function(grupo) {
-      return grupo.get('principal');
-    });
-    if (grupoPrincipal.length > 0) {
-      controller.set('nmGrupoCompartilhamento', grupoPrincipal.objectAt(0).get('nome'));
-      controller.set('nmGrupoCompartilhamentoUsuario', grupoPrincipal.objectAt(0).get('nome'));
-    } else {
-      controller.set('nmGrupoCompartilhamento', 'Todos');
-      controller.set('nmGrupoCompartilhamentoUsuario', 'Todos');
-    }
+    controller.set('dicionarioMeses', dicionarioMeses);    
 
   },
 
-
+  removeUsuarioLogadoEusuarioDeDesenvolvimento: function(listaUsuarios) {
+    for (let i = 0; i < listaUsuarios.length; i++) {
+      if (listaUsuarios[i].id == this.get('usuario').usuario.id) {
+        listaUsuarios.splice(i, 1);
+      }
+      if (listaUsuarios[i].isDesenvolvedor) {
+        listaUsuarios.splice(i, 1);
+      }
+    }
+  }
 
 });

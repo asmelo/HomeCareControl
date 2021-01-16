@@ -24,18 +24,7 @@
             {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
               <div class="col s12 m2">
                 {{input-text label="Valor" type="tel" value=valor mask="#.##0,00" reverseMask=true}}
-              </div>
-              <div class="input-field col s12 m3 combo">
-                <div class="labelForm">Grupo de Compartilhamento</div>
-                {{#power-select selected=grupoCompartilhamento
-                                options=gruposCompartilhamento
-                                onchange=(action "selecionaGrupoCompartilhamento")
-                                noMatchesMessage="Sem registros"
-                                disabled="disabled"
-                                searchField="nome" as |grupo|}}
-                  {{grupo.nome}}
-                {{/power-select}}
-              </div>
+              </div>              
             {{/if}}
 
             {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}

@@ -14,10 +14,6 @@ export default Route.extend({
       pacientes: this.store.query('paciente', {
         orderBy: 'usuario',
         equalTo: this.get('usuario').userId
-      }),
-      gruposCompartilhamento: this.store.query('grupo-compartilhamento', {
-        orderBy: 'usuario',
-        equalTo: this.get('usuario').userId
       })
     })
   },
@@ -28,28 +24,6 @@ export default Route.extend({
     controller.set('pacientes', model.pacientes);
 
     controller.set('tiposAtendimento', ['Atendimento', 'Intercorrência', 'Remoção']);
-
-    //Transfere os grupos para uma lista comum para poder inserir o
-    //item "Nenhum", pois o resultSet do grupo-compartilhamento é imutável
-    let gruposCompartilhamento = model.gruposCompartilhamento.map(function(grupo) {
-      return grupo;
-    });
-    let itemNenhum = EmberObject.create({
-      id: '-1',
-      nome: 'Nenhum'
-    });
-    gruposCompartilhamento.insertAt(0, itemNenhum);
-    controller.set('gruposCompartilhamento', gruposCompartilhamento);
-
-    if (isEmpty(model.atendimento.get('grupoCompartilhamento.id'))) {
-      //Seleciona o item "Nenhum"
-      controller.set('grupoCompartilhamento', gruposCompartilhamento[0]);
-    } else {
-      model.atendimento.get('grupoCompartilhamento').then(grupo => {
-          controller.set('grupoCompartilhamento', grupo);
-      });
-    }
-
   },
 
 });

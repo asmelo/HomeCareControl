@@ -6,8 +6,7 @@ export default DS.Model.extend({
     dtAssistencia:            DS.attr('date'),
     setor:                    DS.belongsTo('setor', { inverse: false }),
     valor:                    DS.attr('moeda'),
-    usuario:                  DS.belongsTo('usuario', { inverse: false }),
-    grupoCompartilhamento:    DS.belongsTo('grupo-compartilhamento', { inverse: false }),
+    usuario:                  DS.belongsTo('usuario', { inverse: false }),    
     turno:                    DS.attr('string'),
 
     nmSetor: computed('setor.nome', function() {
@@ -16,14 +15,6 @@ export default DS.Model.extend({
 
     valorNumber: computed('valor', function() {
         return Number(this.get('valor').replace('R$', '').replace('.', '').replace(',', '.').trim());
-    }),
-
-    nmGrupoCompartilhamento: computed('grupoCompartilhamento.nome', function() {
-        if (this.get('grupoCompartilhamento.nome')) {
-        return this.get('grupoCompartilhamento.nome');
-        } else {
-        return 'Nenhum';
-        }
     }),
 
     dataFormatada: computed('dtAssistencia', function() {

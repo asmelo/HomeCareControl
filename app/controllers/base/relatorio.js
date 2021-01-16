@@ -76,8 +76,7 @@ export default Controller.extend({
     steps.push({text: [3 + x1, y2 + 5, 'Data']});
     steps.push({text: [3 + x1 + 18, y2 + 5, 'Descrição']});
     steps.push({text: [3 + x1 + 68, y2 + 5, 'Duração']});
-    steps.push({text: [3 + x1 + 82, y2 + 5, 'Valor']});
-    steps.push({text: [3 + x1 + 100, y2 + 5, 'Grupo']});
+    steps.push({text: [3 + x1 + 82, y2 + 5, 'Valor']});    
 
     var houveQuebraPagina = false;
 
@@ -87,8 +86,7 @@ export default Controller.extend({
       steps.push({text: [3 + x1, y1, reuniao.dataFormatada]});
       steps.push({text: [3 + x1 + 18, y1, reuniao.descricao, { maxWidth: '48'}]});
       steps.push({text: [3 + x1 + 68, y1, reuniao.duracao]});
-      steps.push({text: [3 + x1 + 82, y1, reuniao.valor]});
-      steps.push({text: [3 + x1 + 100, y1, reuniao.nmGrupoCompartilhamento]});
+      steps.push({text: [3 + x1 + 82, y1, reuniao.valor]});      
       y1 += 5;
 
       if (reuniao.descricao.length > 34) {
@@ -211,8 +209,7 @@ export default Controller.extend({
       steps.push({text: [3 + x1 + 76, y2 + 5, 'Tipo']});
       steps.push({text: [3 + x1 + 97, y2 + 5, 'Valor']});
     } else {
-      steps.push({text: [3 + x1 + 76, y2 + 5, 'Valor']});
-      steps.push({text: [3 + x1 + 94, y2 + 5, 'Grupo']});
+      steps.push({text: [3 + x1 + 76, y2 + 5, 'Valor']});      
     }
 
 
@@ -228,8 +225,7 @@ export default Controller.extend({
         steps.push({text: [3 + x1 + 76, y1, atendimento.tipo]});
         steps.push({text: [3 + x1 + 97, y1, atendimento.valor]});
       } else {
-        steps.push({text: [3 + x1 + 76, y1, atendimento.valor]});
-        steps.push({text: [3 + x1 + 94, y1, atendimento.nmGrupoCompartilhamento]});
+        steps.push({text: [3 + x1 + 76, y1, atendimento.valor]});        
       }
 
       y1 += 5;
@@ -265,8 +261,7 @@ export default Controller.extend({
     let stepsTodos = [];
     let stepsUsuario = [];
 
-    let usuarioSelecionado = this.get('usuarioFiltro');
-    let nmGrupoCompartilhamento = this.get('nmGrupoCompartilhamento');
+    let usuarioSelecionado = this.get('usuarioFiltro');    
 
     for(let i = 0; i < this.get('listaUsuarios').length; i++) {
         this.send('selecionaUsuario', this.get('listaUsuarios').objectAt(i));
@@ -287,8 +282,7 @@ export default Controller.extend({
     steps.push(stepsUsuario);
     steps.push(stepsTodos);
 
-    this.send('selecionaUsuario', usuarioSelecionado);
-    this.send('selecionaCompartilhamento', nmGrupoCompartilhamento);
+    this.send('selecionaUsuario', usuarioSelecionado);    
 
     return steps;
   }),
@@ -314,22 +308,13 @@ export default Controller.extend({
 
   }),
 
-  atendimentosFiltrados: computed('atendimentosDoMes', 'usuarioFiltro', 'nmGrupoCompartilhamento', function() {
-    //Aplica o filtro do Paciente e do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
+  atendimentosFiltrados: computed('atendimentosDoMes', 'usuarioFiltro', function() {
+    //Aplica o filtro do Paciente
     if (isPresent(this.get('atendimentosDoMes'))) {
       return this.get('atendimentosDoMes').filter(function(atendimento) {
         let idUsuario = atendimento.get('usuario.id');
-        if (idUsuario == this.get('usuarioFiltro.id')) {
-          if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-            let nmGrupoCompartilhamento = atendimento.get('nmGrupoCompartilhamento');
-            if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            return true;
-          }
+        if (idUsuario == this.get('usuarioFiltro.id')) {          
+          return true;        
         } else {
           return false;
         }
@@ -377,22 +362,13 @@ export default Controller.extend({
 
   }),
 
-  reunioesFiltradas: computed('reunioesDoMes', 'usuarioFiltro', 'nmGrupoCompartilhamento', function() {
-    //Aplica o filtro do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
+  reunioesFiltradas: computed('reunioesDoMes', 'usuarioFiltro', function() {
+    //Aplica o filtro usuario
     if (isPresent(this.get('reunioesDoMes'))) {
       return this.get('reunioesDoMes').filter(function(reuniao) {
         let idUsuario = reuniao.get('usuario.id');
-        if (idUsuario == this.get('usuarioFiltro.id')) {
-          if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-            let nmGrupoCompartilhamento = reuniao.get('nmGrupoCompartilhamento');
-            if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            return true;
-          }
+        if (idUsuario == this.get('usuarioFiltro.id')) {          
+          return true;          
         } else {
           return false;
         }
@@ -657,12 +633,7 @@ export default Controller.extend({
     },
 
     selecionaUsuario(usuarioFiltro) {
-      this.set('usuarioFiltro', usuarioFiltro);
-      if (!this.get('isAtendimentoDoUsuario')) {
-        this.set('nmGrupoCompartilhamento', 'Todos');
-      } else {
-        this.set('nmGrupoCompartilhamento', this.get('nmGrupoCompartilhamentoUsuario'));
-      }
+      this.set('usuarioFiltro', usuarioFiltro);      
 
       let listaPaciente = this.get('listaAtendimentosPorPaciente');
       if (listaPaciente.length > 0 && isEmpty(listaPaciente[0].paciente.get('nome'))) {
@@ -682,14 +653,7 @@ export default Controller.extend({
 
     selecionaAno(ano) {
       this.set('ano', ano)
-    },
-
-    selecionaCompartilhamento(nmGrupoCompartilhamento) {
-      this.set('nmGrupoCompartilhamento', nmGrupoCompartilhamento);
-      if (this.get('usuarioFiltro.id') == this.get('usuario').usuario.get('id')) {
-        this.set('nmGrupoCompartilhamentoUsuario', nmGrupoCompartilhamento);
-      }
-    },
+    },    
 
     ordenarAtendimentos(campo) {
       if (this.get('ordenacaoAtendimentos') == campo) {

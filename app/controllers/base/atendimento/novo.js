@@ -39,14 +39,6 @@ export default Controller.extend({
       }
     },
 
-    selecionaGrupoCompartilhamento(grupoCompartilhamento) {
-      if (grupoCompartilhamento.get('nome') == 'Cadastrar novo grupo') {
-        this.transitionToRoute('base.grupo-compartilhamento');
-      } else {
-        this.set('grupoCompartilhamento', grupoCompartilhamento);
-      }
-    },
-
     selecionaTipoAtendimento(tipoAtendimento) {
       this.set('tipoAtendimento', tipoAtendimento);
       if (tipoAtendimento == 'Atendimento') {
@@ -62,7 +54,7 @@ export default Controller.extend({
 
     salvarAtendimento() {
 
-      let campos = this.getProperties('dtAtendimento', 'paciente', 'valor', 'grupoCompartilhamento');
+      let campos = this.getProperties('dtAtendimento', 'paciente', 'valor');
       if (!this.get('validacao').validar(campos, constraints)) return;
 
       if(!this.get('paciente')) {
@@ -70,20 +62,14 @@ export default Controller.extend({
         return;
       }
 
-      let valorTratado = this.get('util').tratarValor(this.get('valor'));
-
-      let grupoCompartilhamento = this.get('grupoCompartilhamento');
-      if (grupoCompartilhamento.get('id') == '-1') {
-        grupoCompartilhamento = null;
-      }
+      let valorTratado = this.get('util').tratarValor(this.get('valor'));      
 
       this.get('dtAtendimento').setHours(12);
 
       let atendimento = this.get('store').createRecord('atendimento', {
         dtAtendimento: this.get('dtAtendimento'),
         valor: valorTratado,
-        paciente: this.get('paciente'),
-        grupoCompartilhamento: grupoCompartilhamento,
+        paciente: this.get('paciente'),        
         usuario: this.get('usuario').usuario,
         tipo: this.get('tipoAtendimento')
       });
@@ -115,19 +101,7 @@ export default Controller.extend({
         this.set('tipoAtendimento', 'Atendimento');
       }
 
-      this.set('paciente', null);
-
-      if (isEmpty(this.get('grupoCompartilhamento'))) {
-        let grupoPrincipal = this.get('gruposCompartilhamento').filter(function(grupo) {
-          return grupo.get('principal');
-        });
-        if (grupoPrincipal.length > 0) {
-          this.set('grupoCompartilhamento', grupoPrincipal.objectAt(0));
-        } else {
-          //Seleciona o opção Nenhum
-          this.set('grupoCompartilhamento', this.get('gruposCompartilhamento')[0]);
-        }
-      }
+      this.set('paciente', null);      
     }
 
   }

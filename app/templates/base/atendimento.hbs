@@ -35,19 +35,7 @@
                         as |paciente|}}
           {{paciente}}
         {{/power-select}}
-      </div>
-      {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
-        <div class="input-field col s12 m3 combo">
-          <div class="labelForm">Compartilhamento</div>
-          {{#power-select selected=nmGrupoCompartilhamento
-                          options=gruposCompartilhamento
-                          onchange=(action "selecionaCompartilhamento")
-                          noMatchesMessage="Sem registros"
-                          as |grupo|}}
-            {{grupo}}
-          {{/power-select}}
-        </div>
-      {{/if}}
+      </div>      
 
       {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
         <div class="input-field col s12 m3 combo">
@@ -102,18 +90,7 @@
                 <i class="material-icons">arrow_drop_down</i>
               {{/if}}
             </a>
-          </th>
-          <th>
-            <a class="link" role="button" {{action "ordenar" "nmGrupoCompartilhamento"}} title="Grupo de Compartilhamento">
-              Comp.
-              {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:desc")}}
-                <i class="material-icons">arrow_drop_up</i>
-              {{/if}}
-              {{#if (eq ordenacaoESentido "nmGrupoCompartilhamento:asc")}}
-                <i class="material-icons">arrow_drop_down</i>
-              {{/if}}
-            </a>
-          </th>
+          </th>          
         {{/if}}
 
         {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
@@ -149,8 +126,7 @@
           <td>{{moment-format atendimento.dtAtendimento "DD/MM/YYYY"}}</td>
           <td>{{atendimento.nmPaciente}}</td>
           {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
-            <td>{{atendimento.valor}}</td>
-            <td>{{atendimento.nmGrupoCompartilhamento}}</td>
+            <td>{{atendimento.valor}}</td>            
           {{/if}}
           {{#if (eq usuario.usuario.profissao "Fisioterapeuta")}}
             <td>{{atendimento.tipo}}</td>
