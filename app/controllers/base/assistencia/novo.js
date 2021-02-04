@@ -67,13 +67,17 @@ export default Controller.extend({
       let valorTratado = this.get('util').tratarValor(this.get('valor'));      
       
       this.get('dtAssistencia').setHours(12);
+      let anoMes = this.get('util').formataAnoEmes(this.get('dtAssistencia'));
+      let usuarioAnoMes = this.get('util').formataUsuarioAnoEmes(this.get('usuario').usuario.id, this.get('dtAssistencia'));
       
       let assistencia = this.get('store').createRecord('assistencia', {
         dtAssistencia: this.get('dtAssistencia'),
         valor: valorTratado,
         setor: this.get('setor'),        
         usuario: this.get('usuario').usuario,
-        turno: this.get('turno')
+        turno: this.get('turno'),
+        anoMes: anoMes,
+        usuarioAnoMes: usuarioAnoMes
       });
 
       let self = this;

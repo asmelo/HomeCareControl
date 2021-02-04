@@ -8,32 +8,27 @@ export default Controller.extend({
 
   usuario: service(),
   alerta: service(),
+  util: service(),
 
-  atendimentosDoMes: computed('atendimentos.[]', 'mes', 'ano', function() {
-    //Aplica os filtros obrigatórios Ano e Mês
-    if (this.get('atendimentos')) {
-      return this.get('atendimentos').filter(function(atendimento) {
-        let mesPorExtenso = this.get('dicionarioMeses')[atendimento.get('dtAtendimento').getMonth()]
-        let ano = atendimento.get('dtAtendimento').getFullYear();
-        if (mesPorExtenso == this.get('mes') && ano == this.get('ano')) {
-          return true;
-        } else {
-          return false;
-        }
-      }, this);
-    }
-
-    return [];
-
-  }),
-
-  atendimentosFiltrados: computed('atendimentosDoMes', 'nmPaciente', 'tipoAtendimento', function() {    
+  atendimentosFiltrados: computed('atendimentosDoMes.[]', 'nmPaciente', 'tipoAtendimento', function() {    
     if (this.get('atendimentosDoMes')) {
       return this.get('atendimentosDoMes').filter(this.filtrarPacienteETipo, this);
     } else {
       return [];
     }
   }),
+
+  consultarAtendimentosDoMes: function() {  
+    $('loading').css('display', '');  
+    let usuarioAnoMes = this.get('util').formataUsuarioAnoEmesPorExtenso(this.get('usuario').usuario.id, this.get('ano'), this.get('mes'));
+    this.store.query('atendimento', {
+      orderBy: 'usuarioAnoMes',
+      equalTo: usuarioAnoMes
+    }).then(atendimentos => {
+      this.set('atendimentosDoMes', atendimentos);
+      $('loading').css('display', 'none');
+    });
+  },
 
   filtrarPacienteETipo: function(atendimento) {
     return this.filtrarPaciente(atendimento) && this.filtrarTipoAtendimento(atendimento);
@@ -120,11 +115,13 @@ export default Controller.extend({
     },
 
     selecionaMes(mes) {
-      this.set('mes', mes)
+      this.set('mes', mes);   
+      this.consultarAtendimentosDoMes();   
     },
 
     selecionaAno(ano) {
-      this.set('ano', ano)
+      this.set('ano', ano);
+      this.consultarAtendimentosDoMes();
     },
 
     selecionaPaciente(nmPaciente) {

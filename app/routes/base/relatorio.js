@@ -7,6 +7,7 @@ import { later } from '@ember/runloop';
 export default Route.extend({
 
   usuario: service(),
+  util: service(),
 
   inicializarUsuario(this2) {
     this2.get('usuario').inicializarUsuario();
@@ -42,14 +43,19 @@ export default Route.extend({
     };
      
     if (this.get('usuario').usuario.isCoordenador) {
-      this.store.findAll('atendimento').then(atendimentos => {
+      var anoEMes = this.get('util').formataAnoEmesAtual();
+      this.store.query('atendimento', {
+        orderBy: 'anoMes',
+        equalTo: anoEMes
+      }).then(atendimentos => {
         controller.set('listaAtendimentos', atendimentos);
       });
     } else {        
+      var usuarioAnoMes = this.get('util').formataUsuarioAnoEmesAtual(this.get('usuario').usuario.get('id'));
       this.store.query('atendimento', {
-        orderBy: 'usuario',
-        equalTo: this.get('usuario').usuario.get('id')
-      }).then(assistencias => {
+        orderBy: 'usuarioAnoMes',
+        equalTo: usuarioAnoMes
+      }).then(atendimentos => {
         controller.set('listaAtendimentos', atendimentos);
       });
     }
@@ -67,9 +73,8 @@ export default Route.extend({
       });
     }
 
-    if (this.get('usuario').usuario.isCoordenador) {
-      let listaUsuarios = model.listaUsuarios.sortBy('nome');
-      this.removeUsuarioLogadoEusuarioDeDesenvolvimento(listaUsuarios);
+    if (this.get('usuario').usuario.isCoordenador) {      
+      let listaUsuarios = this.removeUsuarioLogadoUsuarioDeDesenvolvimentoEInativo(model.listaUsuarios.sortBy('nome'));
       listaUsuarios.insertAt(0, this.get('usuario').usuario);
       controller.set('listaUsuarios', listaUsuarios);
     } else {
@@ -97,15 +102,14 @@ export default Route.extend({
 
   },
 
-  removeUsuarioLogadoEusuarioDeDesenvolvimento: function(listaUsuarios) {
+  removeUsuarioLogadoUsuarioDeDesenvolvimentoEInativo: function(listaUsuarios) {
+    let listaFinal = [];
     for (let i = 0; i < listaUsuarios.length; i++) {
-      if (listaUsuarios[i].id == this.get('usuario').usuario.id) {
-        listaUsuarios.splice(i, 1);
-      }
-      if (listaUsuarios[i].isDesenvolvedor) {
-        listaUsuarios.splice(i, 1);
-      }
+      if ((listaUsuarios[i].id != this.get('usuario').usuario.id) && !listaUsuarios[i].isDesenvolvedor && listaUsuarios[i].isAtivo) {
+        listaFinal.push(listaUsuarios[i]);
+      }      
     }
+    return listaFinal;
   }
 
 });

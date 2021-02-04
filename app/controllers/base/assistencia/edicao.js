@@ -45,6 +45,11 @@ export default Controller.extend({
       let valorTratado = this.get('util').tratarValor(this.get('assistencia.valor'));
       this.set('assistencia.valor', valorTratado);      
 
+      let anoMes = this.get('util').formataAnoEmes(this.get('assistencia.dtAssistencia'));
+      let usuarioAnoMes = this.get('util').formataUsuarioAnoEmes(this.get('assistencia.usuario'), this.get('assistencia.dtAssistencia'));
+      this.set('assistencia.anoMes', anoMes);  
+      this.set('assistencia.usuarioAnoMes', usuarioAnoMes); 
+
       if (!this.get('validacao').validar(this.get('assistencia'), constraints)) return;
 
       let self = this;

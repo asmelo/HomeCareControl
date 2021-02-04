@@ -19,6 +19,15 @@
         {{/if}}
       {{/if}}
     {{/each}}
+    {{#if (eq usuario.usuario.isCoordenador true)}}
+      {{#each stepsAniversariantes as |stepAniversariante|}}       
+          <li>
+              {{#js-pdf stepAniversariante showPdf=false id="Aniversarios" as |pdf|}}
+                  <a title="Gerar PDF com a data de nascimento dos profissionais" class="link" role="button" {{action pdf.save}}><i class="material-icons">cake</i></a>
+              {{/js-pdf}}
+          </li>      
+      {{/each}}
+    {{/if}}
   </ul>
 </div>
 

@@ -256,6 +256,60 @@ export default Controller.extend({
     return steps;
   },
 
+  constroiPDFAniversariantes: function() {
+    let steps = [];
+
+    let pagina = 1;
+    steps.push({setFontSize: 25});
+    steps.push({text: [105, 25, 'Aniversário dos Fonoaudiólogos', {align: 'center'}]});        
+
+    let largura = 190;
+    let x1 = 10;
+    let y2 = 41;
+    let y1 = y2 + 12;
+    let x2 = x1 + largura;    
+
+    steps.push({setFontSize: 8});
+    steps.push({setFontStyle: 'bold'});
+    steps.push({text: [3 + x1, y2 + 5, 'Fonoaudiólogo']});
+    steps.push({text: [3 + x1 + 75, y2 + 5, 'Aniversário']});
+
+    var y = y2 + 12;
+    steps.push({setFontStyle: 'normal'});        
+
+    var houveQuebraPagina = false;    
+    for(let i = 0; i < this.get('listaUsuarios').length; i++) {
+        let usuario = this.get('listaUsuarios').objectAt(i);
+        steps.push({text: [3 + x1, y, usuario.get('nome')]});        
+        steps.push({text: [3 + x1 + 75, y, usuario.get('dtNascimentoFormatada')]});   
+        y += 5;
+        y1 += 5;
+        if (y1 > 284) {
+            houveQuebraPagina = true;
+            y1 = 285;
+            steps.push({line: [x1, y1, x1, y2]});
+            steps.push({line: [x1, y2, x2, y2]});
+            steps.push({line: [x2, y2, x2, y1]});
+            steps.push({addPage: []});
+            pagina += 1;
+            steps.push({setFontSize: 6});        
+            steps.push({text: [200, 5, 'Página: ' + pagina, { align: 'right' }]});
+            steps.push({setFontSize: 8});
+            y2 = 10;
+            y1 = 15;
+        }     
+    }
+
+    steps.push({line: [x1, y1, x1, y2]});
+    if (!houveQuebraPagina) {
+      steps.push({line: [x1, y2, x2, y2]});
+    }
+    steps.push({line: [x2, y2, x2, y1]});
+    steps.push({line: [x2, y1, x1, y1]});
+          
+    return steps;
+  },
+
   steps: computed('atendimentosFiltrados', 'reunioesFiltradas', 'ordenaListaAtd', 'funcaoOrdenacaoAtendimentos', 'funcaoOrdenacaoReunioes', function() {
     let steps = [];
     let stepsTodos = [];
@@ -287,31 +341,20 @@ export default Controller.extend({
     return steps;
   }),
 
+  stepsAniversariantes: computed('listaUsuarios', function() {    
+    let internalSteps = this.constroiPDFAniversariantes();
+    let steps = [];
+    steps.push(internalSteps);
+    return steps;
+  }),
+
 
   //ATENDIMENTOS
 
-  atendimentosDoMes: computed('listaAtendimentos.[]', 'mes', 'ano', function() {
-    //Aplica os filtros obrigatórios Ano e Mês
+  atendimentosFiltrados: computed('listaAtendimentos.[]', 'usuarioFiltro', function() {
+    //Aplica o filtro do Paciente
     if (isPresent(this.get('listaAtendimentos'))) {
       return this.get('listaAtendimentos').filter(function(atendimento) {
-        let mesPorExtenso = this.get('dicionarioMeses')[atendimento.get('dtAtendimento').getMonth()]
-        let ano = atendimento.get('dtAtendimento').getFullYear();
-        if (mesPorExtenso == this.get('mes') && ano == this.get('ano')) {
-          return true;
-        } else {
-          return false;
-        }
-      }, this);
-    }
-
-    return [];
-
-  }),
-
-  atendimentosFiltrados: computed('atendimentosDoMes', 'usuarioFiltro', function() {
-    //Aplica o filtro do Paciente
-    if (isPresent(this.get('atendimentosDoMes'))) {
-      return this.get('atendimentosDoMes').filter(function(atendimento) {
         let idUsuario = atendimento.get('usuario.id');
         if (idUsuario == this.get('usuarioFiltro.id')) {          
           return true;        
@@ -626,6 +669,29 @@ export default Controller.extend({
       return 0;
   }),
 
+  consultarAtendimentosDoMes: function() {  
+    $('loading').css('display', '');  
+    if (this.get('usuario').usuario.isCoordenador) {
+      var anoEMes = this.get('util').formataAnoEmesPorExtenso(this.get('ano'), this.get('mes'));
+      this.store.query('atendimento', {
+        orderBy: 'anoMes',
+        equalTo: anoEMes
+      }).then(atendimentos => {
+        this.set('listaAtendimentos', atendimentos);
+        $('loading').css('display', 'none');
+      });
+    } else {        
+      var usuarioAnoMes = this.get('util').formataUsuarioAnoEmesPorExtenso(this.get('usuario').usuario.get('id'), this.get('ano'), this.get('mes'));
+      this.store.query('atendimento', {
+        orderBy: 'usuarioAnoMes',
+        equalTo: usuarioAnoMes
+      }).then(atendimentos => {
+        this.set('listaAtendimentos', atendimentos);
+        $('loading').css('display', 'none');
+      });
+    }
+  },
+
   actions: {
 
     scrollUp() {
@@ -648,11 +714,13 @@ export default Controller.extend({
     },
 
     selecionaMes(mes) {
-      this.set('mes', mes)
+      this.set('mes', mes);
+      this.consultarAtendimentosDoMes();
     },
 
     selecionaAno(ano) {
-      this.set('ano', ano)
+      this.set('ano', ano);
+      this.consultarAtendimentosDoMes();
     },    
 
     ordenarAtendimentos(campo) {

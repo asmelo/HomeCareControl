@@ -15,7 +15,7 @@ Router.map(function() {
     this.route('atendimento', function() {
       this.route('novo');
       this.route('edicao', { path: '/edicao/:id_atendimento'});
-    });    
+    });
     this.route('reuniao', function() {
       this.route('novo');
       this.route('edicao', { path: '/edicao/:id_reuniao'});
@@ -32,6 +32,7 @@ Router.map(function() {
       this.route('edicao', { path: '/edicao/:id_assistencia'});
     });
     this.route('relatorio-assistencia');
+    this.route('admin');
   });
   this.route('conta');
   this.route('login');

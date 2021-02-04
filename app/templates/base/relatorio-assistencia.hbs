@@ -1,6 +1,6 @@
 <div class="relatorio-header">
   <h4>Relatório de Assistências</h4>
-  {{#if (eq usuario.usuario.email 'fisio.health4@hotmail.com')}}
+  {{#if (eq usuario.usuario.isCoordenador true)}}
     <ul> 
       {{#each steps as |step|}}      
           <li>

@@ -8,6 +8,8 @@ export default DS.Model.extend({
     valor:                    DS.attr('moeda'),
     usuario:                  DS.belongsTo('usuario', { inverse: false }),    
     turno:                    DS.attr('string'),
+    usuarioAnoMes:            DS.attr('string'),
+    anoMes:                   DS.attr('string'),
 
     nmSetor: computed('setor.nome', function() {
         return this.get('setor.nome');

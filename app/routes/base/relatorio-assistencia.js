@@ -58,8 +58,7 @@ export default Route.extend({
     }
 
     if (this.get('usuario').usuario.isCoordenador) {
-      let listaUsuarios = model.listaUsuarios.sortBy('nome');
-      this.removeUsuarioLogadoEusuarioDeDesenvolvimento(listaUsuarios);
+      let listaUsuarios = this.removeUsuarioLogadoUsuarioDeDesenvolvimentoEInativo(model.listaUsuarios.sortBy('nome'));
       listaUsuarios.insertAt(0, this.get('usuario').usuario);
       controller.set('listaUsuarios', listaUsuarios);
     } else {
@@ -102,16 +101,15 @@ export default Route.extend({
     controller.set('turno', 'Todos');   
 
   },
-
-  removeUsuarioLogadoEusuarioDeDesenvolvimento: function(listaUsuarios) {
+  
+  removeUsuarioLogadoUsuarioDeDesenvolvimentoEInativo: function(listaUsuarios) {
+    let listaFinal = [];
     for (let i = 0; i < listaUsuarios.length; i++) {
-      if (listaUsuarios[i].id == this.get('usuario').usuario.id) {
-        listaUsuarios.splice(i, 1);
-      }
-      if (listaUsuarios[i].isDesenvolvedor) {
-        listaUsuarios.splice(i, 1);
-      }
+      if ((listaUsuarios[i].id != this.get('usuario').usuario.id) && !listaUsuarios[i].isDesenvolvedor && listaUsuarios[i].isAtivo) {
+        listaFinal.push(listaUsuarios[i]);
+      }      
     }
+    return listaFinal;
   }
 
 });

@@ -12,8 +12,9 @@
             <div class="col s12 m3">
               {{input-text label="Duração" inputClass="duracao" type="tel" value=duracao mask="00:00"}}
             </div>
-            <div class="col s12 m3">
-              {{input-text label="Valor" value=valor disabled=true mask="#.##0,00" reverseMask=true}}
+            <div class="col s12 m3 labelNoForm"> 
+              <div class="labelForm">Valor</div>             
+              {{valor}}
             </div>            
             <div class="col s12">
               {{input-text label="Descricao" inputClass="descricao" value=descricao maxlength=70}}

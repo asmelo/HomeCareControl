@@ -30,7 +30,7 @@ export default Controller.extend({
   util: service(),
   validacao: service(),
 
-  valor: computed('duracao', function() {
+  valor: computed('duracao', function() {    
     return this.get('util').calculaValorReuniao(this.get('duracao'), this.get('usuario.usuario.profissao'));
   }),
 

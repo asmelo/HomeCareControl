@@ -14,6 +14,7 @@ export default DS.Model.extend({
   feriasAno:    DS.attr('string'),
   coordenador:  DS.attr('string'),
   desenvolvedor:  DS.attr('string'),
+  ativo:  DS.attr('string'),
 
   userFirebase: null,
 
@@ -27,6 +28,10 @@ export default DS.Model.extend({
 
   isFisioHealth: computed('profissao', function() {
     return this.get('profissao') == config.APP.fisiohealth;
+  }),
+
+  isAtivo: computed('ativo', function() {
+    return this.get('ativo') != 'Não'
   }),
 
   dtNascimentoFormatada: computed('dtNascimento', function() {
