@@ -46,7 +46,7 @@ export default Controller.extend({
       this.set('assistencia.valor', valorTratado);      
 
       let anoMes = this.get('util').formataAnoEmes(this.get('assistencia.dtAssistencia'));
-      let usuarioAnoMes = this.get('util').formataUsuarioAnoEmes(this.get('assistencia.usuario'), this.get('assistencia.dtAssistencia'));
+      let usuarioAnoMes = this.get('util').formataUsuarioAnoEmes(this.get('assistencia.usuario').get('id'), this.get('assistencia.dtAssistencia'));
       this.set('assistencia.anoMes', anoMes);  
       this.set('assistencia.usuarioAnoMes', usuarioAnoMes); 
 
