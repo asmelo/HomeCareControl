@@ -59,8 +59,7 @@ export default Controller.extend({
     var y = y2 + 12;
     steps.push({setFontStyle: 'normal'});    
 
-    let usuarioSelecionado = this.get('usuarioFiltro');
-    let nmGrupoCompartilhamento = this.get('nmGrupoCompartilhamento');
+    let usuarioSelecionado = this.get('usuarioFiltro');    
 
     var houveQuebraPagina = false;
     let totalGeral = 0;
@@ -110,8 +109,7 @@ export default Controller.extend({
     let totalGeralFormatado = 'Total Geral: ' + this.get('util').tratarValor(totalGeral);    
     steps.splice(4, 0, {text: [200, 40, totalGeralFormatado, {align: 'right'}]});    
 
-    this.send('selecionaUsuario', usuarioSelecionado);
-    this.send('selecionaCompartilhamento', nmGrupoCompartilhamento);
+    this.send('selecionaUsuario', usuarioSelecionado);    
 
     return steps;
   },
@@ -205,7 +203,7 @@ export default Controller.extend({
 
   }),  
 
-  assistenciasFiltradas: computed('assistenciasDoMes', 'usuarioFiltro', 'nmGrupoCompartilhamento', 'nmSetor', 'turno', function() {    
+  assistenciasFiltradas: computed('assistenciasDoMes', 'usuarioFiltro', 'nmSetor', 'turno', function() {    
     if (isPresent(this.get('assistenciasDoMes'))) {
       return this.get('assistenciasDoMes').filter(this.aplicarFiltros, this);
     } else {
@@ -214,20 +212,13 @@ export default Controller.extend({
   }),
 
   aplicarFiltros: function(assistencia) {
-    return this.filtrarUsuario(assistencia) && this.filtrarGrupoCompartilhamento(assistencia) &&
-           this.filtrarSetor(assistencia) && this.filtrarTurno(assistencia);
+    return this.filtrarUsuario(assistencia) && this.filtrarSetor(assistencia) && this.filtrarTurno(assistencia);
   },
 
   filtrarUsuario: function(assistencia) {    
     return assistencia.get('usuario.id') == this.get('usuarioFiltro.id');
   },
-
-  filtrarGrupoCompartilhamento: function(assistencia) {    
-    //Aplica o filtro do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
-    let nmGrupoCompartilhamento = assistencia.get('nmGrupoCompartilhamento');
-    return (this.get('nmGrupoCompartilhamento') == 'Todos') || (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento'));    
-  },
-
+  
   filtrarSetor(assistencia) {    
     return (this.get('nmSetor') == 'Todos') || (assistencia.get('nmSetor') == this.get('nmSetor'));
   },
@@ -349,13 +340,7 @@ export default Controller.extend({
       this.set('usuarioFiltro', usuarioFiltro);
 
       this.set('feriasMes', usuarioFiltro.get('feriasMes'));
-      this.set('feriasAno', usuarioFiltro.get('feriasAno'));
-      
-      if (!this.get('isAssistenciaDoUsuario')) {
-        this.set('nmGrupoCompartilhamento', 'Todos');
-      } else {
-        this.set('nmGrupoCompartilhamento', this.get('nmGrupoCompartilhamentoUsuario'));
-      }
+      this.set('feriasAno', usuarioFiltro.get('feriasAno'));            
 
       let listaSetor = this.get('listaAssistenciasPorSetor');
       if (listaSetor.length > 0 && isEmpty(listaSetor[0].setor.get('nome'))) {
@@ -404,14 +389,7 @@ export default Controller.extend({
 
     selecionaTurno(turno) {
       this.set('turno', turno)
-    },
-
-    selecionaCompartilhamento(nmGrupoCompartilhamento) {
-      this.set('nmGrupoCompartilhamento', nmGrupoCompartilhamento);
-      if (this.get('usuarioFiltro.id') == this.get('usuario').usuario.get('id')) {
-        this.set('nmGrupoCompartilhamentoUsuario', nmGrupoCompartilhamento);
-      }
-    },
+    },    
 
     ordenarAssistencias(campo) {
       if (this.get('ordenacaoAssistencias') == campo) {

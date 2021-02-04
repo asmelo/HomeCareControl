@@ -36,10 +36,6 @@ export default Controller.extend({
       this.set('assistencia.setor', setor);
     },
 
-    selecionaGrupoCompartilhamento(grupoCompartilhamento) {
-      this.set('grupoCompartilhamento', grupoCompartilhamento);
-    },
-
     selecionaTurno(turno) {
       this.set('assistencia.turno', turno);
     },
@@ -47,13 +43,12 @@ export default Controller.extend({
     atualizarAssistencia() {
 
       let valorTratado = this.get('util').tratarValor(this.get('assistencia.valor'));
-      this.set('assistencia.valor', valorTratado);
+      this.set('assistencia.valor', valorTratado);      
 
-      if (this.get('grupoCompartilhamento.id') == -1) {
-        this.set('assistencia.grupoCompartilhamento', null);
-      } else {
-        this.set('assistencia.grupoCompartilhamento', this.get('grupoCompartilhamento'));
-      }
+      let anoMes = this.get('util').formataAnoEmes(this.get('assistencia.dtAssistencia'));
+      let usuarioAnoMes = this.get('util').formataUsuarioAnoEmes(this.get('assistencia.usuario'), this.get('assistencia.dtAssistencia'));
+      this.set('assistencia.anoMes', anoMes);  
+      this.set('assistencia.usuarioAnoMes', usuarioAnoMes); 
 
       if (!this.get('validacao').validar(this.get('assistencia'), constraints)) return;
 

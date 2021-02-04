@@ -11,10 +11,6 @@ export default Route.extend({
       reunioes: this.store.query('reuniao', {
         orderBy: 'usuario',
         equalTo: this.get('usuario').userId
-      }),
-      gruposCompartilhamento: this.store.query('grupo-compartilhamento', {
-        orderBy: 'usuario',
-        equalTo: this.get('usuario').userId
       })
     });
   },
@@ -49,23 +45,7 @@ export default Route.extend({
     let listaMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     controller.set('listaMeses', listaMeses);
     controller.set('mes', dicionarioMeses[hoje.getMonth()]);
-    controller.set('dicionarioMeses', dicionarioMeses);
-
-    //Preenche filtro de Grupos de Compartilhamento
-    let listaGruposCompartilhamento = model.gruposCompartilhamento.mapBy('nome');
-    listaGruposCompartilhamento.insertAt(0, 'Todos');
-    listaGruposCompartilhamento.insertAt(1, 'Nenhum');
-    controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
-
-    let grupoPrincipal = model.gruposCompartilhamento.filter(function(grupo) {
-      return grupo.get('principal');
-    });
-    if (grupoPrincipal.length > 0) {
-      controller.set('nmGrupoCompartilhamento', grupoPrincipal.objectAt(0).get('nome'));
-    } else {
-      controller.set('nmGrupoCompartilhamento', 'Todos');
-    }
-
+    controller.set('dicionarioMeses', dicionarioMeses);    
   },
 
 });

@@ -9,7 +9,7 @@ export default Controller.extend({
   usuario: service(),
   alerta: service(),
 
-  reunioesDoMes: computed('reunioes.[]', 'mes', 'ano', function() {
+  reunioesFiltradas: computed('reunioes.[]', 'mes', 'ano', function() {
     //Aplica os filtros obrigatórios Ano e Mês
     if (this.get('reunioes')) {
       return this.get('reunioes').filter(function(reuniao) {
@@ -25,27 +25,7 @@ export default Controller.extend({
 
     return [];
 
-  }),
-
-  reunioesFiltradas: computed('reunioesDoMes', 'nmGrupoCompartilhamento', function() {
-    //Aplica o filtro do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
-    if (this.get('reunioesDoMes')) {
-      return this.get('reunioesDoMes').filter(function(reuniao) {
-        if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-          let nmGrupoCompartilhamento = reuniao.get('nmGrupoCompartilhamento');
-          if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-            return true;
-          }else{
-            return false;
-          }
-        } else {
-          return true;
-        }
-      }, this);
-    } else {
-      return [];
-    }
-  }),
+  }),  
 
   exibirFiltro: $('body').width() >= 992,
 
@@ -94,10 +74,6 @@ export default Controller.extend({
 
     selecionaAno(ano) {
       this.set('ano', ano)
-    },
-
-    selecionaCompartilhamento(nmGrupoCompartilhamento) {
-      this.set('nmGrupoCompartilhamento', nmGrupoCompartilhamento)
     },
 
     exibirFiltroAction() {

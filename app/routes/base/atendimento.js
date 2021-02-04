@@ -5,23 +5,21 @@ import RSVP from 'rsvp';
 export default Route.extend({
 
   usuario: service(),
+  util: service(),
 
   model() {
+    var usuarioAnoEMes = this.get('util').formataUsuarioAnoEmesAtual(this.get('usuario').userId);
     return RSVP.hash({
       atendimentos: this.store.query('atendimento', {
-        orderBy: 'usuario',
-        equalTo: this.get('usuario').userId
-      }),
-      gruposCompartilhamento: this.store.query('grupo-compartilhamento', {
-        orderBy: 'usuario',
-        equalTo: this.get('usuario').userId
+        orderBy: 'usuarioAnoMes',
+        equalTo: usuarioAnoEMes
       })
     });
   },
 
   setupController(controller, model) {
 
-    controller.set('atendimentos', model.atendimentos);
+    controller.set('atendimentosDoMes', model.atendimentos);
 
     let dicionarioMeses = {
       0: "Janeiro",
@@ -49,29 +47,11 @@ export default Route.extend({
     let listaMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     controller.set('listaMeses', listaMeses);
     controller.set('mes', dicionarioMeses[hoje.getMonth()]);
-    controller.set('dicionarioMeses', dicionarioMeses);
-
-    //Preenche filtro de Grupos de Compartilhamento
-    let listaGruposCompartilhamento = model.gruposCompartilhamento.mapBy('nome');
-    listaGruposCompartilhamento.insertAt(0, 'Todos');
-    listaGruposCompartilhamento.insertAt(1, 'Nenhum');
-    controller.set('gruposCompartilhamento', listaGruposCompartilhamento);
+    controller.set('dicionarioMeses', dicionarioMeses);    
 
     //Preeche filtro de Tipo de Atendimento (Para Fisio)
     controller.set('tiposAtendimento', ['Todos', 'Atendimento', 'Intercorrência', 'Remoção']);
-    controller.set('tipoAtendimento', 'Todos');
-
-    let grupoPrincipal = model.gruposCompartilhamento.filter(function(grupo) {
-      return grupo.get('principal');
-    });
-    if (grupoPrincipal.length > 0) {
-      controller.set('nmGrupoCompartilhamento', grupoPrincipal.objectAt(0).get('nome'));
-    } else {
-      controller.set('nmGrupoCompartilhamento', 'Todos');
-    }
-
-  },
-
-
+    controller.set('tipoAtendimento', 'Todos');    
+  }
 
 });

@@ -1,0 +1,23 @@
+<div class="row formulario">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <form {{action "migrarDados" on="submit"}}>
+          <div class="row">
+            <h4>Migrar Dados Antigos</h4>    
+            <h8>Atendimentos processados: {{total}}</h8><br>        
+            <h8>Atendimentos até 2019: {{count}}</h8><br>    
+            <h8>Erros: {{erros}}</h8>
+          </div>
+          <div class="row">
+            <div class="col s12 right-align">
+              <button type="submit" class="salvar btn wave-effects wave-light">Migrar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{outlet}}

@@ -35,14 +35,6 @@ export default Controller.extend({
       this.set('setor', setor);      
     },
 
-    selecionaGrupoCompartilhamento(grupoCompartilhamento) {
-      if (grupoCompartilhamento.get('nome') == 'Cadastrar novo grupo') {
-        this.transitionToRoute('base.grupo-compartilhamento');
-      } else {
-        this.set('grupoCompartilhamento', grupoCompartilhamento);
-      }
-    },
-
     selecionaTurno(turno) {
       this.set('turno', turno);
       if (turno == 'Manhã') {
@@ -64,7 +56,7 @@ export default Controller.extend({
 
     salvarAssistencia() {
 
-      let campos = this.getProperties('dtAssistencia', 'setor', 'valor', 'grupoCompartilhamento');
+      let campos = this.getProperties('dtAssistencia', 'setor', 'valor');
       if (!this.get('validacao').validar(campos, constraints)) return;
 
       if(!this.get('setor')) {
@@ -72,22 +64,20 @@ export default Controller.extend({
         return;
       }
 
-      let valorTratado = this.get('util').tratarValor(this.get('valor'));
-
-      let grupoCompartilhamento = this.get('grupoCompartilhamento');
-      if (grupoCompartilhamento.get('id') == '-1') {
-        grupoCompartilhamento = null;
-      }
+      let valorTratado = this.get('util').tratarValor(this.get('valor'));      
       
       this.get('dtAssistencia').setHours(12);
+      let anoMes = this.get('util').formataAnoEmes(this.get('dtAssistencia'));
+      let usuarioAnoMes = this.get('util').formataUsuarioAnoEmes(this.get('usuario').usuario.id, this.get('dtAssistencia'));
       
       let assistencia = this.get('store').createRecord('assistencia', {
         dtAssistencia: this.get('dtAssistencia'),
         valor: valorTratado,
-        setor: this.get('setor'),
-        grupoCompartilhamento: grupoCompartilhamento,
+        setor: this.get('setor'),        
         usuario: this.get('usuario').usuario,
-        turno: this.get('turno')
+        turno: this.get('turno'),
+        anoMes: anoMes,
+        usuarioAnoMes: usuarioAnoMes
       });
 
       let self = this;
@@ -114,19 +104,7 @@ export default Controller.extend({
         this.set('turno', 'Manhã');
       }
 
-      this.set('setor', null);
-
-      if (isEmpty(this.get('grupoCompartilhamento'))) {
-        let grupoPrincipal = this.get('gruposCompartilhamento').filter(function(grupo) {
-          return grupo.get('principal');
-        });
-        if (grupoPrincipal.length > 0) {
-          this.set('grupoCompartilhamento', grupoPrincipal.objectAt(0));
-        } else {
-          //Seleciona o opção Nenhum
-          this.set('grupoCompartilhamento', this.get('gruposCompartilhamento')[0]);
-        }
-      }
+      this.set('setor', null);      
     }
 
   }

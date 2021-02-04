@@ -76,8 +76,7 @@ export default Controller.extend({
     steps.push({text: [3 + x1, y2 + 5, 'Data']});
     steps.push({text: [3 + x1 + 18, y2 + 5, 'Descrição']});
     steps.push({text: [3 + x1 + 68, y2 + 5, 'Duração']});
-    steps.push({text: [3 + x1 + 82, y2 + 5, 'Valor']});
-    steps.push({text: [3 + x1 + 100, y2 + 5, 'Grupo']});
+    steps.push({text: [3 + x1 + 82, y2 + 5, 'Valor']});    
 
     var houveQuebraPagina = false;
 
@@ -87,8 +86,7 @@ export default Controller.extend({
       steps.push({text: [3 + x1, y1, reuniao.dataFormatada]});
       steps.push({text: [3 + x1 + 18, y1, reuniao.descricao, { maxWidth: '48'}]});
       steps.push({text: [3 + x1 + 68, y1, reuniao.duracao]});
-      steps.push({text: [3 + x1 + 82, y1, reuniao.valor]});
-      steps.push({text: [3 + x1 + 100, y1, reuniao.nmGrupoCompartilhamento]});
+      steps.push({text: [3 + x1 + 82, y1, reuniao.valor]});      
       y1 += 5;
 
       if (reuniao.descricao.length > 34) {
@@ -211,8 +209,7 @@ export default Controller.extend({
       steps.push({text: [3 + x1 + 76, y2 + 5, 'Tipo']});
       steps.push({text: [3 + x1 + 97, y2 + 5, 'Valor']});
     } else {
-      steps.push({text: [3 + x1 + 76, y2 + 5, 'Valor']});
-      steps.push({text: [3 + x1 + 94, y2 + 5, 'Grupo']});
+      steps.push({text: [3 + x1 + 76, y2 + 5, 'Valor']});      
     }
 
 
@@ -228,8 +225,7 @@ export default Controller.extend({
         steps.push({text: [3 + x1 + 76, y1, atendimento.tipo]});
         steps.push({text: [3 + x1 + 97, y1, atendimento.valor]});
       } else {
-        steps.push({text: [3 + x1 + 76, y1, atendimento.valor]});
-        steps.push({text: [3 + x1 + 94, y1, atendimento.nmGrupoCompartilhamento]});
+        steps.push({text: [3 + x1 + 76, y1, atendimento.valor]});        
       }
 
       y1 += 5;
@@ -260,13 +256,66 @@ export default Controller.extend({
     return steps;
   },
 
+  constroiPDFAniversariantes: function() {
+    let steps = [];
+
+    let pagina = 1;
+    steps.push({setFontSize: 25});
+    steps.push({text: [105, 25, 'Aniversário dos Fonoaudiólogos', {align: 'center'}]});        
+
+    let largura = 190;
+    let x1 = 10;
+    let y2 = 41;
+    let y1 = y2 + 12;
+    let x2 = x1 + largura;    
+
+    steps.push({setFontSize: 8});
+    steps.push({setFontStyle: 'bold'});
+    steps.push({text: [3 + x1, y2 + 5, 'Fonoaudiólogo']});
+    steps.push({text: [3 + x1 + 75, y2 + 5, 'Aniversário']});
+
+    var y = y2 + 12;
+    steps.push({setFontStyle: 'normal'});        
+
+    var houveQuebraPagina = false;    
+    for(let i = 0; i < this.get('listaUsuarios').length; i++) {
+        let usuario = this.get('listaUsuarios').objectAt(i);
+        steps.push({text: [3 + x1, y, usuario.get('nome')]});        
+        steps.push({text: [3 + x1 + 75, y, usuario.get('dtNascimentoFormatada')]});   
+        y += 5;
+        y1 += 5;
+        if (y1 > 284) {
+            houveQuebraPagina = true;
+            y1 = 285;
+            steps.push({line: [x1, y1, x1, y2]});
+            steps.push({line: [x1, y2, x2, y2]});
+            steps.push({line: [x2, y2, x2, y1]});
+            steps.push({addPage: []});
+            pagina += 1;
+            steps.push({setFontSize: 6});        
+            steps.push({text: [200, 5, 'Página: ' + pagina, { align: 'right' }]});
+            steps.push({setFontSize: 8});
+            y2 = 10;
+            y1 = 15;
+        }     
+    }
+
+    steps.push({line: [x1, y1, x1, y2]});
+    if (!houveQuebraPagina) {
+      steps.push({line: [x1, y2, x2, y2]});
+    }
+    steps.push({line: [x2, y2, x2, y1]});
+    steps.push({line: [x2, y1, x1, y1]});
+          
+    return steps;
+  },
+
   steps: computed('atendimentosFiltrados', 'reunioesFiltradas', 'ordenaListaAtd', 'funcaoOrdenacaoAtendimentos', 'funcaoOrdenacaoReunioes', function() {
     let steps = [];
     let stepsTodos = [];
     let stepsUsuario = [];
 
-    let usuarioSelecionado = this.get('usuarioFiltro');
-    let nmGrupoCompartilhamento = this.get('nmGrupoCompartilhamento');
+    let usuarioSelecionado = this.get('usuarioFiltro');    
 
     for(let i = 0; i < this.get('listaUsuarios').length; i++) {
         this.send('selecionaUsuario', this.get('listaUsuarios').objectAt(i));
@@ -287,49 +336,28 @@ export default Controller.extend({
     steps.push(stepsUsuario);
     steps.push(stepsTodos);
 
-    this.send('selecionaUsuario', usuarioSelecionado);
-    this.send('selecionaCompartilhamento', nmGrupoCompartilhamento);
+    this.send('selecionaUsuario', usuarioSelecionado);    
 
+    return steps;
+  }),
+
+  stepsAniversariantes: computed('listaUsuarios', function() {    
+    let internalSteps = this.constroiPDFAniversariantes();
+    let steps = [];
+    steps.push(internalSteps);
     return steps;
   }),
 
 
   //ATENDIMENTOS
 
-  atendimentosDoMes: computed('listaAtendimentos.[]', 'mes', 'ano', function() {
-    //Aplica os filtros obrigatórios Ano e Mês
+  atendimentosFiltrados: computed('listaAtendimentos.[]', 'usuarioFiltro', function() {
+    //Aplica o filtro do Paciente
     if (isPresent(this.get('listaAtendimentos'))) {
       return this.get('listaAtendimentos').filter(function(atendimento) {
-        let mesPorExtenso = this.get('dicionarioMeses')[atendimento.get('dtAtendimento').getMonth()]
-        let ano = atendimento.get('dtAtendimento').getFullYear();
-        if (mesPorExtenso == this.get('mes') && ano == this.get('ano')) {
-          return true;
-        } else {
-          return false;
-        }
-      }, this);
-    }
-
-    return [];
-
-  }),
-
-  atendimentosFiltrados: computed('atendimentosDoMes', 'usuarioFiltro', 'nmGrupoCompartilhamento', function() {
-    //Aplica o filtro do Paciente e do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
-    if (isPresent(this.get('atendimentosDoMes'))) {
-      return this.get('atendimentosDoMes').filter(function(atendimento) {
         let idUsuario = atendimento.get('usuario.id');
-        if (idUsuario == this.get('usuarioFiltro.id')) {
-          if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-            let nmGrupoCompartilhamento = atendimento.get('nmGrupoCompartilhamento');
-            if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            return true;
-          }
+        if (idUsuario == this.get('usuarioFiltro.id')) {          
+          return true;        
         } else {
           return false;
         }
@@ -377,22 +405,13 @@ export default Controller.extend({
 
   }),
 
-  reunioesFiltradas: computed('reunioesDoMes', 'usuarioFiltro', 'nmGrupoCompartilhamento', function() {
-    //Aplica o filtro do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
+  reunioesFiltradas: computed('reunioesDoMes', 'usuarioFiltro', function() {
+    //Aplica o filtro usuario
     if (isPresent(this.get('reunioesDoMes'))) {
       return this.get('reunioesDoMes').filter(function(reuniao) {
         let idUsuario = reuniao.get('usuario.id');
-        if (idUsuario == this.get('usuarioFiltro.id')) {
-          if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-            let nmGrupoCompartilhamento = reuniao.get('nmGrupoCompartilhamento');
-            if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            return true;
-          }
+        if (idUsuario == this.get('usuarioFiltro.id')) {          
+          return true;          
         } else {
           return false;
         }
@@ -650,6 +669,29 @@ export default Controller.extend({
       return 0;
   }),
 
+  consultarAtendimentosDoMes: function() {  
+    $('loading').css('display', '');  
+    if (this.get('usuario').usuario.isCoordenador) {
+      var anoEMes = this.get('util').formataAnoEmesPorExtenso(this.get('ano'), this.get('mes'));
+      this.store.query('atendimento', {
+        orderBy: 'anoMes',
+        equalTo: anoEMes
+      }).then(atendimentos => {
+        this.set('listaAtendimentos', atendimentos);
+        $('loading').css('display', 'none');
+      });
+    } else {        
+      var usuarioAnoMes = this.get('util').formataUsuarioAnoEmesPorExtenso(this.get('usuario').usuario.get('id'), this.get('ano'), this.get('mes'));
+      this.store.query('atendimento', {
+        orderBy: 'usuarioAnoMes',
+        equalTo: usuarioAnoMes
+      }).then(atendimentos => {
+        this.set('listaAtendimentos', atendimentos);
+        $('loading').css('display', 'none');
+      });
+    }
+  },
+
   actions: {
 
     scrollUp() {
@@ -657,12 +699,7 @@ export default Controller.extend({
     },
 
     selecionaUsuario(usuarioFiltro) {
-      this.set('usuarioFiltro', usuarioFiltro);
-      if (!this.get('isAtendimentoDoUsuario')) {
-        this.set('nmGrupoCompartilhamento', 'Todos');
-      } else {
-        this.set('nmGrupoCompartilhamento', this.get('nmGrupoCompartilhamentoUsuario'));
-      }
+      this.set('usuarioFiltro', usuarioFiltro);      
 
       let listaPaciente = this.get('listaAtendimentosPorPaciente');
       if (listaPaciente.length > 0 && isEmpty(listaPaciente[0].paciente.get('nome'))) {
@@ -677,19 +714,14 @@ export default Controller.extend({
     },
 
     selecionaMes(mes) {
-      this.set('mes', mes)
+      this.set('mes', mes);
+      this.consultarAtendimentosDoMes();
     },
 
     selecionaAno(ano) {
-      this.set('ano', ano)
-    },
-
-    selecionaCompartilhamento(nmGrupoCompartilhamento) {
-      this.set('nmGrupoCompartilhamento', nmGrupoCompartilhamento);
-      if (this.get('usuarioFiltro.id') == this.get('usuario').usuario.get('id')) {
-        this.set('nmGrupoCompartilhamentoUsuario', nmGrupoCompartilhamento);
-      }
-    },
+      this.set('ano', ano);
+      this.consultarAtendimentosDoMes();
+    },    
 
     ordenarAtendimentos(campo) {
       if (this.get('ordenacaoAtendimentos') == campo) {

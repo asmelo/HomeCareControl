@@ -14,10 +14,6 @@ export default Route.extend({
         orderBy: 'usuario',
         equalTo: this.get('usuario').userId
       }),
-      gruposCompartilhamento: this.store.query('grupo-compartilhamento', {
-        orderBy: 'usuario',
-        equalTo: this.get('usuario').userId
-      }),
       params: params
     });
   },
@@ -35,29 +31,6 @@ export default Route.extend({
     })
     pacientes.insertAt(0, novoPaciente);
     controller.set('pacientes', pacientes);
-
-    //Transfere os grupos para uma lista comum para poder inserir o
-    //item "Nenhum", pois o resultSet do grupo-compartilhamento é imutável
-    let gruposCompartilhamento = model.gruposCompartilhamento.map(function(grupo) {
-      return grupo;
-    });
-
-    let itemNenhum = EmberObject.create({
-      id: '-1',
-      nome: 'Nenhum'
-    });
-    gruposCompartilhamento.insertAt(0, itemNenhum);
-
-    if (gruposCompartilhamento.length == 1) {
-      let novoGrupo = EmberObject.create({
-        id: '-2',
-        nome: 'Cadastrar novo grupo'
-      });
-      gruposCompartilhamento.insertAt(0, novoGrupo);
-      controller.set('grupoCompartilhamento', itemNenhum)
-    }
-
-    controller.set('gruposCompartilhamento', gruposCompartilhamento);
 
     if (localStorage.getItem('novoPaciente')) {
         let pacienteCadastrado = this.store.peekRecord('paciente', localStorage.getItem('novoPaciente'));

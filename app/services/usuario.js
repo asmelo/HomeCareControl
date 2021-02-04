@@ -1,6 +1,5 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
-import config from 'homecarecontrol/config/environment';
 import $ from 'jquery';
 
 /*global firebase*/
@@ -36,18 +35,20 @@ export default Service.extend({
         equalTo: this.get('userEmail')
       }).then(response => {
         let usuario = response.objectAt(0);
-        this.set('usuario', usuario);
-        localStorage.setItem('userId', usuario.get('id'));
-        this.set('userId', usuario.get('id'));
+        if (usuario) {
+          this.set('usuario', usuario);
+          localStorage.setItem('userId', usuario.get('id'));
+          this.set('userId', usuario.get('id'));
 
-        if (this.get('redirecionarParaAtendimento')) {
-          if (usuario.isFisioHealth) {
-            this.get('router').transitionTo('base.assistencia.novo');
-          } else {
-            this.get('router').transitionTo('base.atendimento.novo');
-          }            
-          this.set('redirecionarParaAtendimento', false);
-        }
+          if (this.get('redirecionarParaAtendimento')) {
+            if (usuario.isFisioHealth) {
+              this.get('router').transitionTo('base.assistencia.novo');
+            } else {
+              this.get('router').transitionTo('base.atendimento.novo');
+            }            
+            this.set('redirecionarParaAtendimento', false);
+          }
+        }        
       });
     }
   },
@@ -97,44 +98,12 @@ export default Service.extend({
         email: email
       });
       let self_2 = self;
-      usuario.save().then(function(novoUsuario) {
-        if (novoUsuario.get('profissao') == config.APP.fonoaudiologo || 
-        novoUsuario.get('profissao') == config.APP.fisioterapeuta || 
-        novoUsuario.get('profissao') == config.APP.fisiohealth) {
-            let grupo = self_2.get('store').createRecord('grupo-compartilhamento', {
-              nome: 'SOS Vida',
-              principal: true,
-              usuario: novoUsuario
-            });
-
-            var coordenadorEmail = 'analusiqueira@hotmail.com';
-            if (novoUsuario.get('profissao') == config.APP.fisioterapeuta) {
-              coordenadorEmail = 'carolreina_fisio@hotmail.com';
-            }
-            
-            if (novoUsuario.get('profissao') == config.APP.fisiohealth) {
-              coordenadorEmail = 'fisio.health4@hotmail.com';
-            }
-            
-            let self_3 = self_2;
-            self_2.get('store').query('usuario', {
-                  orderBy: 'email',
-                  equalTo: coordenadorEmail
-                }).then(function(coordenador) {
-                  grupo.get('listaUsuarios').pushObject(coordenador.objectAt(0));
-
-                  let self_4 = self_3;
-                  grupo.save().then(function() {
-                    self_4.set('redirecionarParaAtendimento', true);
-                    self_4.get('alerta').sucesso('Conta cadastrada com sucesso!');
-                  }).catch(function() {
-                    self_4.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
-                  })
-                })
-        } else {
-          self_2.set('redirecionarParaAtendimento', true);
-          self_2.get('alerta').sucesso('Conta cadastrada com sucesso!');
-        }
+      usuario.save().then(function() {   
+        self_2.set('redirecionarParaAtendimento', true);
+        self_2.inicializarUsuario();
+        self_2.get('alerta').sucesso('Conta cadastrada com sucesso!');                             
+      }).catch(function() {
+        self_2.get('alerta').erro('Ocorreu um erro ao criar o usuario!');
       })
     }).catch(error => {
       $('loading').css('display', 'none');
@@ -168,6 +137,9 @@ export default Service.extend({
       if (error.code == 'auth/user-not-found' || error.code == 'auth/wrong-password') {
         this2.get('alerta').erro('Usuário ou senha inválido!');
       }
+      if (error.code == 'auth/user-disabled') {
+        this2.get('alerta').erro('Usuário desativado!');
+      }
       $('loading').css('display', 'none');
     });
 
@@ -192,56 +164,6 @@ export default Service.extend({
     }).catch(function() {
       this2.get('alerta').erro('Erro ao enviar e-mail. Verifique se seu e-mail está preenchido corretamente.');
     });
-  },
-
-  criarGrupoSOSVidaFono() {
-    let grupoSOS = this.get('gruposCompartilhamento').filter(grupo => {
-      return grupo.get('nome') == 'SOS Vida';
-    });
-    if (grupoSOS.length > 0) {
-      this.get('alerta').erro('Este grupo já existe');
-      return;
-    }
-
-    let grupo = this.get('store').createRecord('grupo-compartilhamento', {
-      nome: 'SOS Vida',
-      principal: true,
-      usuario: this.get('usuario').usuario
-    });
-
-    grupo.get('listaUsuarios').pushObject(this.get('analu'));
-
-    let self = this;
-    grupo.save().then(function() {
-      self.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
-    }).catch(function() {
-      self.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
-    })
-  },
-
-  criarGrupoSOSVidaFisio() {
-    let grupoSOS = this.get('gruposCompartilhamento').filter(grupo => {
-      return grupo.get('nome') == 'SOS Vida';
-    });
-    if (grupoSOS.length > 0) {
-      this.get('alerta').erro('Este grupo já existe');
-      return;
-    }
-
-    let grupo = this.get('store').createRecord('grupo-compartilhamento', {
-      nome: 'SOS Vida',
-      principal: true,
-      usuario: this.get('usuario').usuario
-    });
-
-    grupo.get('listaUsuarios').pushObject(this.get('carol'));
-
-    let self = this;
-    grupo.save().then(function() {
-      self.get('alerta').sucesso('Grupo SOS Vida Criado com sucesso!');
-    }).catch(function() {
-      self.get('alerta').erro('Ocorreu um erro ao criar o grupo!');
-    })
-  },
+  }  
 
 });
