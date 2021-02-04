@@ -28,29 +28,18 @@ export default Controller.extend({
     }),
 
     assistenciasFiltradas: computed('assistenciasDoMes', 'nmSetor', 'nmGrupoCompartilhamento', 'turno', function() {
-        //Aplica o filtro do Setor e do Grupo de Compartilhamento caso o valor seja diferente de 'Todos'
+        //Aplica o filtro do Setor e do Turno caso o valor seja diferente de 'Todos'
         if (this.get('assistenciasDoMes')) {
-        return this.get('assistenciasDoMes').filter(function(assistencia) {
-            if (this.get('nmSetor') != 'Todos') {
+            return this.get('assistenciasDoMes').filter(this.filtrarSetorETurno(), this);
+        } else {
+            return [];
+        }
+    }),
+
+    filtrarSetorETurno: function(assistencia) {
+        if (this.get('nmSetor') != 'Todos') {
             let nmSetor = assistencia.get('setor.nome');
-            if (nmSetor == this.get('nmSetor')) {
-                if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-                let nmGrupoCompartilhamento = assistencia.get('nmGrupoCompartilhamento');
-                if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-                    if (this.get('turno') != 'Todos') {
-                        let turno = assistencia.get('turno');
-                    if (turno == this.get('turno')) {
-                        return true;
-                    }else{
-                        return false;
-                    }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-                } else {
+            if (nmSetor == this.get('nmSetor')) {                
                 if (this.get('turno') != 'Todos') {
                     let turno = assistencia.get('turno');
                     if (turno == this.get('turno')) {
@@ -60,46 +49,23 @@ export default Controller.extend({
                     }
                 } else {
                     return true;
-                }
-                }
+                }                
             } else {
                 return false;
             }
-            } else {
-            if (this.get('nmGrupoCompartilhamento') != 'Todos') {
-                let nmGrupoCompartilhamento = assistencia.get('nmGrupoCompartilhamento');
-                if (nmGrupoCompartilhamento == this.get('nmGrupoCompartilhamento')) {
-                if (this.get('turno') != 'Todos') {
-                    let turno = assistencia.get('turno');
-                    if (turno == this.get('turno')) {
-                        return true;
-                    }else{
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-                }else{
-                    return false;
-                }
-            } else {
-                if (this.get('turno') != 'Todos') {
+        } else {            
+            if (this.get('turno') != 'Todos') {
                 let turno = assistencia.get('turno');
                 if (turno == this.get('turno')) {
                     return true;
                 }else{
                     return false;
                 }
-                } else {
+            } else {
                 return true;
-                }
-            }
-            }
-        }, this);
-        } else {
-        return [];
+            }            
         }
-    }),
+    },
 
     exibirFiltro: $('body').width() >= 992,
 
