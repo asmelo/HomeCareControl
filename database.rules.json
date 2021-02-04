@@ -1,10 +1,13 @@
 {
   /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
+    "usuarios": {
+      ".indexOn": ["nome"]
+    },
+    "atendimentos": {
+      ".indexOn": ["usuario", "anoMes", "usuarioAnoMes"]
+    },
     ".read": true,
-    ".write": true,
-    "assistencia" : {
-      ".indexOn": ["usuario"]
-    }
+    ".write": true
   }
 }

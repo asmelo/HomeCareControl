@@ -50,7 +50,7 @@ export default Route.extend({
     controller.set('dicionarioMeses', dicionarioMeses);    
 
     //Preeche filtro de Tipo de Atendimento (Para Fisio)
-    controller.set('tiposAtendimento', ['Todos', 'Atendimento', 'Intercorrência', 'Remoção']);
+    controller.set('tiposAtendimento', ['Todos', 'Atendimento', 'Intercorrência', 'Remoção', 'Sobreaviso']);
     controller.set('tipoAtendimento', 'Todos');    
   }
 

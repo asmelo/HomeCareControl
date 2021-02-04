@@ -568,6 +568,23 @@ export default Controller.extend({
         listaResumo.push(intercorrencia);
 
 
+        let sobreavisos = this.get('atendimentosFiltrados').filter( function( sobreaviso ) {
+          return sobreaviso.get('tipo') == 'Sobreaviso';
+        } );
+
+        let qtdSobreavisos = sobreavisos.length;
+        let totalSobreavisos = 0;
+        sobreavisos.forEach(sobreaviso => {
+          totalSobreavisos += sobreaviso.get('valorNumber');
+        })
+        let sobreaviso = {}
+        sobreaviso.descricao = 'Sobreavisos';
+        sobreaviso.quantidade = qtdSobreavisos;
+        sobreaviso.total = totalSobreavisos;
+        sobreaviso.totalFormatado = this.get('util').tratarValor(totalSobreavisos);
+        listaResumo.push(sobreaviso);
+
+
         let qtdReunioes = this.get('reunioesFiltradas').length;
         let totalReunioes = 0;
         this.get('reunioesFiltradas').forEach(reuniao => {
