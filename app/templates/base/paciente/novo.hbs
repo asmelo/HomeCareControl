@@ -1,13 +1,21 @@
 <div class="row formulario">
-  <div class="col s12 m8 offset-m2">
+  <div class="col s12 m10 offset-m1">
     <div class="card">
       <div class="card-content">
         <form {{action "cadastrarPaciente" on="submit"}}>
           <div class="row">
             <h4>Novo Paciente</h4>
-            <div class="input-field col s12">
+            <div class="input-field col s12 m2">
+              <label>Número</label>
+              {{input id="inputNumero" class="nome" type="number" value=numero required=true maxlength="10"}}              
+            </div>
+            <div class="input-field col s12 m8">
               <label>Nome do paciente</label>
               {{input id="inputNome" class="nome" value=nome required=true maxlength=33}}
+            </div>
+            <div class="input-field col s12 m2" alt="Frequência semanal">
+              <label>Freq.</label>
+              {{input id="inputFrequencia" class="nome" type="number" value=frequenciaSemanal maxlength="3"}}                            
             </div>
           </div>
           <div class="row">

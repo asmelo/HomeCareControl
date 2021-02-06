@@ -17,6 +17,8 @@ export default Route.extend({
     didTransition() {
       schedule("afterRender",this,function() {
         document.getElementById('inputNome').focus();
+        document.getElementById('inputFrequencia').focus();
+        document.getElementById('inputNumero').focus();
       });
 
       return true;

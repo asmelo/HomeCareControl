@@ -21,7 +21,8 @@ export default Route.extend({
   model() {
     return RSVP.hash({      
       timeout: this.get('inicializarUsuario')(this),
-      listaUsuarios: this.store.findAll('usuario')      
+      listaUsuarios: this.store.findAll('usuario'),
+      pacientes: this.store.findAll('paciente')     
     });
   },
 
@@ -83,6 +84,12 @@ export default Route.extend({
 
     controller.set('usuarioFiltro', this.get('usuario').usuario);
 
+    let pacientesOrdenador = model.pacientes.sortBy('nome');
+    let pacientesAgrupados = this.agrupaPacientesPorUsuario(pacientesOrdenador);
+    let somaDasFrequencias = this.calculaTotalDeFrequencias(pacientesOrdenador, pacientesAgrupados)
+    controller.set('pacientesAgrupados', pacientesAgrupados);
+    controller.set('somaDasFrequencias', somaDasFrequencias);
+
     later(controller, function() {
       controller.send('ordernarAtendimentoPorPaciente');
     }, 2000);
@@ -110,6 +117,47 @@ export default Route.extend({
       }      
     }
     return listaFinal;
+  },
+
+  agrupaPacientesPorUsuario: function(listaPacientes) {
+    var map = {};
+    for (let i = 0; i < listaPacientes.length; i++) {
+      let paciente = listaPacientes.objectAt(i);    
+      if (!paciente.get('inativo')) {
+        let idUsuario = paciente.usuario.get('id');
+        if (!map[idUsuario]) {
+          map[idUsuario] = [];
+        }
+
+        let pacientesDoUsuario = map[idUsuario];
+        pacientesDoUsuario.push(paciente);
+        map[idUsuario] = pacientesDoUsuario;
+      }      
+    };
+    return map;
+  },
+
+  calculaTotalDeFrequencias: function(listaPacientes, pacientesAgrupados) {
+    var map = {};
+    for (let i = 0; i < listaPacientes.length; i++) {
+      let paciente = listaPacientes.objectAt(i);    
+      let idUsuario = paciente.usuario.get('id');
+      let pacientesDoUsuario = pacientesAgrupados[idUsuario];
+
+      var soma = 0;
+      for (let i = 0; i < pacientesDoUsuario.length; i++) {
+        const paciente = pacientesDoUsuario[i];
+        if (paciente.get('frequenciaSemanal')) {
+          soma += parseFloat(paciente.get('frequenciaSemanal'))
+        }        
+      }
+      if (!map[idUsuario]) {
+        map[idUsuario] = [];
+      }
+            
+      map[idUsuario] = soma;
+    };
+    return map;
   }
 
 });

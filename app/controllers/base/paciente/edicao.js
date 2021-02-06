@@ -18,8 +18,10 @@ export default Controller.extend({
     },
 
     atualizarPaciente() {
+      this.set('paciente.numero', this.get('paciente.numero'));
       this.set('paciente.nome', this.get('paciente.nome').trim());
       this.set('paciente.nomeLowerCase', this.get('paciente.nome').toLowerCase().trim());
+      this.set('paciente.frequenciaSemanal', this.get('paciente.frequenciaSemanal'));
       let self = this;
       this.get('paciente').save().then(function() {
         self.get('alerta').sucesso('Paciente atualizado com sucesso!');

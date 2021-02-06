@@ -1,15 +1,23 @@
 <div class="row formulario">
-  <div class="col s12 m8 offset-m2">
+  <div class="col s12 m10 offset-m1">
     <div class="card">
       <div class="card-content">
         <form {{action "atualizarPaciente" on="submit"}}>
           <div class="row">
             <h4>Atualizar Paciente</h4>
-            <div class="input-field col s12 m8">
+            <div class="input-field col s12 m2">
+              <label>Número</label>
+              {{input id="inputNumero" class="nome" type="number" value=paciente.numero required=true maxlength="10"}}
+            </div>
+            <div class="input-field col s12 m6">
               <label>Nome do paciente</label>
               {{input id="inputNome" class="nome" value=paciente.nome required=true maxlength=33}}
             </div>
-            <div class="input-field col s12 m4 combo">
+            <div class="input-field col s12 m2" alt="Frequência semanal">
+              <label>Freq.</label>
+              {{input id="inputFrequencia" class="nome" type="number" value=paciente.frequenciaSemanal maxlength="3"}}
+            </div>
+            <div class="input-field col s12 m2 combo">
               <div class="labelForm">Situação</div>
               {{#power-select selected=paciente.situacao
                               options=listaSituacao

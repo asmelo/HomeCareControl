@@ -29,14 +29,18 @@ export default Controller.extend({
             $('#modalConfirmarReativacao').modal('open');
           }
         } else {
-          let paciente = this.get('store').createRecord('paciente', {
+          let paciente = this.get('store').createRecord('paciente', {            
+            numero: this.get('numero'),
             nome: this.get('nome').trim(),
-            nomeLowerCase: this.get('nome').toLowerCase().trim(),
+            nomeLowerCase: this.get('nome').toLowerCase().trim(),            
+            frequenciaSemanal: this.get('frequenciaSemanal'),
             usuario: this.get('usuario').usuario
           })
           let self = this;
           paciente.save().then(function() {
+            self.set('numero', null);
             self.set('nome', null);
+            self.set('frequenciaSemanal', null);
             self.get('alerta').sucesso('Paciente salvo com sucesso!');
             self.set('ultimoIdPaciente', paciente.get('id'))
             if (self.get('from')) {

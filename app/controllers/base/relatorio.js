@@ -5,6 +5,7 @@ import { sort } from '@ember/object/computed';
 import { isPresent, isEmpty } from '@ember/utils';
 import { later } from '@ember/runloop';
 import $ from 'jquery';
+import config from 'homecarecontrol/config/environment';
 
 export default Controller.extend({
 
@@ -159,7 +160,7 @@ export default Controller.extend({
     let atendimentosPorPaciente = listaAtendimentosPorPacienteOrdenada;
     atendimentosPorPaciente.forEach(function(paciente) {
       steps.push({text: [3 + x1, y1, String(paciente.paciente.get('nome'))]});
-      steps.push({text: [3 + x1 + 54, y1, String(paciente.total), { align: 'center' }]});
+      steps.push({text: [3 + x1 + 56, y1, String(paciente.total), { align: 'center' }]});
       y1 += 5;
       if (y1 > 284) {
         houveQuebraPagina = true;
@@ -204,14 +205,17 @@ export default Controller.extend({
     steps.push({setFontSize: 8});
     steps.push({setFontStyle: 'bold'});
     steps.push({text: [3 + x1, y2 + 5, 'Data']});
-    steps.push({text: [3 + x1 + 19, y2 + 5, 'Paciente']});
-    if (this.get('usuario').usuario.get('profissao') == 'Fisioterapeuta') {
+    
+    if (this.get('usuario').usuario.get('profissao') == config.APP.fonoaudiologo) {
+      steps.push({text: [3 + x1 + 17, y2 + 5, 'Numero']});
+      steps.push({text: [3 + x1 + 32, y2 + 5, 'Paciente']});
+      steps.push({text: [3 + x1 + 97, y2 + 5, 'Valor']}); 
+    }    
+    if (this.get('usuario').usuario.get('profissao') == config.APP.fisioterapeuta) {
+      steps.push({text: [3 + x1 + 19, y2 + 5, 'Paciente']});
       steps.push({text: [3 + x1 + 76, y2 + 5, 'Tipo']});
       steps.push({text: [3 + x1 + 97, y2 + 5, 'Valor']});
-    } else {
-      steps.push({text: [3 + x1 + 76, y2 + 5, 'Valor']});      
     }
-
 
     houveQuebraPagina = false;
 
@@ -220,13 +224,18 @@ export default Controller.extend({
     atendimentosOrdenados.forEach(function(atendimento) {
 
       steps.push({text: [3 + x1, y1, atendimento.dataFormatada]});
-      steps.push({text: [3 + x1 + 19, y1, String(atendimento.nmPaciente)]});
-      if (this.get('usuario').usuario.get('profissao') == 'Fisioterapeuta') {
+
+      if (this.get('usuario').usuario.get('profissao') == config.APP.fonoaudiologo) {
+        steps.push({text: [3 + x1 + 17, y1, (atendimento.nrPaciente ? String(atendimento.nrPaciente) : "")]});
+        steps.push({text: [3 + x1 + 32, y1, String(atendimento.nmPaciente)]});
+        steps.push({text: [3 + x1 + 97, y1, atendimento.valor]});
+      }
+
+      if (this.get('usuario').usuario.get('profissao') == config.APP.fisioterapeuta) {
+        steps.push({text: [3 + x1 + 19, y1, String(atendimento.nmPaciente)]});
         steps.push({text: [3 + x1 + 76, y1, atendimento.tipo]});
         steps.push({text: [3 + x1 + 97, y1, atendimento.valor]});
-      } else {
-        steps.push({text: [3 + x1 + 76, y1, atendimento.valor]});        
-      }
+      }      
 
       y1 += 5;
       if (y1 > 284) {
@@ -273,16 +282,163 @@ export default Controller.extend({
     steps.push({setFontStyle: 'bold'});
     steps.push({text: [3 + x1, y2 + 5, 'Fonoaudiólogo']});
     steps.push({text: [3 + x1 + 75, y2 + 5, 'Aniversário']});
-
-    var y = y2 + 12;
+    
     steps.push({setFontStyle: 'normal'});        
 
     var houveQuebraPagina = false;    
     for(let i = 0; i < this.get('listaUsuarios').length; i++) {
         let usuario = this.get('listaUsuarios').objectAt(i);
-        steps.push({text: [3 + x1, y, usuario.get('nome')]});        
-        steps.push({text: [3 + x1 + 75, y, usuario.get('dtNascimentoFormatada')]});   
-        y += 5;
+        steps.push({text: [3 + x1, y1, usuario.get('nome')]});        
+        steps.push({text: [3 + x1 + 75, y1, usuario.get('dtNascimentoFormatada')]});           
+        y1 += 5;
+        if (y1 > 284) {
+            houveQuebraPagina = true;
+            y1 = 285;
+            steps.push({line: [x1, y1, x1, y2]});
+            steps.push({line: [x1, y2, x2, y2]});
+            steps.push({line: [x2, y2, x2, y1]});
+            steps.push({addPage: []});
+            pagina += 1;
+            steps.push({setFontSize: 6});        
+            steps.push({text: [200, 5, 'Página: ' + pagina, { align: 'right' }]});
+            steps.push({setFontSize: 8});
+            y2 = 10;
+            y1 = 15;
+        }     
+    }
+
+    steps.push({line: [x1, y1, x1, y2]});
+    if (!houveQuebraPagina) {
+      steps.push({line: [x1, y2, x2, y2]});
+    }
+    steps.push({line: [x2, y2, x2, y1]});
+    steps.push({line: [x2, y1, x1, y1]});
+          
+    return steps;
+  },
+
+  constroiPDFPacientes: function() {    
+    let steps = [];
+
+    let pagina = 1;
+    steps.push({setFontSize: 25});
+    steps.push({text: [105, 25, 'Relação dos Pacientes', {align: 'center'}]});        
+
+    let largura = 190;
+    let x1 = 10;
+    let y2 = 41;
+    let y1 = y2 + 7;
+    let x2 = x1 + largura;    
+
+    for (let i = 0; i < this.get('listaUsuarios').length; i++) {  
+      let usuario = this.get('listaUsuarios').objectAt(i);  
+      var houveQuebraPagina = false;   
+
+      if (this.get('pacientesAgrupados')[usuario.get('id')]) {
+        steps.push({setFontSize: 12});
+        steps.push({setFontStyle: 'bold'});
+        steps.push({text: [3 + x1, y1, usuario.nome]});     
+        
+        let totalFrequencia = 'Total de atendimento por semana: ' + this.get('somaDasFrequencias')[usuario.get('id')];
+        steps.push({text: [193, y1, totalFrequencia, {align: 'right'}]})           
+
+        y1 += 12;
+
+        steps.push({setFontSize: 8});
+        steps.push({setFontStyle: 'bold'});
+        steps.push({text: [3 + x1, y1, 'Profissional']});
+        steps.push({text: [3 + x1 + 48, y1, 'Nr. Atendimento']});
+        steps.push({text: [3 + x1 + 75, y1, 'Paciente']});
+        steps.push({text: [3 + x1 + 145, y1, 'Frquência Semanal']});
+
+        y1 += 12;
+        steps.push({setFontStyle: 'normal'});
+
+        for (let i = 0; i < this.get('pacientesAgrupados')[usuario.get('id')].length; i++) { 
+          let paciente = this.get('pacientesAgrupados')[usuario.get('id')].objectAt(i);                                
+          steps.push({text: [3 + x1, y1, usuario.nome]});        
+          steps.push({text: [3 + x1 + 48, y1, (paciente.get('numero') ? paciente.get('numero') : "")]});        
+          steps.push({text: [3 + x1 + 75, y1, (paciente.get('nome') ? paciente.get('nome') : "")]});   
+          steps.push({text: [3 + x1 + 145, y1, (paciente.get('frequenciaSemanal') ? paciente.get('frequenciaSemanal') : "")]});             
+          y1 += 5;
+          let ehUltimoPaciente = i == this.get('pacientesAgrupados')[usuario.get('id')].length-1;
+          if (!ehUltimoPaciente && y1 > 284) {              
+              y1 = 285;
+              steps.push({line: [x1, y1, x1, y2]});
+              steps.push({line: [x1, y2, x2, y2]});
+              steps.push({line: [x2, y2, x2, y1]});
+              steps.push({addPage: []});
+              pagina += 1;
+              steps.push({setFontSize: 6});        
+              steps.push({text: [200, 5, 'Página: ' + pagina, { align: 'right' }]});
+              steps.push({setFontSize: 8});
+              y2 = 10;
+              y1 = 15;
+          }               
+        };        
+
+        let ehUltimoUsuario = i == this.get('listaUsuarios').length-1;
+        if (!ehUltimoUsuario && y1 > 190) {
+          houveQuebraPagina = true;
+          y1 = 285;
+          steps.push({line: [x1, y1, x1, y2]});
+          steps.push({line: [x1, y2, x2, y2]});
+          steps.push({line: [x2, y2, x2, y1]});
+          steps.push({line: [x1, y1, x2, y1]});
+          steps.push({addPage: []});
+          pagina += 1;
+          steps.push({setFontSize: 6});        
+          steps.push({text: [200, 5, 'Página: ' + pagina, { align: 'right' }]});
+          steps.push({setFontSize: 8});
+          y2 = 10;
+          y1 = 17;
+        } else {
+          if (!ehUltimoUsuario) {
+            steps.push({line: [x1, y1, x2, y1]});
+            steps.push({line: [x1, y1+5, x2, y1+5]});
+            y1 += 12;
+          }          
+        }
+      }      
+    };    
+
+    steps.push({line: [x1, y1, x1, y2]});
+    if (!houveQuebraPagina) {
+      steps.push({line: [x1, y2, x2, y2]});
+    }
+    steps.push({line: [x2, y2, x2, y1]});
+    steps.push({line: [x2, y1, x1, y1]});
+
+    return steps;
+  },
+
+  constroiPDFUsuarios: function() {    
+    let steps = [];
+
+    let pagina = 1;
+    steps.push({setFontSize: 25});
+    steps.push({text: [105, 25, 'Relação dos Profissionais', {align: 'center'}]});        
+
+    let largura = 190;
+    let x1 = 10;
+    let y2 = 41;
+    let y1 = y2 + 12;
+    let x2 = x1 + largura;    
+
+    steps.push({setFontSize: 8});
+    steps.push({setFontStyle: 'bold'});
+    steps.push({text: [3 + x1, y2 + 5, 'Registro']});
+    steps.push({text: [3 + x1 + 40, y2 + 5, 'Nome']});
+    steps.push({text: [3 + x1 + 100, y2 + 5, 'Email']});
+    
+    steps.push({setFontStyle: 'normal'});        
+
+    var houveQuebraPagina = false;    
+    for(let i = 0; i < this.get('listaUsuarios').length; i++) {
+        let usuario = this.get('listaUsuarios').objectAt(i);
+        steps.push({text: [3 + x1, y1, usuario.get('registro')]});        
+        steps.push({text: [3 + x1 + 40, y1, usuario.get('nome')]});        
+        steps.push({text: [3 + x1 + 100, y1, usuario.get('email')]});
         y1 += 5;
         if (y1 > 284) {
             houveQuebraPagina = true;
@@ -343,6 +499,20 @@ export default Controller.extend({
 
   stepsAniversariantes: computed('listaUsuarios', function() {    
     let internalSteps = this.constroiPDFAniversariantes();
+    let steps = [];
+    steps.push(internalSteps);
+    return steps;
+  }),
+
+  stepsPacientes: computed('pacientesAgrupados', function() {    
+    let internalSteps = this.constroiPDFPacientes();
+    let steps = [];
+    steps.push(internalSteps);
+    return steps;
+  }),
+
+  stepsUsuarios: computed('listaUsuarios', function() {    
+    let internalSteps = this.constroiPDFUsuarios();
     let steps = [];
     steps.push(internalSteps);
     return steps;

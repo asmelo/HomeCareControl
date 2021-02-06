@@ -27,6 +27,20 @@
               {{/js-pdf}}
           </li>      
       {{/each}}
+      {{#each stepsPacientes as |stepsPaciente|}}       
+          <li>
+              {{#js-pdf stepsPaciente showPdf=false id="Pacientes" as |pdf|}}
+                  <a title="Gerar PDF com a relação dos pacientes" class="link" role="button" {{action pdf.save}}><i class="material-icons">person</i></a>
+              {{/js-pdf}}
+          </li>      
+      {{/each}}  
+      {{#each stepsUsuarios as |stepsUsuario|}}       
+          <li>
+              {{#js-pdf stepsUsuario showPdf=false id="Usuarios" as |pdf|}}
+                  <a title="Gerar PDF com a dados dos profissionais" class="link" role="button" {{action pdf.save}}><i class="material-icons">assignment_ind</i></a>
+              {{/js-pdf}}
+          </li>      
+      {{/each}}      
     {{/if}}
   </ul>
 </div>
@@ -181,6 +195,17 @@
           </a>
         </th>
         <th>
+          <a class="link" role="button" {{action "ordenarAtendimentos" "nrPaciente"}}>
+            Número
+            {{#if (eq ordenacaoESentidoAtendimentos "nrPaciente:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentidoAtendimentos "nrPaciente:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
           <a class="link" role="button" {{action "ordenarAtendimentos" "nmPaciente"}}>
             Paciente
             {{#if (eq ordenacaoESentidoAtendimentos "nmPaciente:desc")}}
@@ -235,6 +260,7 @@
       {{#each atendimentosOrdenados as |atendimento|}}
         <tr>
           <td>{{moment-format atendimento.dtAtendimento "DD/MM/YYYY"}}</td>
+          <td>{{atendimento.nrPaciente}}</td>
           <td>{{atendimento.nmPaciente}}</td>
           {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
             <td>{{atendimento.valor}}</td>            

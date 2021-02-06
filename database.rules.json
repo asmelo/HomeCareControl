@@ -3,8 +3,11 @@
   "rules": {
     ".read": true,
     ".write": true,
-    "assistencia" : {
-      ".indexOn": ["usuario"]
-    }
+    "usuarios" : {
+      ".indexOn": ["nome"]
+    },
+    "atendimentos" : {
+      ".indexOn": ["usuario", "anoMes", "usuarioAnoMes"]
+    }  
   }
 }

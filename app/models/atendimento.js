@@ -15,6 +15,10 @@ export default DS.Model.extend({
     return this.get('paciente.nome');
   }),
 
+  nrPaciente: computed('paciente.numero', function() {
+    return this.get('paciente.numero');
+  }),
+
   valorNumber: computed('valor', function() {
     return Number(this.get('valor').replace('R$', '').replace('.', '').replace(',', '.').trim());
   }),
