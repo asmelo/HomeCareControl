@@ -22,7 +22,7 @@ export default Route.extend({
 
     window.scrollTo(0,0);
 
-    controller.set('tiposAtendimento', ['Atendimento', 'Intercorrência', 'Remoção']);
+    controller.set('tiposAtendimento', ['Atendimento', 'Intercorrência', 'Remoção', 'Sobreaviso']);
 
     let pacientes = model.pacientes.filter(paciente => { return !paciente.get('inativo') })
     pacientes = pacientes.sortBy('nome');

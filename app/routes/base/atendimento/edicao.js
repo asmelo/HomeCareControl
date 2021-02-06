@@ -23,7 +23,7 @@ export default Route.extend({
     controller.set('atendimento', model.atendimento);
     controller.set('pacientes', model.pacientes);
 
-    controller.set('tiposAtendimento', ['Atendimento', 'Intercorrência', 'Remoção']);
+    controller.set('tiposAtendimento', ['Atendimento', 'Intercorrência', 'Remoção', 'Sobreaviso']);
   },
 
 });

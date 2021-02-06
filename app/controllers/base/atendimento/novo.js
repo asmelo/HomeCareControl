@@ -50,6 +50,9 @@ export default Controller.extend({
       if (tipoAtendimento == 'Remoção') {
         this.set('valor', config.APP.valorRemocao);
       }
+      if (tipoAtendimento == 'Sobreaviso') {
+        this.set('valor', config.APP.valorSobreaviso);
+      }
     },
 
     salvarAtendimento() {
