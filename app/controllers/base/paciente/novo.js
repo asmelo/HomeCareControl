@@ -12,6 +12,10 @@ export default Controller.extend({
 
   actions: {
 
+    selecionaDeOutroProfissional(deOutroProfissional) {
+      this.set('deOutroProfissional', deOutroProfissional);
+    },
+
     cadastrarPaciente() {
       this.get('store').query('paciente', {
         orderBy: 'nomeLowerCase',
@@ -34,6 +38,7 @@ export default Controller.extend({
             nome: this.get('nome').trim(),
             nomeLowerCase: this.get('nome').toLowerCase().trim(),            
             frequenciaSemanal: this.get('frequenciaSemanal'),
+            deOutroProfissional: this.get('deOutroProfissional'),
             usuario: this.get('usuario').usuario
           })
           let self = this;
@@ -41,6 +46,7 @@ export default Controller.extend({
             self.set('numero', null);
             self.set('nome', null);
             self.set('frequenciaSemanal', null);
+            self.set('deOutroProfissional', 'Não');
             self.get('alerta').sucesso('Paciente salvo com sucesso!');
             self.set('ultimoIdPaciente', paciente.get('id'))
             if (self.get('from')) {

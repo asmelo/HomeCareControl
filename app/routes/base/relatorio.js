@@ -123,7 +123,8 @@ export default Route.extend({
     var map = {};
     for (let i = 0; i < listaPacientes.length; i++) {
       let paciente = listaPacientes.objectAt(i);    
-      if (!paciente.get('inativo')) {
+      let pacienteDoUsuario = (paciente.get('deOutroProfissional') == 'Não') || (paciente.get('deOutroProfissional') == null)
+      if (!paciente.get('inativo') && pacienteDoUsuario) {
         let idUsuario = paciente.usuario.get('id');
         if (!map[idUsuario]) {
           map[idUsuario] = [];
@@ -145,17 +146,19 @@ export default Route.extend({
       let pacientesDoUsuario = pacientesAgrupados[idUsuario];
 
       var soma = 0;
-      for (let i = 0; i < pacientesDoUsuario.length; i++) {
-        const paciente = pacientesDoUsuario[i];
-        if (paciente.get('frequenciaSemanal')) {
-          soma += parseFloat(paciente.get('frequenciaSemanal'))
-        }        
-      }
-      if (!map[idUsuario]) {
-        map[idUsuario] = [];
-      }
-            
-      map[idUsuario] = soma;
+      if (pacientesDoUsuario) {
+        for (let i = 0; i < pacientesDoUsuario.length; i++) {
+          const paciente = pacientesDoUsuario[i];
+          if (paciente.get('frequenciaSemanal')) {
+            soma += parseFloat(paciente.get('frequenciaSemanal'))
+          }        
+        }
+        if (!map[idUsuario]) {
+          map[idUsuario] = [];
+        }
+              
+        map[idUsuario] = soma;
+      }      
     };
     return map;
   }

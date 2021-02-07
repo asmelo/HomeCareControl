@@ -9,6 +9,10 @@ export default Controller.extend({
 
   actions: {
 
+    selecionaDeOutroProfissional(deOutroProfissional) {
+      this.set('paciente.deOutroProfissional', deOutroProfissional);      
+    },
+
     selecionaSituacao(situacao) {
       if (situacao == 'Ativo') {
         this.set('paciente.inativo', false);
@@ -17,11 +21,10 @@ export default Controller.extend({
       }
     },
 
-    atualizarPaciente() {
-      this.set('paciente.numero', this.get('paciente.numero'));
+    atualizarPaciente() {      
       this.set('paciente.nome', this.get('paciente.nome').trim());
-      this.set('paciente.nomeLowerCase', this.get('paciente.nome').toLowerCase().trim());
-      this.set('paciente.frequenciaSemanal', this.get('paciente.frequenciaSemanal'));
+      this.set('paciente.nomeLowerCase', this.get('paciente.nome').toLowerCase().trim());      
+            
       let self = this;
       this.get('paciente').save().then(function() {
         self.get('alerta').sucesso('Paciente atualizado com sucesso!');

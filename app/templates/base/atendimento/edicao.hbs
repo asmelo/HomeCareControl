@@ -17,7 +17,11 @@
                               noMatchesMessage="Sem registros"
                               triggerClass="selectPaciente"
                               searchField="nome" as |paciente|}}
-                {{paciente.nome}}
+                {{#if (eq paciente.inativo true)}}
+                  {{paciente.nome}} {{"(Inativo)"}}
+                {{else}}
+                  {{paciente.nome}}
+                {{/if}}                    
               {{/power-select}}
             </div>
 

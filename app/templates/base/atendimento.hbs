@@ -69,6 +69,17 @@
           </a>
         </th>
         <th>
+          <a class="link" role="button" {{action "ordenar" "nrPaciente"}}>
+            Nr. Atendimento
+            {{#if (eq ordenacaoESentido "nrPaciente:desc")}}
+              <i class="material-icons">arrow_drop_up</i>
+            {{/if}}
+            {{#if (eq ordenacaoESentido "nrPaciente:asc")}}
+              <i class="material-icons">arrow_drop_down</i>
+            {{/if}}
+          </a>
+        </th>
+        <th>
           <a class="link" role="button" {{action "ordenar" "nmPaciente"}}>
             Paciente
             {{#if (eq ordenacaoESentido "nmPaciente:desc")}}
@@ -124,6 +135,7 @@
       {{#each atendimentosOrdenados as |atendimento|}}
         <tr class="link" role="button" {{action "editarAtendimento" atendimento}}>
           <td>{{moment-format atendimento.dtAtendimento "DD/MM/YYYY"}}</td>
+          <td>{{atendimento.nrPaciente}}</td>
           <td>{{atendimento.nmPaciente}}</td>
           {{#if (not-eq usuario.usuario.profissao "Fisioterapeuta")}}
             <td>{{atendimento.valor}}</td>            

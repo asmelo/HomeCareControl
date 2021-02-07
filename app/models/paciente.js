@@ -9,6 +9,7 @@ export default DS.Model.extend({
   usuario:             DS.belongsTo('usuario', { inverse: false }),
   inativo:             DS.attr('boolean'),
   frequenciaSemanal:   DS.attr('string'),
+  deOutroProfissional: DS.attr('string'),
 
   situacao: computed('inativo', function() {
     if (this.get('inativo')) {

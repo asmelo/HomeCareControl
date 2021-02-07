@@ -10,6 +10,9 @@ export default Route.extend({
   setupController(controller, model) {
     controller.set('paciente', model);
     controller.set('listaSituacao', ['Ativo', 'Inativo']);
+
+    let listaDeOutroPaciente = ['Sim', 'Não'];
+    controller.set('listaDeOutroPaciente', listaDeOutroPaciente);       
   },
 
 

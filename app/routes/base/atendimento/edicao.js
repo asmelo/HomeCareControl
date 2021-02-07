@@ -21,7 +21,7 @@ export default Route.extend({
   setupController(controller, model) {
 
     controller.set('atendimento', model.atendimento);
-    controller.set('pacientes', model.pacientes);
+    controller.set('pacientes', model.pacientes.sortBy('nome'));    
 
     controller.set('tiposAtendimento', ['Atendimento', 'Intercorrência', 'Remoção', 'Sobreaviso']);
   },

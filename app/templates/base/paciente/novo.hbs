@@ -9,7 +9,7 @@
               <label>Número</label>
               {{input id="inputNumero" class="nome" type="number" value=numero required=true maxlength="10"}}              
             </div>
-            <div class="input-field col s12 m8">
+            <div class="input-field col s12 m6">
               <label>Nome do paciente</label>
               {{input id="inputNome" class="nome" value=nome required=true maxlength=33}}
             </div>
@@ -17,7 +17,16 @@
               <label>Freq.</label>
               {{input id="inputFrequencia" class="nome" type="number" value=frequenciaSemanal maxlength="3"}}                            
             </div>
-          </div>
+            <div class="input-field col s12 m2 combo">
+              <div class="labelForm">De outro prof.</div>
+              {{#power-select selected=deOutroProfissional
+                              options=listaDeOutroPaciente
+                              onchange=(action "selecionaDeOutroProfissional")
+                              as |item|}}
+                {{item}}
+              {{/power-select}}
+            </div>
+          </div>          
           <div class="row">
             <div class="col s12 right-align">
               <button type="submit" class="salvar btn wave-effects wave-light">Salvar</button>
